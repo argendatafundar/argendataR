@@ -68,9 +68,9 @@ agregar_fuente <- function(url = NULL,
 
 
 
-  df <- googlesheets4::read_sheet(fuentes_id())
+  df_fuentes <- fuentes()
 
-  if (nrow(df[df$nombre == inputs$nombre & df$url == inputs$url & df$institucion == inputs$institucion,]) != 0) {
+  if (nrow(df_fuentes[df_fuentes$nombre == inputs$nombre & df_fuentes$url == inputs$url & df_fuentes$institucion == inputs$institucion,]) != 0) {
     stop("Ya existe esa combinacion nombre, institucion y url. Verificar si es una posible duplicacion o cambiar de nombre, institucion o url")
   }
 
@@ -82,7 +82,7 @@ agregar_fuente <- function(url = NULL,
     stop("No se encontro el archivo script en scripts/fuentes/. Guardarlo en la ubicacion antes de continuar")
   }
 
-  last_id <- dplyr::last(df$id_fuente)
+  last_id <- dplyr::last(df_fuentes$id_fuente)
 
   if (is.na(last_id)) {
     next_id <- 1
@@ -108,6 +108,17 @@ agregar_fuente <- function(url = NULL,
                       "path_raw",
                       "script")
                       )
+  
+  
+  
+  fuentes_raw_dir <- fuentes_raw_dir()
+  
+  stopifnot("El archivo ya existe en el drive. Cambiar el nombre del archivo o borrar el archivo existente" = ! path_raw %in% fuentes_raw_dir$tree$name)
+  
+  googledrive::drive_upload(media = paste0("data/_FUENTES/raw/", path_raw),
+                            path = fuentes_raw_dir$id,
+                            name = path_raw)
+  
 
 
     tibble::as_tibble(inputs) |>
@@ -120,15 +131,6 @@ agregar_fuente <- function(url = NULL,
                "fecha_actualizar",
                "path_raw",
                "script" ) |>
-      googlesheets4::sheet_append(sheet = fuentes_id())
-
-
-      bbdd <- googledrive::drive_ls(googledrive::as_id(argendata_root()$id[argendata_root()$name == "BASES DE DATOS"]))
-
-      fuentes_dir <- googledrive::drive_ls(googledrive::as_id(bbdd$id[bbdd$name == "Fuentes"]))
-
-      googledrive::drive_upload(media = paste0("data/_FUENTES/raw/", path_raw),
-                                path = googledrive::as_id(fuentes_dir), name = nombre, overwrite = F)
-
+      googlesheets4::sheet_append(sheet = fuentes_sheet_id())
 
 }

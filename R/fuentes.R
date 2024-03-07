@@ -1,15 +1,12 @@
-#' Title
+#' Fuentes
 #'
 #' @return tibble con la sheet de fuentes de googledrive Argendata
 #' @export
 #'
-#' @examples
 
 fuentes <- function() {
 
 
-
-
-  googlesheets4::read_sheet(ss = fuentes_id())
+  googlesheets4::read_sheet(ss = fuentes_sheet_id())
 
 }

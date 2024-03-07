@@ -8,11 +8,11 @@ get_nomenclador_paises <- function() {
 
 
 
-  bbdd_path <- googledrive::drive_ls(googledrive::as_id(argendata_root()[argendata_root()$name == "BASES DE DATOS",]$id))
+  bbdd_tree <- bbdd_dir()$tree
+  
+  clasificadores_nomecladores <- googledrive::drive_ls(googledrive::as_id(bbdd_tree[bbdd_tree$name == "Clasificadores y Nomencladores","id"]))
 
-  clasificadores_nomecladores <- googledrive::drive_ls(googledrive::as_id(bbdd_path[bbdd_path$name == "Clasificadores y Nomencladores",]$id))
-
-  geograficos <- googledrive::drive_ls(googledrive::as_id(clasificadores_nomecladores[clasificadores_nomecladores$name == "GEOGRAFICOS",]$id))
+  geograficos <- googledrive::drive_ls(googledrive::as_id(clasificadores_nomecladores[clasificadores_nomecladores$name == "GEOGRAFICOS","id"]))
 
   id <-  geograficos[grepl("consolidado_fundar",geograficos$name),]$id
 

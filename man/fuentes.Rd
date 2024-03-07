@@ -2,7 +2,7 @@
 % Please edit documentation in R/fuentes.R
 \name{fuentes}
 \alias{fuentes}
-\title{Title}
+\title{Fuentes}
 \usage{
 fuentes()
 }
@@ -10,5 +10,5 @@ fuentes()
 tibble con la sheet de fuentes de googledrive Argendata
 }
 \description{
-Title
+Fuentes
 }

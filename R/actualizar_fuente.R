@@ -19,10 +19,10 @@ actualizar_fuente <- function(id_fuente,
 
   stopifnot("'id_fuente' debe ser numerico" = is.numeric(id_fuente))
 
-  df <- googlesheets4::read_sheet(fuentes_id())
+  df_fuentes <- fuentes()
 
 
-  stopifnot("'id_fuente' no encontrado en sheet de fuentes. Ver `fuentes()`." = id_fuente %in% df$id_fuente )
+  stopifnot("'id_fuente' no encontrado en sheet de fuentes. Ver `fuentes()`." = id_fuente %in% df_fuentes$id_fuente )
 
   if (is.null(fecha_descarga)) {
     fecha_descarga <- Sys.Date()
@@ -40,25 +40,25 @@ actualizar_fuente <- function(id_fuente,
   inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
 
 
-  df <- df[df$id_fuente == id_fuente,]
+  df_fuentes <- df_fuentes[df_fuentes$id_fuente == id_fuente,]
 
   for (i in names(inputs)) {
 
-        df[df$id_fuente == inputs$id_fuente , i] <-  inputs[i]
+    df_fuentes[df_fuentes$id_fuente == inputs$id_fuente , i] <-  inputs[i]
 
   }
 
 
-  print( df[df$id_fuente == inputs$id_fuente ,])
+  print( df_fuentes[df_fuentes$id_fuente == inputs$id_fuente ,])
+  
 
-  df |>
-    googlesheets4::range_write(ss = fuentes_id(), range = sprintf("A%d:I%d", id_fuente))
+  df_fuentes |>
+    googlesheets4::range_write(ss = fuentes_sheet_id(),
+                               range = sprintf("A%d:I%d", id_fuente))
+  
 
-  bbdd <- googledrive::drive_ls(googledrive::as_id(argendata_root()$id[argendata_root()$name == "BASES DE DATOS"]))
-
-  fuentes_dir <- googledrive::drive_ls(googledrive::as_id(bbdd$id[bbdd$name == "Fuentes"]))
-
-  googledrive::drive_upload(media = paste0("data/_FUENTES/raw/", df$path_raw),
-                            path = googledrive::as_id(fuentes_dir), name = df$nombre, overwrite = T)
+  googledrive::drive_upload(media = paste0("data/_FUENTES/raw/", df_fuentes$path_raw),
+                            path = googledrive::as_id(fuentes_raw_dir()$id),
+                            name = df_fuentes$path_raw, overwrite = T)
 
   }

@@ -2,10 +2,11 @@
 % Please edit documentation in R/subtopicos.R
 \name{subtopicos}
 \alias{subtopicos}
-\title{Title}
+\title{subtopicos}
 \usage{
 subtopicos()
 }
 \description{
-Title
+subtopicos
 }
+\keyword{internal}

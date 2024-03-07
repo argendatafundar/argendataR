@@ -2,13 +2,18 @@
 % Please edit documentation in R/outputs_subtopico.R
 \name{outputs_subtopico}
 \alias{outputs_subtopico}
-\title{Title}
+\title{outputs_subtopico}
 \usage{
 outputs_subtopico(subtopico_nombre, entrega_subtopico)
 }
 \arguments{
-\item{entrega_subtopico}{}
+\item{subtopico_nombre}{codigo 6 letras del subtopico tal cual su nombre en el drive de Argendata}
+
+\item{entrega_subtopico}{nombre de la entrega a buscar tal cual su nombre en el drive de Argendata}
+}
+\value{
+dataframe con los outputs del subtopico para la entrega elegida
 }
 \description{
-Title
+outputs_subtopico
 }

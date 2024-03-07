@@ -14,5 +14,5 @@ actualizar_fuente(id_fuente, fecha_descarga = NULL, fecha_actualizar = NULL)
 \item{fecha_actualizar}{string or date Valor de la fecha en que se debe actualizar la descarga. Puede ser clase 'date' como producto de `Sys.Date()` o un string parseable por `as.Date()`}
 }
 \description{
-Actualiza fecha de descarga y acutalizacion de una fuente ya registrada con `agregar_fuente()` en la sheet de fuentes en el drive de Argendata. Hace `drive_upload()` con overwrite = T pisando la version anterior de la fuente.
+Actualiza 'fecha_descarga' y 'fecha_actualizar' de una fuente en la sheet de fuentes en el drive de Argendata. Hace `drive_upload()` con overwrite = T pisando la version anterior de la fuente en el drive.
 }

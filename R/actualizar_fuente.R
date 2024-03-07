@@ -1,7 +1,7 @@
 #' Actualizar informacion de una fuente
 #'
 #' @description
-#' Actualiza fecha de descarga y acutalizacion de una fuente ya registrada con `agregar_fuente()` en la sheet de fuentes en el drive de Argendata. Hace `drive_upload()` con overwrite = T pisando la version anterior de la fuente.
+#' Actualiza 'fecha_descarga' y 'fecha_actualizar' de una fuente en la sheet de fuentes en el drive de Argendata. Hace `drive_upload()` con overwrite = T pisando la version anterior de la fuente en el drive.
 #'
 #'
 #' @param id_fuente integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  `fuentes()`
@@ -10,8 +10,7 @@
 #'
 #' @export
 #'
-#' @examples
-#'
+#' 
 
 actualizar_fuente <- function(id_fuente,
                               fecha_descarga= NULL,

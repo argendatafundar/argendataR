@@ -1,19 +1,16 @@
-#' Title
+#' Expandir una serie usando variaciones de otra serie 
 #'
 #' @description
-#' para empalmar una serie usando variaciones de otra serie
-#' dada una columna x con los valores de la serie a expandir: Xi a Xn de 1 a N
-#' y dada una columna var donde VARi = Xi/Xi-1 como las proporciones entre un valor de x y su antecedente
-#' si Xi es NA lo calcula y reemplaza como Xi-1*VARi, si no es NA lo deja tal cual
+#' Toma un vector x con valores definidos de x1 a xn y con valores faltantes de xn+1 a xm y calcula los valores faltantes usando variaciones de otro vector var1 a varm como: xn+1 = xn*varn+1.
 #'
 #'
-#' @param x
-#' @param var
+#' @param x variable con serie a expandir
+#' @param var  variable con variaciones a usar para expandir la  serie
 #'
-#' @return
+#' @return vector con la serie expandida
 #' @export
 #'
-#' @examples
+#' 
 
 
 expansor_xvar <- function(x,var) {

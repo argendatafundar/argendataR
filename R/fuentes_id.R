@@ -1,11 +1,7 @@
-#' Title
-#'
-#' @return
+#' fuentes_id
 #'
 #' @keywords internal
 #'
-#' @examples
-
 
 fuentes_id <- function() {
 

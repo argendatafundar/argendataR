@@ -1,9 +1,9 @@
-#' Title
+#' subtopicos
 #'
-#' @return
+#' @keywords internal
 #' @export
 #'
-#' @examples
+
 subtopicos <- function() {
 
 

@@ -1,12 +1,10 @@
-#' Title
+#' get_nomenclador_paises
 #'
-#' @return
+#' @return tibble con la sheet de consolidado_fundar del drive de Argendata
 #' @export
 #'
-#' @examples
 
-
-get_iso_paises <- function() {
+get_nomenclador_paises <- function() {
 
 
 

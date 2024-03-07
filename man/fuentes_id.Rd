@@ -2,11 +2,11 @@
 % Please edit documentation in R/fuentes_id.R
 \name{fuentes_id}
 \alias{fuentes_id}
-\title{Title}
+\title{fuentes_id}
 \usage{
 fuentes_id()
 }
 \description{
-Title
+fuentes_id
 }
 \keyword{internal}

@@ -6,6 +6,9 @@
 \usage{
 fuentes()
 }
+\value{
+tibble con la sheet de fuentes de googledrive Argendata
+}
 \description{
 Title
 }

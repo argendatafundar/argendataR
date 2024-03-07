@@ -25,9 +25,8 @@
 #' @returns Escribe localmente un json con la data y metadata definida usando '{output_name}.json' como path. Opcionalmente tambien escribe un csv '{output_name}.csv'
 #' @export
 #'
-#' @examples
 #'
-#'
+
 write_output <- function(
     data = NULL,
     extension = 'csv',

@@ -1,17 +1,13 @@
-#' Title
+#' outputs_subtopico
 #'
-#' @param subtopico_nombre
-#' @param entrega_subtopico
+#' @param subtopico_nombre codigo 6 letras del subtopico tal cual su nombre en el drive de Argendata
+#' @param entrega_subtopico nombre de la entrega a buscar tal cual su nombre en el drive de Argendata
 #'
-#' @return
+#' @return dataframe con los outputs del subtopico para la entrega elegida
 #' @export
 #'
-#' @examples
-outputs_subtopico <- function(subtopico_nombre, entrega_subtopico) {
-  # eleccion del subtopico
-  # subtopico <- subtopicos$name[subtopicos$name == x]
 
-  # levanta los outputs del subtopico
+outputs_subtopico <- function(subtopico_nombre, entrega_subtopico) {
 
   files_subtopico <- googledrive::drive_ls(subtopicos()$id[subtopicos()$name == subtopico_nombre])
 

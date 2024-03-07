@@ -1,11 +1,10 @@
 Package: argendataR
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: Caja de herramientas para Argendata
+Version: 0.0.9000
+Author: Fundar
+Maintainer: Juan Gabriel Juara <jgjuara@fund.ar>
+Description: Paquete de herramientas para el flujo de outputs Argendata
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

@@ -2,15 +2,13 @@
 #'
 #' @keywords internal
 #' @export
-#'
 
 subtopicos <- function() {
 
-
-  id_subtopicos <- argendata_root()[argendata_root()$name == "SUBTOPICOS",]$id
-
-  subtopicos_dir <- googledrive::drive_ls(id_subtopicos)
-
+  argendata_root_dir <- argendata_root_dir()
+  subtopicos_dir <- list()
+  subtopicos_dir$id <- argendata_root_dir$id[argendata_root_dir$name == "SUBTOPICOS"] 
+  subtopicos_dir$tree <- googledrive::drive_ls(googledrive::as_id(subtopicos_dir$id))
   subtopicos_dir
 
   }

@@ -30,10 +30,10 @@ bbdd_dir <- function() {
 #' @keywords internal
 #'
 fuentes_dir <- function(){
-  bbdd_dir <- bbdd_dir()
+  bbdd_dir <- bbdd_dir()$tree
   fuentes_dir <- list()
   
-  fuentes_dir$id <- bbdd_dir$id[bbdd_dir$tree$name == "Fuentes"]
+  fuentes_dir$id <- bbdd_dir$id[bbdd_dir$name == "Fuentes"]
   fuentes_dir$tree <- googledrive::drive_ls(googledrive::as_id(fuentes_dir$id))
   fuentes_dir
 }

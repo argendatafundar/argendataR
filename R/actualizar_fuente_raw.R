@@ -53,7 +53,8 @@ actualizar_fuente_raw <- function(id_fuente,
   
 
   df_fuentes |>
-    googlesheets4::range_write(ss = fuentes_raw_sheet_id(),
+    googlesheets4::range_write(data = _,
+                               ss = fuentes_raw_sheet_id(),
                                range = sprintf("A%d:I%d", id_fuente))
   
 

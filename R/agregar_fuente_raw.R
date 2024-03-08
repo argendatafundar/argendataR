@@ -131,6 +131,7 @@ agregar_fuente_raw <- function(url = NULL,
                "fecha_actualizar",
                "path_raw",
                "script" ) |>
-      googlesheets4::sheet_append(sheet = fuentes_raw_sheet_id())
+      googlesheets4::sheet_append(data = _,
+                                  ss = fuentes_raw_sheet_id())
 
 }

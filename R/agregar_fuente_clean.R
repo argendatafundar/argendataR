@@ -100,6 +100,6 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
                     "nombre",
                     "script",
                     "fecha") |>
-    googlesheets4::sheet_append(sheet = fuentes_clean_sheet_id())
+    googlesheets4::sheet_append(data = _, ss = fuentes_clean_sheet_id())
   
 }

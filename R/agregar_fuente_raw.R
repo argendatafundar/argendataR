@@ -1,4 +1,4 @@
-#' Agregar nueva fuente
+#' Agregar nueva fuente raw
 #'
 #' @description
 #' Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace `drive_upload()` con overwrite = F de la fuente.
@@ -11,13 +11,13 @@
 #' @param fecha_descarga date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por `as.Date()`. Si es null toma la fecha de `Sys.Date()`
 #' @param fecha_actualizar date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por `as.Date()`.
 #' @param path_raw string Nombre del archivo de la fuente tal cual fue descargado en el directorio data/_FUENTES/raw/ de argendata-etl
-#' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/fuentes/ de argendata-etl
+#' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl
 #'
 #' @export
 #'
 
 
-agregar_fuente <- function(url = NULL,
+agregar_fuente_raw <- function(url = NULL,
                            nombre = NULL,
                            institucion = NULL,
                            actualizable = NULL,
@@ -68,7 +68,7 @@ agregar_fuente <- function(url = NULL,
 
 
 
-  df_fuentes <- fuentes()
+  df_fuentes <- fuentes_raw()
 
   if (nrow(df_fuentes[df_fuentes$nombre == inputs$nombre & df_fuentes$url == inputs$url & df_fuentes$institucion == inputs$institucion,]) != 0) {
     stop("Ya existe esa combinacion nombre, institucion y url. Verificar si es una posible duplicacion o cambiar de nombre, institucion o url")
@@ -78,8 +78,8 @@ agregar_fuente <- function(url = NULL,
     stop("No se encontro el archivo raw en data/_FUENTES/raw. Guardarlo en la ubicacion antes de continuar")
   }
 
-  if (!file.exists(paste0("scripts/fuentes/", inputs$script))) {
-    stop("No se encontro el archivo script en scripts/fuentes/. Guardarlo en la ubicacion antes de continuar")
+  if (!file.exists(paste0("scripts/descarga_fuentes/", inputs$script))) {
+    stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
   }
 
   last_id <- dplyr::last(df_fuentes$id_fuente)
@@ -131,6 +131,6 @@ agregar_fuente <- function(url = NULL,
                "fecha_actualizar",
                "path_raw",
                "script" ) |>
-      googlesheets4::sheet_append(sheet = fuentes_sheet_id())
+      googlesheets4::sheet_append(sheet = fuentes_raw_sheet_id())
 
 }

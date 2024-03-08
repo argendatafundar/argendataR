@@ -83,11 +83,12 @@ write_output <- function(
 
   stopifnot("'fuentes' debe ser un vector tipo character o numeric" = class(fuentes) == "character" | class(fuentes) == "numeric")
 
-
+  fuentes_clean_df <- fuentes_clean()
+  
   if(is.numeric(fuentes)) {
-    stopifnot("Alguna/s de las fuentes no estan cargadas en sheet fuentes" = all(fuentes %in% fuentes()$id_fuente))
+    stopifnot("Alguna/s de las fuentes no estan cargadas en sheet fuentes" = all(fuentes %in% fuentes_clean_df$id_fuente))
   } else if (is.character(fuentes)) {
-    stopifnot("Alguna/s de las fuentes no estan cargadas en sheet fuentes" = all(fuentes %in% fuentes()$nombre))
+    stopifnot("Alguna/s de las fuentes no estan cargadas en sheet fuentes" = all(fuentes %in% fuentes_clean_df$nombre))
   } else if (!is.numeric(fuentes) & !is.character(fuentes)) {
     stop("Input de fuentes invalido. Debe ser vector de strings con nombres de fuentes registradas o vector numerico con id de fuentes registradas")
   }
@@ -221,9 +222,14 @@ write_output <- function(
 
   if (exportar) {
     data |>
+      dplyr::mutate(dplyr::everything(), as.character) |>
       readr::write_csv(file = glue::glue("data/{subtopico}/datasets/outputs/{output_name}.{extension}"),
-                eol = "\n", na = "")
+                       eol = "\n",
+                       quote = "all",
+                       escape = "none",
+                       na = "")
   }
 
   inputs
+  
 }

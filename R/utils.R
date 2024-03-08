@@ -30,23 +30,37 @@ fuentes_dir <- function(){
   bbdd_dir <- bbdd_dir()
   fuentes_dir <- list()
   
-  fuentes_dir$id <- bbdd_dir$id[bbdd_dir$name == "Fuentes"]
+  fuentes_dir$id <- bbdd_dir$id[bbdd_dir$tree$name == "Fuentes"]
   fuentes_dir$tree <- googledrive::drive_ls(googledrive::as_id(fuentes_dir$id))
   fuentes_dir
 }
 
-#' fuentes_sheet_id
+#' fuentes_raw_sheet_id
 #'
 #' @keywords internal
 #' @return id de sheet de fuentes
 
-fuentes_sheet_id <- function() {
+fuentes_raw_sheet_id <- function() {
   
   fuentes_dir <- fuentes_dir()$tree
   
-  fuentes_sheet_id <- fuentes_dir$id[fuentes_dir$name == "fuentes_raw"]
+  fuentes_raw_sheet_id <- fuentes_dir$id[fuentes_dir$name == "fuentes_raw"]
   
-  fuentes_sheet_id
+  fuentes_raw_sheet_id
+}
+
+#' fuentes_raw_sheet_id
+#'
+#' @keywords internal
+#' @return id de sheet de fuentes
+
+fuentes_clean_sheet_id <- function() {
+  
+  fuentes_dir <- fuentes_dir()$tree
+  
+  fuentes_clean_sheet_id <- fuentes_dir$id[fuentes_dir$name == "fuentes_clean"]
+  
+  fuentes_clean_sheet_id
 }
 
 #' lista de entradas dentro de Fuentes/raw
@@ -63,4 +77,16 @@ fuentes_raw_dir <- function() {
   fuentes_raw_dir
 }
 
+#' lista de entradas dentro de Fuentes/clean
+#'
+#' @return tibble con el directorio de fuentes clean
+#' @keywords internal
+#' 
 
+fuentes_clean_dir <- function() {
+  fuentes_dir <- fuentes_dir()$tree
+  fuentes_clean_dir <- list()
+  fuentes_clean_dir$id <- fuentes_dir$id[fuentes_dir$name == "clean"]
+  fuentes_clean_dir$tree <- googledrive::drive_ls(googledrive::as_id(fuentes_clean_dir$id))
+  fuentes_clean_dir
+}

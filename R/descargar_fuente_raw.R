@@ -8,7 +8,7 @@
 
 descargar_fuente_raw <- function(id_fuente) {
   
-  df_fuentes <- fuentes()
+  df_fuentes <- fuentes_raw()
   
   stopifnot("id fuente no es numeric o no fue encontrado en sheet fuentes" = is.numeric(id_fuente) & id_fuente %in% df_fuentes$id_fuente)
 

@@ -20,6 +20,15 @@ knitr::opts_chunk$set(
 
 Este paquete es un conjunto de funciones para facilitar el flujo de trabajo con fuentes y outputs en Argendata usando R.
 
+## Requisito
+
+Para usar muchas de las funciones de este paquete es necesario tener seteado en el .Renviron la variable 'ARGENDATA_DRIVE' con el id del directorio de Argendata. Para editar el .Renviron se puede usar `usethis::edit_r_environ()`. Allí se declara de la siguiente forma:
+
+```
+ARGENDATA_DRIVE='xaskooasdklaslkaldd'
+```
+
+
 ## Installation
 
 You can install the development version of argendataR like so:

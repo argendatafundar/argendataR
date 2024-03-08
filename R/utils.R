@@ -5,6 +5,9 @@
 #'
 
 argendata_root_dir <- function() {
+  
+  stopifnot("ARGENDATA_DRIVE no esta definido en .Renviron o está mal escrito" = nchar(Sys.getenv("ARGENDATA_DRIVE")) == 33)
+  
   argendata_root_dir <- googledrive::drive_ls(googledrive::as_id(Sys.getenv("ARGENDATA_DRIVE")))
   argendata_root_dir
 }

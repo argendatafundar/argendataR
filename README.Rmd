@@ -18,37 +18,113 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of argendataR is to ...
+Este paquete es un conjunto de funciones para facilitar el flujo de trabajo con fuentes y outputs en Argendata usando R.
 
 ## Installation
 
 You can install the development version of argendataR like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+# devtools::install_github("argendata/argendataR")
+
 ```
 
-## Example
+## Fuentes
 
-This is a basic example which shows you how to solve a common problem:
+Para el trabajo con fuentes hay dos grandes set de funciones`raw` y `clean`. Las primeras se usan para el proceso con fuentes en su estado original, las segundas para trabajar con fuentes ya limpias.
 
-```{r example}
+Con `agregar_fuente_raw()` se registra una fuente en la sheet de fuentes raw y carga en la carpeta de `BASES DE DATOS/Fuentes/raw` el archivo de path_raw. A cada fuente se le asigna automaticamente un id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  `fuentes_raw()`. 
+
+```
 library(argendataR)
 ## basic example code
+agregar_fuente_raw(url = "https://www.ejemplo.com",
+                   nombre = "Ejemplo",
+                   institucion = "Ejemplo",
+                   actualizable = TRUE,
+                   fecha_descarga = "2021-01-01",
+                   fecha_actualizar = "2022-01-01",
+                   path_raw = "ejemplo.csv",
+                   script = "ejemplo.R")
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+Un bloque de código análogo se espera que se use la primera vez que se ejecute un script de descarga de una fuente desde su origen. Sucesivas descargas de una fuente ya registrada deberían usar en cambio:
 
-```{r cars}
-summary(cars)
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
+actualizar_fuente_raw(id_fuente = 1,
+                      fecha_descarga = "2022-01-01",
+                      fecha_actualizar = "2023-01-01")
 
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+Esta función actualiza 'fecha_descarga' y 'fecha_actualizar' de una fuente en la sheet de fuentes en el drive de Argendata. Hace `google::drive_upload()` de la fuente con overwrite = T pisando la version anterior en el drive. Las fuentes raw se pueden consultar con `fuentes_raw()`.
+
+
+Existen funciones analogas para el trabajo con fuentes clean. Las fuentes clean refieren a cada csv disponibilizado a partir de una fuente descargada que debería cumplir con una minima limpieza de nombres de columnas y estar en formato longer. Las funciones no evalúan esas condiciones pero  ayudan en su registro sistematico. Vean los siguientes.
+
+Bloque 1
+
+```
+
+agregar_fuente_clean(id_fuente_raw = 1,
+                     path_clean = "ejemplo.csv",
+                     nombre = "Ejemplo 1",
+                     script = "ejemplo1.R"
+                     )
+```
+
+Bloque 2
+
+```
+
+agregar_fuente_clean(id_fuente_raw = 1,
+                     path_clean = "ejemplo.csv",
+                     nombre = "Ejemplo 2",
+                     script = "ejemplo2.R"
+                     )
+
+```
+
+Muchas fuentes clean se pueden relacionar a una misma fuente raw pero cada una debería ser unica. Un bloque de codigo como los anteriores debería aparecer dentro del script que genera cada fuente limpia y usarse solo la primera vez que se ejecute el script. Las fuentes raw se pueden consultar con `fuentes_clean()`. Sucesivas actualizaciones de una fuente clean ya registrada deberían usar en cambio:
+
+```
+actualizar_fuente_clean(id_fuente_clean = 1,
+                        fecha = "2022-01-01")
+
+```
+
+Esta función actualiza 'fecha' de una fuente en la sheet de fuentes clean en el drive de Argendata y hace `google::drive_upload()` de la fuente con overwrite = T pisando la version anterior en el drive.
+
+## Outputs
+
+El paquete tambien incluye funciones para el trabajo con outputs. La principal funcion es `write_output()`. Esta funcion genera un json con la data y metadata que el proyecto de Argendata requiere para cada dataset. Opcionalmente también escribe un csv usando el estándar de Argendata (UTF-8, double quote agresivo, eol "\\n", na = ""). Esta función debería aparecer al final de cada script de generación de outputs. 
+
+``` 
+write_output( data = df_output,
+                extension = 'csv',
+                output_name = 'A1_inb_pib',
+                subtopico = 'ACECON',
+                fuentes = 'World Development Indicators',
+                analista = 'Andrés Salles',
+                aclaraciones = NULL,
+                exportar = TRUE,
+                pk = c("anio", "iso3"),
+                es_serie_tiempo = TRUE,
+                columna_indice_tiempo = "anio",
+                columna_geo_referencia = "iso3",
+                nivel_agregacion = "pais",
+                nullables = FALSE,
+                etiquetas_indicadores = list("diferencia_inb_pbi" = "Diferencia entre Ingreso Bruto Nacional y PBI"),
+                unidades = "Porcentaje respecto al PBI",
+                classes = NULL)
+
+```
+
+
+
+
+
+
+
+

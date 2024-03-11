@@ -4,13 +4,17 @@
 \alias{descargar_fuente_clean}
 \title{Descarga fuente version clean}
 \usage{
-descargar_fuente_clean(id_fuente)
+descargar_fuente_clean(id_fuente, nombre, dir)
 }
 \arguments{
-\item{id_fuente}{id numerico de la fuente tal cual aparece en la sheet de fuentes. Ver `fuentes()`}
+\item{id_fuente}{id numerico de la fuente tal cual aparece en la sheet de fuentes. Ver `fuentes_clean()`}
+
+\item{nombre}{nombre de la fuente tal cual aparece en la sheet de fuentes. Ver `fuentes_clean()`}
+
+\item{dir}{directorio donde se descarga la fuente}
 }
 \value{
-descarga la fuente seleccionada de Fuentes/raw
+file la fuente seleccionada de Fuentes/clean descargada en el directorio especificado
 }
 \description{
 Descarga fuente version clean

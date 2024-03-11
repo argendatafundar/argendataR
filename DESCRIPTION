@@ -1,10 +1,10 @@
 Package: argendataR
 Type: Package
 Title: Caja de herramientas para Argendata
-Version: 0.0.9003
+Version: 0.0.9004
 Author: Fundar
 Maintainer: Juan Gabriel Juara <jgjuara@fund.ar>
-Description: Paquete de herramientas para el flujo de outputs Argendata
+Description: Paquete de herramientas para el flujo de outputs Argendata.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

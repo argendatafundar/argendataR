@@ -62,7 +62,6 @@ Un bloque de código análogo se espera que se use la primera vez que se ejecute
 ```
 
 actualizar_fuente_raw(id_fuente = 1,
-                      fecha_descarga = "2022-01-01",
                       fecha_actualizar = "2023-01-01")
 
 ```
@@ -98,8 +97,7 @@ agregar_fuente_clean(id_fuente_raw = 1,
 Muchas fuentes clean se pueden relacionar a una misma fuente raw pero cada una debería ser unica. Un bloque de codigo como los anteriores debería aparecer dentro del script que genera cada fuente limpia y usarse solo la primera vez que se ejecute el script. Las fuentes raw se pueden consultar con `fuentes_clean()`. Sucesivas actualizaciones de una fuente clean ya registrada deberían usar en cambio:
 
 ```
-actualizar_fuente_clean(id_fuente_clean = 1,
-                        fecha = "2022-01-01")
+actualizar_fuente_clean(id_fuente_clean = 1)
 
 ```
 

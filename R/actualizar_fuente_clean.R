@@ -1,18 +1,18 @@
 #' Actualizar informacion de una fuente clean
 #'
 #' @description
-#' Actualiza 'fecha' de una fuente en la sheet de fuentes clean en el drive de Argendata y hace `drive_upload()` con overwrite = T pisando la version anterior de la fuente en el drive.
+#' Hace `drive_upload()` con overwrite = T pisando la version anterior de la fuente en el drive y actualiza 'timestamp' de una fuente en la sheet de fuentes clean en el drive de Argendata.
+#' @details
+#' La funcion toma el dato de path_clean declarado en `fuentes_clean()` para el id seleccionado y espera que exista el archivo correpondiente al path_clean. Ese archivo ser subirá al drive pisando el archivo preexistente. 
+#' La fecha será actualizada usando `Sys.time()` al momento de su ejecución.
 #'
-#'
-#' @param id_fuente_clean integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  `fuentes_raw()`
-#' @param fecha string or date Valor de la fecha de descarga. Puede ser clase 'date' como producto de `Sys.Date()` o un string parseable por `as.Date()`
+#' @param id_fuente_clean integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  `fuentes_clean()`
 #'
 #' @export
 #'
 #' 
 
-actualizar_fuente_clean <- function(id_fuente_clean,
-                                  fecha = NULL) {
+actualizar_fuente_clean <- function(id_fuente_clean) {
   
   
   stopifnot("'id_fuente_clean' debe ser numerico" = is.numeric(id_fuente_clean))
@@ -22,19 +22,14 @@ actualizar_fuente_clean <- function(id_fuente_clean,
   
   stopifnot("'id_fuente_clean' no encontrado en sheet de fuentes. Ver `fuentes_clean()`." = id_fuente_clean %in% df_fuentes$id_fuente_clean )
   
- if (is.null(fecha)) {
-   fecha <- Sys.Date()
- } else {
-   fecha <- as.Date(as.character(fecha))
-   stopifnot("'fecha' debe ser null o fecha o string parseable a fecha" = !is.na(fecha))
- }
+   fecha <- Sys.time()
   
   inputs <- list(
     "id_fuente_clean" = id_fuente_clean,
     "fecha" = fecha 
     )
   
-  df_fuentes <- df_fuentes[df_fuentes$id_fuente_clean == id_fuente_clean,]
+  df_fuentes <- df_fuentes[df_fuentes$id_fuente_clean == inputs$id_fuente_clean,]
 
   df_fuentes$fecha <-  inputs$fecha
   
@@ -44,13 +39,13 @@ actualizar_fuente_clean <- function(id_fuente_clean,
   }
   
   
-  print( df_fuentes[df_fuentes$id_fuente == inputs$id_fuente ,])
+  print( df_fuentes[df_fuentes$id_fuente_clean == inputs$id_fuente_clean ,])
   
   
   df_fuentes |>
     googlesheets4::range_write(data = _,
-                               ss = fuentes_raw_sheet_id(),
-                               range = sprintf("A%d:F%d", id_fuente_clean))
+                               ss = fuentes_clean_sheet_id(),
+                               range = sprintf("A%d:F%d", id_fuente_clean+1, id_fuente_clean+1))
   
   
   googledrive::drive_upload(media = paste0("data/_FUENTES/clean/", df_fuentes$path_clean),

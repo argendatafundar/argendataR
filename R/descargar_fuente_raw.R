@@ -41,7 +41,7 @@ descargar_fuente_raw <- function(id_fuente, nombre, dir) {
   
 
   
-  googledrive::drive_download(file = fuente_gd_id,
+  googledrive::drive_download(file = googledrive::as_id(fuente_gd_id),
                               path = glue::glue("{dir}/{fuente_path_raw}"),
                               overwrite = T)
   

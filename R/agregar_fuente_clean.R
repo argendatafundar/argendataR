@@ -72,7 +72,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
   
   print(
     
-    tibble::as_tibble(inputs) |>
+    tibble::as_tibble(inputs)  %>% 
       dplyr::select(  "id_fuente_clean" ,
                       "id_fuente_raw",
                       "path_clean",
@@ -93,13 +93,13 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
   
   
   
-  tibble::as_tibble(inputs) |>
+  tibble::as_tibble(inputs)  %>% 
     dplyr::select(  "id_fuente_clean" ,
                     "id_fuente_raw",
                     "path_clean",
                     "nombre",
                     "script",
-                    "fecha") |>
-    googlesheets4::sheet_append(data = _, ss = fuentes_clean_sheet_id())
+                    "fecha")  %>% 
+    googlesheets4::sheet_append(ss = fuentes_clean_sheet_id())
   
 }

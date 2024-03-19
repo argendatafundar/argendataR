@@ -221,8 +221,8 @@ write_output <- function(
   # inputs defaulting from data
 
   if (exportar) {
-    data |>
-      dplyr::mutate(dplyr::everything(), as.character) |>
+    data  %>% 
+      dplyr::mutate(dplyr::everything(), as.character)  %>% 
       readr::write_csv(file = glue::glue("data/{subtopico}/datasets/outputs/{output_name}.{extension}"),
                        eol = "\n",
                        quote = "all",

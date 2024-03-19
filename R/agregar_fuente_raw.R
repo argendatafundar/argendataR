@@ -97,7 +97,7 @@ agregar_fuente_raw <- function(url = NULL,
 
   print(
 
-    tibble::as_tibble(inputs) |>
+    tibble::as_tibble(inputs)  %>% 
       dplyr::select(  "id_fuente" ,
                       "nombre",
                       "url",
@@ -121,7 +121,7 @@ agregar_fuente_raw <- function(url = NULL,
   
 
 
-    tibble::as_tibble(inputs) |>
+    tibble::as_tibble(inputs)  %>% 
       dplyr::select(  "id_fuente" ,
                "nombre",
                "url",
@@ -130,8 +130,8 @@ agregar_fuente_raw <- function(url = NULL,
                "fecha_descarga",
                "fecha_actualizar",
                "path_raw",
-               "script" ) |>
-      googlesheets4::sheet_append(data = _,
+               "script" )  %>% 
+      googlesheets4::sheet_append(
                                   ss = fuentes_raw_sheet_id())
 
 }

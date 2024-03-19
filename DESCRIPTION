@@ -15,4 +15,5 @@ Imports:
     readr,
     tibble,
     googledrive,
-    googlesheets4
+    googlesheets4,
+    magrittr

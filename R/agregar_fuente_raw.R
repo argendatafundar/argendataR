@@ -113,8 +113,13 @@ agregar_fuente_raw <- function(url = NULL,
   
   fuentes_raw_dir <- fuentes_raw_dir()
   
-  stopifnot("El archivo ya existe en el drive. Cambiar el nombre del archivo o borrar el archivo existente" = ! path_raw %in% fuentes_raw_dir$tree$name)
   
+  if (path_raw %in% fuentes_raw_dir$tree$name) {
+    print(df_fuentes[df_fuentes$path_raw == path_raw, ])
+    stop("El archivo ya existe en el drive. Cambiar el nombre del archivo o borrar el archivo existente")
+    
+  }
+
   googledrive::drive_upload(media = paste0("data/_FUENTES/raw/", path_raw),
                             path = fuentes_raw_dir$id,
                             name = path_raw)

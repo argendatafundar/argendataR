@@ -11,7 +11,7 @@
 #' @param fuentes string o numeric Vector con referencia a las fuentes usadas para el output segun aparecen en `fuentes()`. Si es string, los valores deben coincidir con 'nombre' de fuentes registradas, si es numeric deben coincidir con el 'id'. Req. Default = NULL
 #' @param analista string Vector con nombre/s de la/s persona/s que crearon originalmente el output. Req. Default = NULL
 #' @param aclaraciones string o null Cadena de texto para asentar aclaraciones pertinentes sobre el output. Default = NULL
-#' @param exportar logical Si es TRUE escribe un archivo con el path '{output_name}.{extension}'. Default = TRUE
+#' @param exportar logical Si es TRUE escribe un archivo con el path '{output_name}.{extension}' dentro de 'data/\{subtopico\}'. Default = TRUE
 #' @param pk string o null Nombres de columnas que son primary key del output. Si es NULL toma todas las columnas como ok. Default NULL.
 #' @param es_serie_tiempo logical Valor TRUE o FALSO indicando si el output es una serie de tiempo. Default  = TRUE
 #' @param columna_indice_tiempo string o null Nombre de la columna indice de tiempo. Valores aceptados: 'anio', 'fecha'. Otras columnas de referencia temporal (semestre, trim, etc) deberian ser parse. Default = NULL
@@ -36,6 +36,7 @@ write_output <- function(
     analista = NULL,
     aclaraciones = NULL,
     exportar = TRUE,
+    dir = NULL,
     pk = NULL,
     es_serie_tiempo = TRUE,
     columna_indice_tiempo = NULL,
@@ -218,12 +219,14 @@ write_output <- function(
   )
 
 
-  # inputs defaulting from data
+
+  # exportar
+  
 
   if (exportar) {
     data  %>% 
       dplyr::mutate(dplyr::everything(), as.character)  %>% 
-      readr::write_csv(file = glue::glue("data/{subtopico}/datasets/outputs/{output_name}.{extension}"),
+      readr::write_csv(file = glue::glue("data/{subtopico}/{output_name}.{extension}"),
                        eol = "\n",
                        quote = "all",
                        escape = "none",

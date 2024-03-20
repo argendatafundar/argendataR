@@ -36,7 +36,6 @@ write_output <- function(
     analista = NULL,
     aclaraciones = NULL,
     exportar = TRUE,
-    dir = NULL,
     pk = NULL,
     es_serie_tiempo = TRUE,
     columna_indice_tiempo = NULL,

@@ -46,6 +46,8 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
   df_fuentes <- fuentes_clean()
   
   if (nrow(df_fuentes[df_fuentes$nombre == inputs$nombre & df_fuentes$id_fuente_raw == inputs$id_fuente_raw,]) != 0) {
+    
+    print(df_fuentes[df_fuentes$nombre == inputs$nombre & df_fuentes$id_fuente_raw == inputs$id_fuente_raw,])
     stop("Ya existe esa combinacion nombre y id_fuente_raw. Verificar si es una posible duplicacion o cambiar de nombre")
   }
   
@@ -85,7 +87,12 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
   
   fuentes_clean_dir <- fuentes_clean_dir()
   
-  stopifnot("El archivo ya existe en el drive. Cambiar el nombre del archivo o borrar el archivo existente" = ! path_clean %in% fuentes_clean_dir$tree$name)
+  
+  if (path_clean %in% fuentes_clean_dir$tree$name) {
+    print(df_fuentes[df_fuentes$path_clean == path_clean, ])
+    stop("El archivo ya existe en el drive. Cambiar el nombre del archivo o borrar el archivo existente")
+    
+  }
   
   googledrive::drive_upload(media = paste0("data/_FUENTES/clean/", path_clean),
                             path = fuentes_clean_dir$id,

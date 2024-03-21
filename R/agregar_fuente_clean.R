@@ -95,7 +95,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
   }
   
   googledrive::drive_upload(media = paste0("data/_FUENTES/clean/", path_clean),
-                            path = fuentes_clean_dir$id,
+                            path = googledrive::as_id(fuentes_clean_dir$id),
                             name = path_clean)
   
   

@@ -18,13 +18,28 @@ directorio de Argendata. Para editar el .Renviron se puede usar
 
     ARGENDATA_DRIVE='xaskooasdklaslkaldd'
 
-## Installation
+## Instalacion
 
-You can install the development version of argendataR like so:
+Para instalar el paquete se puede clonar este proyecto y luego abrir el
+proyecto y usar la función
 
 ``` r
-# devtools::install_github("argendata/argendataR")
+devtools::install_local()
 ```
+
+La función también se puede usar sin abrir el proyecto pero hay que
+pasarle la ruta a la carpeta del proyecto de `argendataR`.
+
+Para instalar directo desde github se puede usar
+
+``` r
+
+devtools::install_github("argendata/argendataR")
+```
+
+Pero esta función requiere que esté configurada la variable de entorno
+‘GITHUB_PAT’ con el token del PAT de github del usuario, con el que debe
+tener los permisos necesarios para acceder al repositorio.
 
 ## Fuentes
 
@@ -55,7 +70,6 @@ descargas de una fuente ya registrada deberían usar en cambio:
 
 
     actualizar_fuente_raw(id_fuente = 1,
-                          fecha_descarga = "2022-01-01",
                           fecha_actualizar = "2023-01-01")
 
 Esta función actualiza ‘fecha_descarga’ y ‘fecha_actualizar’ de una
@@ -95,8 +109,7 @@ usarse solo la primera vez que se ejecute el script. Las fuentes raw se
 pueden consultar con `fuentes_clean()`. Sucesivas actualizaciones de una
 fuente clean ya registrada deberían usar en cambio:
 
-    actualizar_fuente_clean(id_fuente_clean = 1,
-                            fecha = "2022-01-01")
+    actualizar_fuente_clean(id_fuente_clean = 1)
 
 Esta función actualiza ‘fecha’ de una fuente en la sheet de fuentes
 clean en el drive de Argendata y hace `google::drive_upload()` de la

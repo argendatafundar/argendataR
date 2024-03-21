@@ -22,7 +22,7 @@ descargar_fuente_clean <- function(id_fuente, path_clean, dir) {
   
   if (!missing(id_fuente)) {
     
-    stopifnot("id fuente no es numeric o no fue encontrado en sheet fuentes" = is.numeric(id_fuente) & id_fuente %in% df_fuentes$id_fuente)
+    stopifnot("id fuente no es numeric o no fue encontrado en sheet fuentes" = is.numeric(id_fuente) & id_fuente %in% df_fuentes$id_fuente_clean)
     
     path_clean <- df_fuentes[df_fuentes$id_fuente_clean == id_fuente,][["path_clean"]]
     

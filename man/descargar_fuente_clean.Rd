@@ -4,12 +4,12 @@
 \alias{descargar_fuente_clean}
 \title{Descarga fuente version clean}
 \usage{
-descargar_fuente_clean(id_fuente, nombre, dir)
+descargar_fuente_clean(id_fuente, path_clean, dir)
 }
 \arguments{
 \item{id_fuente}{id numerico de la fuente tal cual aparece en la sheet de fuentes. Ver \code{fuentes_clean()}}
 
-\item{nombre}{nombre de la fuente tal cual aparece en la sheet de fuentes. Ver \code{fuentes_clean()}}
+\item{path_clean}{path_clean de la fuente tal cual aparece en la sheet de fuentes. Ver \code{fuentes_clean()}}
 
 \item{dir}{directorio donde se descarga la fuente}
 }

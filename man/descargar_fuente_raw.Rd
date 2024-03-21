@@ -7,9 +7,9 @@
 descargar_fuente_raw(id_fuente, nombre, dir)
 }
 \arguments{
-\item{id_fuente}{id numerico de la fuente tal cual aparece en la sheet de fuentes. Ver `fuentes_raw()`}
+\item{id_fuente}{id numerico de la fuente tal cual aparece en la sheet de fuentes. Ver \code{fuentes_raw()}}
 
-\item{nombre}{nombre de la fuente tal cual aparece en la sheet de fuentes. Ver `fuentes_raw()`}
+\item{nombre}{nombre de la fuente tal cual aparece en la sheet de fuentes. Ver \code{fuentes_raw()}}
 
 \item{dir}{directorio donde se descarga la fuente}
 }

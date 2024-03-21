@@ -7,12 +7,12 @@
 actualizar_fuente_clean(id_fuente_clean)
 }
 \arguments{
-\item{id_fuente_clean}{integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  `fuentes_clean()`}
+\item{id_fuente_clean}{integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  \code{fuentes_clean()}}
 }
 \description{
-Hace `drive_upload()` con overwrite = T pisando la version anterior de la fuente en el drive y actualiza 'timestamp' de una fuente en la sheet de fuentes clean en el drive de Argendata.
+Hace \code{drive_upload()} con overwrite = T pisando la version anterior de la fuente en el drive y actualiza 'timestamp' de una fuente en la sheet de fuentes clean en el drive de Argendata.
 }
 \details{
-La funcion toma el dato de path_clean declarado en `fuentes_clean()` para el id seleccionado y espera que exista el archivo correpondiente al path_clean. Ese archivo ser subirá al drive pisando el archivo preexistente. 
-La fecha será actualizada usando `Sys.time()` al momento de su ejecución.
+La funcion toma el dato de path_clean declarado en \code{fuentes_clean()} para el id seleccionado y espera que exista el archivo correpondiente al path_clean. Ese archivo ser subirá al drive pisando el archivo preexistente.
+La fecha será actualizada usando \code{Sys.time()} al momento de su ejecución.
 }

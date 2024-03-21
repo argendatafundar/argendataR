@@ -7,13 +7,13 @@
 actualizar_fuente_raw(id_fuente, fecha_actualizar = NULL)
 }
 \arguments{
-\item{id_fuente}{integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  `fuentes_raw()`}
+\item{id_fuente}{integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  \code{fuentes_raw()}}
 
-\item{fecha_actualizar}{string or date Valor de la fecha en que se debe actualizar la descarga. Puede ser clase 'date' como producto de `Sys.Date()` o un string parseable por `as.Date()`}
+\item{fecha_actualizar}{string or date Valor de la fecha en que se debe actualizar la descarga. Puede ser clase 'date' como producto de \code{Sys.Date()} o un string parseable por \code{as.Date()}}
 }
 \description{
-Actualiza 'fecha_descarga' y 'fecha_actualizar' de una fuente en la sheet de fuentes en el drive de Argendata. Hace `drive_upload()` con overwrite = T pisando la version anterior de la fuente en el drive.
+Actualiza 'fecha_descarga' y 'fecha_actualizar' de una fuente en la sheet de fuentes en el drive de Argendata. Hace \code{drive_upload()} con overwrite = T pisando la version anterior de la fuente en el drive.
 }
 \details{
-La fecha será actualizada usando `Sys.time()` al momento de su ejecución.
+La fecha será actualizada usando \code{Sys.time()} al momento de su ejecución.
 }

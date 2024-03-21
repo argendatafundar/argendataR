@@ -1,19 +1,27 @@
-Package: argendataR
 Type: Package
+Package: argendataR
 Title: Caja de herramientas para Argendata
-Version: 0.0.9007
+Version: 0.0.9008
 Author: Fundar
 Maintainer: Juan Gabriel Juara <jgjuara@fund.ar>
 Description: Paquete de herramientas para el flujo de outputs Argendata.
 License: What license is it under?
+Imports: 
+    cli,
+    dplyr,
+    fs,
+    glue,
+    googledrive,
+    googlesheets4,
+    lifecycle,
+    magrittr,
+    readr (>= 2.0.0),
+    rlang,
+    rstudioapi,
+    stringi,
+    tibble,
+    withr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1
-Imports: 
-    glue,
-    dplyr,
-    readr (>= 2.0.0),
-    tibble,
-    googledrive,
-    googlesheets4,
-    magrittr
+Roxygen: list(markdown = TRUE)

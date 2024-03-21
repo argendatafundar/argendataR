@@ -12,7 +12,7 @@ agregar_fuente_clean(
 )
 }
 \arguments{
-\item{id_fuente_raw}{integer id numerico que permite seleccionar la fuente raw segun aparece en el sheet. Para consultar ids usar  `fuentes_raw()`}
+\item{id_fuente_raw}{integer id numerico que permite seleccionar la fuente raw segun aparece en el sheet. Para consultar ids usar  \code{fuentes_raw()}}
 
 \item{path_clean}{string Nombre del archivo de la fuente tal cual fue guardado en el directorio data/_FUENTES/clean/ de argendata-etl}
 
@@ -21,7 +21,7 @@ agregar_fuente_clean(
 \item{script}{string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl}
 }
 \description{
-Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace `drive_upload()` con overwrite = F de la fuente.
+Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace \code{drive_upload()} con overwrite = F de la fuente.
 }
 \details{
 Más de una fuente clean puede referir a una misma fuente raw. Por ejemplo, si la fuente raw consiste en un excel de multiples hojas, cada hoja debería pasar a ser un csv independiente.

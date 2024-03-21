@@ -24,14 +24,14 @@ agregar_fuente_raw(
 
 \item{actualizable}{logical TRUE o FALSE  sobre si la fuente será actualizada y debe volver a ser descargada en nueva versión en el futuro.}
 
-\item{fecha_descarga}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por `as.Date()`. Si es null toma la fecha de `Sys.Date()`}
+\item{fecha_descarga}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por \code{as.Date()}. Si es null toma la fecha de \code{Sys.Date()}}
 
-\item{fecha_actualizar}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por `as.Date()`.}
+\item{fecha_actualizar}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por \code{as.Date()}.}
 
 \item{path_raw}{string Nombre del archivo de la fuente tal cual fue descargado en el directorio data/_FUENTES/raw/ de argendata-etl}
 
 \item{script}{string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl}
 }
 \description{
-Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace `drive_upload()` con overwrite = F de la fuente.
+Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace \code{drive_upload()} con overwrite = F de la fuente.
 }

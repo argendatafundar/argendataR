@@ -25,7 +25,7 @@ write_output(
 )
 }
 \arguments{
-\item{data}{dataframe Dataframe con datos de output. `class(data)` debe ser 'data.frame'. Req. Default = NULL}
+\item{data}{dataframe Dataframe con datos de output. \code{class(data)} debe ser 'data.frame'. Req. Default = NULL}
 
 \item{extension}{string Extension con que se debe escribir el output exportado. Default = 'csv'}
 
@@ -33,13 +33,13 @@ write_output(
 
 \item{subtopico}{string Codigo de 6 letras del subtopico al que pertenece. Req. Default = NULL}
 
-\item{fuentes}{string o numeric Vector con referencia a las fuentes usadas para el output segun aparecen en `fuentes()`. Si es string, los valores deben coincidir con 'nombre' de fuentes registradas, si es numeric deben coincidir con el 'id'. Req. Default = NULL}
+\item{fuentes}{string o numeric Vector con referencia a las fuentes usadas para el output segun aparecen en \code{fuentes()}. Si es string, los valores deben coincidir con 'nombre' de fuentes registradas, si es numeric deben coincidir con el 'id'. Req. Default = NULL}
 
 \item{analista}{string Vector con nombre/s de la/s persona/s que crearon originalmente el output. Req. Default = NULL}
 
 \item{aclaraciones}{string o null Cadena de texto para asentar aclaraciones pertinentes sobre el output. Default = NULL}
 
-\item{exportar}{logical Si es TRUE escribe un archivo con el path '{output_name}.{extension}'. Default = TRUE}
+\item{exportar}{logical Si es TRUE escribe un archivo con el path '{output_name}.{extension}' dentro de 'data/\{subtopico\}'. Default = TRUE}
 
 \item{pk}{string o null Nombres de columnas que son primary key del output. Si es NULL toma todas las columnas como ok. Default NULL.}
 

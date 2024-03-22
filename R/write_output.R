@@ -1,4 +1,4 @@
-#' write_output
+#' Genera json y csv con metadata y data de output para argendata
 #'
 #' @description
 #' Genera un json con la data y metadata del output para Argendata. Opcionalmente exporta tambien un archivo con el formato esperado en Argendata.

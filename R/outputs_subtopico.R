@@ -1,4 +1,4 @@
-#' outputs_subtopico
+#' Consulta lista de outputs del subtopico/entrega en drive
 #'
 #' @param subtopico_nombre codigo 6 letras del subtopico tal cual su nombre en el drive de Argendata
 #' @param entrega_subtopico nombre de la entrega a buscar tal cual su nombre en el drive de Argendata
@@ -7,16 +7,36 @@
 #' @export
 #'
 
-outputs_subtopico <- function(subtopico_nombre, entrega_subtopico) {
+subtopico_outputs <- function(subtopico_nombre, entrega_subtopico) {
+  
+  subtopicos_dir_df <- subtopicos_dir()
+  
+  filetemp <- list.files(tempdir(), full.names = T)[grepl("subtopico_outputs", list.files(tempdir()))]
+  
+  if (length(filetemp) == 1) { 
+    
+    readr::read_rds(filetemp)
+    
+  } else {
 
-  files_subtopico <- googledrive::drive_ls(subtopicos()$id[subtopicos()$name == subtopico_nombre])
+  files_subtopico <- googledrive::drive_ls(googledrive::as_id(subtopicos_dir_df$tree$id[subtopicos_dir_df$tree$name == subtopico_nombre]))
 
-  files_subtopico <- files_subtopico[files_subtopico["name"] == "datasets", ]
+  datasets_id <- files_subtopico[files_subtopico["name"] == "datasets",][["id"]]
 
-  outputs_id <- googledrive::drive_ls(files_subtopico[["id"]])
+  datasets <- googledrive::drive_ls(googledrive::as_id(datasets_id))
+  
+  outputs_id <- datasets$id[datasets$name == "outputs"]
 
-  outputs <- googledrive::drive_ls(outputs_id[grepl(entrega_subtopico, outputs_id[["name"]])][["id"]])
+  outputs <- googledrive::drive_ls(googledrive::as_id(outputs_id))
+  
+  entregas_id <- outputs[grepl(entrega_subtopico, outputs[["name"]]),][["id"]]
 
+  entregas_dir <- googledrive::drive_ls(googledrive::as_id(entregas_id))
+  
+  readr::write_rds(entregas_dir,
+                   file = tempfile(pattern = "subtopico_outputs", fileext = ".rds"))
 
-  outputs
+  entregas_dir
+  
+  }
 }

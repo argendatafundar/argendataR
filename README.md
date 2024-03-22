@@ -142,3 +142,22 @@ outputs.
                     etiquetas_indicadores = list("diferencia_inb_pbi" = "Diferencia entre Ingreso Bruto Nacional y PBI"),
                     unidades = "Porcentaje respecto al PBI",
                     classes = NULL)
+
+## Funciones
+
+| Función                        | Descripción                                                               |
+|--------------------------------|---------------------------------------------------------------------------|
+| `actualizar_fuente_clean()`    | Actualizar información de una fuente clean                                |
+| `actualizar_fuente_raw()`      | Actualizar información de una fuente raw                                  |
+| `agregar_fuente_clean()`       | Agregar nueva fuente clean                                                |
+| `agregar_fuente_raw()`         | Agregar nueva fuente raw                                                  |
+| `descargar_fuente_clean()`     | Descargar fuente versión clean                                            |
+| `descargar_fuente_raw()`       | Descargar fuente versión raw                                              |
+| `expansor_xvar()`              | Expandir una serie usando variaciones de otra serie                       |
+| `fuentes_clean()`              | Fuentes clean                                                             |
+| `fuentes_raw()`                | Fuentes raw                                                               |
+| `get_nomenclador_geografico()` | Devuelve el nomenclador geografico para argendata                         |
+| `script_subtopico()`           | Crea un archivo .R con el esquema básico de script para outputs           |
+| `subtopico_outputs()`          | Consulta la lista de outputs del subtopico/entrega en drive               |
+| `write_csv_fundar()`           | Crea un archivo CSV estilo Fundar                                         |
+| `write_output()`               | Genera un archivo JSON y CSV con metadata y data de output para argendata |

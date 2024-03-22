@@ -2,7 +2,7 @@
 % Please edit documentation in R/script_subtopico.R
 \name{script_subtopico}
 \alias{script_subtopico}
-\title{script_subtopico}
+\title{Crea un .R con el esquema basico de script para outputs}
 \usage{
 script_subtopico(path = NULL)
 }
@@ -13,5 +13,5 @@ script_subtopico(path = NULL)
 Crea un archivo .R con el esquema basico para un script de subtopico
 }
 \description{
-script_subtopico
+Crea un .R con el esquema basico de script para outputs
 }

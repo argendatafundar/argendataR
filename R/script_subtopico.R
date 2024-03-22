@@ -1,4 +1,4 @@
-#' script_subtopico
+#' Crea un .R con el esquema basico de script para outputs
 #'
 #'
 #' @param path string Ruta y nombre del archivo a crear

@@ -2,7 +2,7 @@
 % Please edit documentation in R/write_output.R
 \name{write_output}
 \alias{write_output}
-\title{write_output}
+\title{Genera json y csv con metadata y data de output para argendata}
 \usage{
 write_output(
   data = NULL,

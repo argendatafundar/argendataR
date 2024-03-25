@@ -25,6 +25,15 @@ actualizar_fuente_raw <- function(id_fuente,
   stopifnot("'id_fuente' no encontrado en sheet de fuentes. Ver `fuentes_raw()`." = id_fuente %in% df_fuentes$id_fuente )
 
   fecha_descarga <- Sys.time()
+  
+  if (is.null(fecha_actualizar)) {
+    fecha_actualizar <- Sys.Date()+months(6)
+  }
+  
+  fecha_actualizar <- as.Date(fecha_actualizar)
+  
+  stopifnot("param 'fecha_actualizar' debe ser fecha" = !is.na(fecha_actualizar))
+  
 
   inputs <- list(
     "id_fuente" = id_fuente,

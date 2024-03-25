@@ -86,7 +86,7 @@ write_output <- function(
   fuentes_df <- fuentes()
   
   if (is.character(fuentes)) {
-    stopifnot("Alguna/s de las fuentes no estan cargadas. Ver codigos en `fuentes()`" = all(fuentes %in% fuentes_df$codigo))
+    stopifnot("Alguna/s de las fuentes no estan cargadas. Ver codigos en `fuentes()`" = all(fuentes %in% fuentes_df[["codigo"]]))
   } else {
     stop("Input de fuentes invalido. Debe ser vector de strings con codigos de fuentes registradas")
   }
@@ -109,10 +109,10 @@ write_output <- function(
   if (es_serie_tiempo) {
     stopifnot("'columna_indice_tiempo' no hallada en 'data'. Debe ser uno de: 'anio', 'fecha'." = columna_indice_tiempo %in% columnas & length(columna_indice_tiempo) == 1 & columna_indice_tiempo %in% c("anio", "fecha"))
     if (columna_indice_tiempo == 'anio') {
-      stopifnot("columna 'anio' en data debe ser 'numeric'" = class(data['anio']) == "numeric")
+      stopifnot("columna 'anio' en data debe ser 'numeric'" = class(data[['anio']]) == "numeric")
     }
     if (columna_indice_tiempo == 'fecha') {
-      stopifnot("columna 'fecha' en data debe ser 'Date'" = class(data['fecha']) == "Date")
+      stopifnot("columna 'fecha' en data debe ser 'Date'" = class(data[['fecha']]) == "Date")
     }
   }
 

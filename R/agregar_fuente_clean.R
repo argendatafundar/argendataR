@@ -29,7 +29,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
     path_clean = path_clean,
     nombre = nombre,
     script = script,
-    fecha = Sys.Date()
+    fecha = Sys.time()
   )
   
   

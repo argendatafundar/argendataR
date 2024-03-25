@@ -131,10 +131,9 @@ write_output <- function(
     } else {
       nullables <- ""
     }
-  }
-
-  if (is.character(nullables)) {
+  } else if (is.character(nullables)) {
     stopifnot("valores en 'nullables' no hallados entre los nombres de columas de 'data'" == all(nullables %in% colnames(data)))
+    
   }
 
   ## etiquetas_indicadores
@@ -196,12 +195,11 @@ write_output <- function(
   ## inputs
 
   inputs <- list(
-    data = data,
-    extension = extension,
-    output_name = output_name,
     subtopico = subtopico,
-    fuentes = fuentes,
+    output_name = output_name,
+    extension = extension,
     analista = analista,
+    fuentes = fuentes,
     aclaraciones = aclaraciones,
     exportar = exportar,
     pk = pk,
@@ -212,7 +210,8 @@ write_output <- function(
     nullables = nullables ,
     etiquetas_indicadores = etiquetas_indicadores,
     unidades = unidades,
-    classes = classes
+    classes = classes,
+    data = data
   )
 
 
@@ -222,7 +221,7 @@ write_output <- function(
 
   if (exportar) {
     data  %>% 
-      dplyr::mutate(dplyr::everything(), as.character)  %>% 
+      dplyr::mutate(dplyr::across(dplyr::everything(), as.character))  %>% 
       readr::write_csv(file = glue::glue("data/{subtopico}/{output_name}.{extension}"),
                        eol = "\n",
                        quote = "all",
@@ -230,6 +229,6 @@ write_output <- function(
                        na = "")
   }
 
-  inputs
+  jsonlite::write_json(x = inputs, path = glue::glue("data/{subtopico}/{output_name}.json"))
   
 }

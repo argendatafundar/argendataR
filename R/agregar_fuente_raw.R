@@ -28,6 +28,39 @@ agregar_fuente_raw <- function(
                            path_raw = NULL,
                            script = NULL,
                            api = FALSE) {
+  
+  if (is.character(fecha_actualizar) | class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) { 
+    
+    fecha_actualizar <- as.Date(fecha_actualizar)
+    stopifnot("param 'fecha_actualizar' debe ser date o string parseable como fecha o null" = !is.na(fecha_actualizar))
+    
+  } else if (is.null(fecha_actualizar)) {
+    
+    fecha_actualizar <- "s/d"
+   
+    
+  } else {
+    
+    stop("param 'fecha_actualizar' debe ser fecha o null")
+  }
+  
+  
+  
+  if (is.character(fecha_descarga)  | class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) { 
+    
+    fecha_descarga <- as.Date(fecha_descarga)
+    stopifnot("param 'fecha_descarga' debe ser date o string parseable como fecha o null" = !is.na(fecha_actualizar))
+    
+  } else if (is.null(fecha_descarga)) {
+    
+    fecha_descarga <- Sys.time()
+    
+  } else { 
+    
+    stop("param 'fecha_descarga' debe ser fecha o null")
+    
+    }
+  
 
 
 
@@ -36,27 +69,20 @@ agregar_fuente_raw <- function(
     "nombre" = nombre ,
     "institucion" = institucion,
     "actualizable" = actualizable ,
-    "fecha_descarga" = fecha_descarga ,
+    "fecha_descarga" = as.Date(fecha_descarga),
     "fecha_actualizar" =  fecha_actualizar ,
     "path_raw" = path_raw,
     "script" = script,
     "api" = api
   )
 
-  if (is.null(fecha_actualizar)) {
-    fecha_actualizar <- Sys.Date()+months(6)
-  }
-
-  inputs$fecha_descarga <- as.Date(inputs$fecha_descarga)
-
-  inputs$fecha_actualizar <- as.Date(inputs$fecha_actualizar)
 
 
-  stopifnot("No se admiten parametros nulos" = !any(sapply(inputs, is.null)))
+  stopifnot("No se admiten parametros nulos" = !any(sapply(inputs[!names(inputs) %in% c("fecha_actualizar")], is.null)))
 
-  stopifnot("No se admiten parametros con NAs" = !any(sapply(inputs, is.na)))
+  stopifnot("No se admiten parametros con NAs" = !any(sapply(inputs[!names(inputs) %in% c("fecha_actualizar")], is.na)))
 
-  stopifnot("No se admiten parametros con string vacios. Eg: ''" = !any(sapply(inputs, function(x) {as.character(x) == ''})))
+  stopifnot("No se admiten parametros con string vacios. Eg: ''" = !any(sapply(inputs[!names(inputs) %in% c("fecha_actualizar")], function(x) {as.character(x) == ''})))
 
   stopifnot("param 'actualizable' debe ser logico" = is.logical(inputs$actualizable))
 

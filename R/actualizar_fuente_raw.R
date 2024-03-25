@@ -26,13 +26,21 @@ actualizar_fuente_raw <- function(id_fuente,
 
   fecha_descarga <- Sys.time()
   
-  if (is.null(fecha_actualizar)) {
-    fecha_actualizar <- Sys.Date()+months(6)
-  }
+  if (is.character(fecha_actualizar) | class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) { 
+    
+    fecha_actualizar <- as.Date(fecha_actualizar)
+    stopifnot("param 'fecha_actualizar' debe ser date o string parseable como fecha o null" = !is.na(fecha_actualizar))
+    
+  } else if (is.null(fecha_actualizar)) {
+      
+    fecha_actualizar <- "s/d"
+    
+  } else {
+      
+    stop("param 'fecha_actualizar' debe ser fecha o null")
+    
+    }
   
-  fecha_actualizar <- as.Date(fecha_actualizar)
-  
-  stopifnot("param 'fecha_actualizar' debe ser fecha" = !is.na(fecha_actualizar))
   
 
   inputs <- list(

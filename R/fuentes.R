@@ -6,9 +6,8 @@
 
 fuentes <- function() {
   
-  df <- fuentes_raw() %>% 
-    dplyr::left_join(fuentes_clean(),
-                     "id_fuente"  = "id_fuente_raw") 
+  df <- dplyr::left_join(fuentes_raw(), fuentes_clean(),
+                     by = c("id_fuente"  = "id_fuente_raw")) 
   
   
   df$id_fuente_clean <- replace(df$id_fuente_clean, which(is.na(df$id_fuente_clean)), 0)

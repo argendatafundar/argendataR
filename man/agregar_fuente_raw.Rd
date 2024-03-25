@@ -12,7 +12,8 @@ agregar_fuente_raw(
   fecha_descarga = NULL,
   fecha_actualizar = NULL,
   path_raw = NULL,
-  script = NULL
+  script = NULL,
+  api = FALSE
 )
 }
 \arguments{
@@ -26,11 +27,13 @@ agregar_fuente_raw(
 
 \item{fecha_descarga}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por \code{as.Date()}. Si es null toma la fecha de \code{Sys.Date()}}
 
-\item{fecha_actualizar}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por \code{as.Date()}.}
+\item{fecha_actualizar}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por \code{as.Date()}. Si es null toma fecha actual más 6 meses}
 
 \item{path_raw}{string Nombre del archivo de la fuente tal cual fue descargado en el directorio data/_FUENTES/raw/ de argendata-etl}
 
 \item{script}{string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl}
+
+\item{api}{logical TRUE o FALSE indicando si la fuente es una api o no.}
 }
 \description{
 Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace \code{drive_upload()} con overwrite = F de la fuente.

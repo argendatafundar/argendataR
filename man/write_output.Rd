@@ -33,7 +33,7 @@ write_output(
 
 \item{subtopico}{string Codigo de 6 letras del subtopico al que pertenece. Req. Default = NULL}
 
-\item{fuentes}{string o numeric Vector con referencia a las fuentes usadas para el output segun aparecen en \code{fuentes()}. Si es string, los valores deben coincidir con 'nombre' de fuentes registradas, si es numeric deben coincidir con el 'id'. Req. Default = NULL}
+\item{fuentes}{string Vector con los codigos de las fuentes usadas para el output segun aparecen en \code{fuentes()}.  Req. Default = NULL}
 
 \item{analista}{string Vector con nombre/s de la/s persona/s que crearon originalmente el output. Req. Default = NULL}
 

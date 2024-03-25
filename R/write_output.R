@@ -8,7 +8,7 @@
 #' @param extension string Extension con que se debe escribir el output exportado. Default = 'csv'
 #' @param output_name string Nombre del output tal cual se usa para escribir el archivo csv. Req. Default = NULL
 #' @param subtopico string Codigo de 6 letras del subtopico al que pertenece. Req. Default = NULL
-#' @param fuentes string o numeric Vector con referencia a las fuentes usadas para el output segun aparecen en `fuentes()`. Si es string, los valores deben coincidir con 'nombre' de fuentes registradas, si es numeric deben coincidir con el 'id'. Req. Default = NULL
+#' @param fuentes string Vector con los codigos de las fuentes usadas para el output segun aparecen en `fuentes()`.  Req. Default = NULL
 #' @param analista string Vector con nombre/s de la/s persona/s que crearon originalmente el output. Req. Default = NULL
 #' @param aclaraciones string o null Cadena de texto para asentar aclaraciones pertinentes sobre el output. Default = NULL
 #' @param exportar logical Si es TRUE escribe un archivo con el path '{output_name}.{extension}' dentro de 'data/\{subtopico\}'. Default = TRUE
@@ -81,16 +81,14 @@ write_output <- function(
 
   ## fuentes
 
-  stopifnot("'fuentes' debe ser un vector tipo character o numeric" = class(fuentes) == "character" | class(fuentes) == "numeric")
+  stopifnot("'fuentes' debe ser un vector tipo character" = class(fuentes) == "character")
 
-  fuentes_clean_df <- fuentes_clean()
+  fuentes_df <- fuentes()
   
-  if(is.numeric(fuentes)) {
-    stopifnot("Alguna/s de las fuentes no estan cargadas en sheet fuentes" = all(fuentes %in% fuentes_clean_df$id_fuente))
-  } else if (is.character(fuentes)) {
-    stopifnot("Alguna/s de las fuentes no estan cargadas en sheet fuentes" = all(fuentes %in% fuentes_clean_df$nombre))
-  } else if (!is.numeric(fuentes) & !is.character(fuentes)) {
-    stop("Input de fuentes invalido. Debe ser vector de strings con nombres de fuentes registradas o vector numerico con id de fuentes registradas")
+  if (is.character(fuentes)) {
+    stopifnot("Alguna/s de las fuentes no estan cargadas. Ver codigos en `fuentes()`" = all(fuentes %in% fuentes_df$codigo))
+  } else {
+    stop("Input de fuentes invalido. Debe ser vector de strings con codigos de fuentes registradas")
   }
 
 

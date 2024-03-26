@@ -1,8 +1,8 @@
 #' Descarga fuente version raw
 #'
-#' @param id_fuente id numerico de la fuente tal cual aparece en la sheet de fuentes. Ver `fuentes_raw()` 
-#' @param path_raw nombre de la fuente tal cual aparece en la sheet de fuentes. Ver `fuentes_raw()`
-#' @param dir directorio donde se descarga la fuente
+#' @param id_fuente numeric id numerico de la fuente tal cual aparece en la sheet de fuentes. Ver `fuentes_raw()` 
+#' @param path_raw string nombre de la fuente tal cual aparece en la sheet de fuentes. Ver `fuentes_raw()`
+#' @param dir string directorio donde se descarga la fuente
 #' 
 #' @return file la fuente seleccionada de Fuentes/raw descargada en el directorio especificado
 #' @export
@@ -15,7 +15,7 @@ descargar_fuente_raw <- function(id_fuente, path_raw, dir) {
   
   dir <- gsub("/$", "", dir)
   
-  stopifnot("dir debe ser string de un directorio existente" = dir %in% gsub("^./","",list.dirs()))
+  stopifnot("dir debe ser string de un directorio existente" = dir.exists(dir))
   
   df_fuentes <- fuentes_raw()
   

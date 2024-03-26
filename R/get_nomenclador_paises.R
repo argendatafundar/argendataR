@@ -11,7 +11,9 @@ get_nomenclador_geografico <- function() {
   if (length(filetemp) == 1) { 
     
     jsonlite::fromJSON(filetemp) %>% 
-      tidyr::as_tibble()
+      tidyr::as_tibble() %>% 
+      suppressMessages()
+    
     
   } else { 
       
@@ -29,7 +31,8 @@ get_nomenclador_geografico <- function() {
     
     googledrive::drive_download(googledrive::as_id(id), path = temp)
     
-    jsonlite::fromJSON(temp) %>% tidyr::as_tibble()
+    jsonlite::fromJSON(temp) %>% tidyr::as_tibble() %>%  suppressMessages()
+
     
     }
 

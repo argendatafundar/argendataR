@@ -10,13 +10,15 @@ fuentes_clean <- function() {
   
   if (length(filetemp) == 1) { 
     
-    readr::read_csv(filetemp)
+    readr::read_csv(filetemp) %>% 
+      suppressMessages()
     
   } else { 
     df <- googlesheets4::read_sheet(ss = fuentes_clean_sheet_id())
     
     df %>% 
-      readr::write_csv(tempfile("fuentes_clean", fileext = ".csv"))
+      readr::write_csv(tempfile("fuentes_clean", fileext = ".csv")) %>% 
+      suppressMessages()
     
     df
   }

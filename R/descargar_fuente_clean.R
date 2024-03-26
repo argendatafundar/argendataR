@@ -14,7 +14,7 @@ descargar_fuente_clean <- function(id_fuente, path_clean, dir) {
   
   dir <- gsub("/$", "", dir)
   
-  stopifnot("dir debe ser string de un directorio existente" = dir %in% gsub("^./","",list.dirs()))
+  stopifnot("dir debe ser string de un directorio existente" = dir.exists(dir))
   
   
   df_fuentes <- fuentes_clean()

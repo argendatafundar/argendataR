@@ -13,7 +13,7 @@
 #' @param path_raw string Nombre del archivo de la fuente tal cual fue descargado en el directorio data/_FUENTES/raw/ de argendata-etl
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl
 #' @param api logical TRUE o FALSE indicando si la fuente es una api o no.
-#' 
+#'
 #' @export
 #'
 
@@ -28,39 +28,42 @@ agregar_fuente_raw <- function(
                            path_raw = NULL,
                            script = NULL,
                            api = FALSE) {
-  
-  if (is.character(fecha_actualizar) | class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) { 
-    
+
+  if (is.character(fecha_actualizar)) {
+
     fecha_actualizar <- as.Date(fecha_actualizar)
-    stopifnot("param 'fecha_actualizar' debe ser date o string parseable como fecha o null" = !is.na(fecha_actualizar))
-    
+    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o null" = !is.na(fecha_actualizar) & length(fecha_actualizar) != 0)
+
+  } else if (class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) {
+
+    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o null" = !is.na(fecha_actualizar) & length(fecha_actualizar) != 0)
+
   } else if (is.null(fecha_actualizar)) {
-    
+
     fecha_actualizar <- "s/d"
-   
-    
+
   } else {
-    
-    stop("param 'fecha_actualizar' debe ser fecha o null")
+
+    stop("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o null")
   }
-  
-  
-  
-  if (is.character(fecha_descarga)  | class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) { 
-    
+
+
+
+  if (is.character(fecha_descarga)  | class(fecha_descarga) %in% c("Date", "POSIXct", "POSIXt")) {
+
     fecha_descarga <- as.Date(fecha_descarga)
-    stopifnot("param 'fecha_descarga' debe ser date o string parseable como fecha o null" = !is.na(fecha_actualizar))
-    
+    stopifnot("param 'fecha_descarga' debe ser date o string parseable como fecha o null" = !is.na(fecha_descarga) & length(fecha_descarga) != 0)
+
   } else if (is.null(fecha_descarga)) {
-    
+
     fecha_descarga <- Sys.time()
-    
-  } else { 
-    
+
+  } else {
+
     stop("param 'fecha_descarga' debe ser fecha o null")
-    
+
     }
-  
+
 
 
 
@@ -99,11 +102,11 @@ agregar_fuente_raw <- function(
   if (nrow(df_fuentes[df_fuentes$nombre == inputs$nombre & df_fuentes$url == inputs$url & df_fuentes$institucion == inputs$institucion,]) != 0) {
     stop("Ya existe esa combinacion nombre, institucion y url. Verificar si es una posible duplicacion o cambiar de nombre, institucion o url")
   }
-  
+
   if (!file.exists(paste0("data/_FUENTES/raw/", inputs$path_raw))) {
     stop("No se encontro el archivo raw en data/_FUENTES/raw. Guardarlo en la ubicacion antes de continuar")
   }
-  
+
   if (!file.exists(paste0("scripts/descarga_fuentes/", inputs$script))) {
     stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
   }
@@ -114,16 +117,18 @@ agregar_fuente_raw <- function(
     next_id <- 1
   } else {
     next_id <- last_id+1
-    
+
   }
 
   inputs$id_fuente <- next_id
 
-  print(paste("La fuente quedara registrada con el id:", inputs$id_fuente))
+  inputs$codigo <- sprintf("R%dC0", inputs$id_fuente)
+
+  print(paste("La fuente quedara registrada con el codigo:", inputs$codigo))
 
   print(
 
-    tibble::as_tibble(inputs)  %>% 
+    tibble::as_tibble(inputs)  %>%
       dplyr::select(  "id_fuente" ,
                       "nombre",
                       "url",
@@ -133,27 +138,28 @@ agregar_fuente_raw <- function(
                       "fecha_actualizar",
                       "path_raw",
                       "script",
-                      "api")
+                      "api",
+                      "codigo")
   )
-  
-  
-  
+
+
+
   fuentes_raw_dir <- fuentes_raw_dir()
-  
-  
+
+
   if (path_raw %in% fuentes_raw_dir$tree$name) {
     print(df_fuentes[df_fuentes$path_raw == path_raw, ])
     stop("El archivo ya existe en el drive. Cambiar el nombre del archivo o borrar el archivo existente")
-    
+
   }
-  
+
   googledrive::drive_upload(media = paste0("data/_FUENTES/raw/", path_raw),
                             path = googledrive::as_id(fuentes_raw_dir$id),
                             name = path_raw)
-  
-  
-  
-  tibble::as_tibble(inputs)  %>% 
+
+
+
+  tibble::as_tibble(inputs)  %>%
     dplyr::select(  "id_fuente" ,
                     "nombre",
                     "url",
@@ -163,12 +169,13 @@ agregar_fuente_raw <- function(
                     "fecha_actualizar",
                     "path_raw",
                     "script",
-                    "api")  %>% 
+                    "api",
+                    "codigo")  %>%
     googlesheets4::sheet_append(
       ss = fuentes_raw_sheet_id())
-  
 
 
- 
+
+
 
 }

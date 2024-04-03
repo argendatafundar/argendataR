@@ -11,37 +11,47 @@
 #'
 #' @export
 #'
-#' 
+#'
 
 actualizar_fuente_raw <- function(id_fuente,
                               fecha_actualizar = NULL) {
 
-
-  stopifnot("'id_fuente' debe ser numerico" = is.numeric(id_fuente))
+  stopifnot("'id_fuente' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente) | is.character(id_fuente))
 
   df_fuentes <- fuentes_raw()
 
+  if (is.numeric(id_fuente)) {
 
-  stopifnot("'id_fuente' no encontrado en sheet de fuentes. Ver `fuentes_raw()`." = id_fuente %in% df_fuentes$id_fuente )
+    stopifnot("'id_fuente' no encontrado en sheet de fuentes. Ver `fuentes_raw()`." = id_fuente %in% df_fuentes$id_fuente )
+
+  } else if (is.character(id_fuente)) {
+
+    stopifnot("'id_fuente' no coincide con ningun codigo en sheet de fuentes. Ver `fuentes_raw()`." = id_fuente %in% df_fuentes$codigo )
+    id_fuente <- regmatches(id_fuente, m = regexpr("(?<=R)(\\d+)", text = id_fuente, perl = T))
+
+    id_fuente <- as.numeric(id_fuente)
+  }
+
+
 
   fecha_descarga <- Sys.time()
-  
-  if (is.character(fecha_actualizar) | class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) { 
-    
+
+  if (is.character(fecha_actualizar) | class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) {
+
     fecha_actualizar <- as.Date(fecha_actualizar)
     stopifnot("param 'fecha_actualizar' debe ser date o string parseable como fecha o null" = !is.na(fecha_actualizar))
-    
+
   } else if (is.null(fecha_actualizar)) {
-      
+
     fecha_actualizar <- "s/d"
-    
+
   } else {
-      
+
     stop("param 'fecha_actualizar' debe ser fecha o null")
-    
+
     }
-  
-  
+
+
 
   inputs <- list(
     "id_fuente" = id_fuente,
@@ -62,18 +72,16 @@ actualizar_fuente_raw <- function(id_fuente,
 
 
   print( df_fuentes[df_fuentes$id_fuente == inputs$id_fuente ,])
-  
+
   googledrive::drive_upload(media = paste0("data/_FUENTES/raw/", df_fuentes$path_raw),
                             path = googledrive::as_id(fuentes_raw_dir()$id),
                             name = df_fuentes$path_raw, overwrite = T)
-  
 
-  df_fuentes %>% 
+
+  df_fuentes %>%
     googlesheets4::range_write(col_names = F,
                                ss = fuentes_raw_sheet_id(),
-                               range = sprintf("A%d:I%d", id_fuente+1,id_fuente+1))
-  
-
+                               range = sprintf("A%d:K%d", id_fuente+1,id_fuente+1))
 
 
   }

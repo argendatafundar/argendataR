@@ -4,12 +4,10 @@
 \alias{descargar_fuente_raw}
 \title{Descarga fuente version raw}
 \usage{
-descargar_fuente_raw(id_fuente, path_raw, dir)
+descargar_fuente_raw(id_fuente, dir)
 }
 \arguments{
 \item{id_fuente}{numeric id numerico de la fuente tal cual aparece en la sheet de fuentes. Ver \code{fuentes_raw()}}
-
-\item{path_raw}{string nombre de la fuente tal cual aparece en la sheet de fuentes. Ver \code{fuentes_raw()}}
 
 \item{dir}{string directorio donde se descarga la fuente}
 }

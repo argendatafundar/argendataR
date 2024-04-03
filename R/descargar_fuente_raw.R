@@ -29,13 +29,10 @@ descargar_fuente_raw <- function(id_fuente, dir) {
 
     codigo <- id_fuente
 
-    id_fuente <- regmatches(id_fuente, m = regexpr("(?<=R)(\\d+)", text = id_fuente, perl = T))
-
-    id_fuente <- as.numeric(id_fuente)
   }
 
 
-  path_raw <- df_fuentes[df_fuentes$id_fuente == id_fuente,][[ "path_raw"]]
+  path_raw <- df_fuentes[df_fuentes$codigo == codigo,][[ "path_raw"]]
 
   path_raw_body <- gsub("\\.[^\\.]*$", "", path_raw)
 
@@ -49,7 +46,7 @@ descargar_fuente_raw <- function(id_fuente, dir) {
   ext <- gsub("^.*\\.","",path_raw)
 
   googledrive::drive_download(file = googledrive::as_id(fuente_gd_id),
-                              path = glue::glue("{dir}/{path_raw_body}_{codigo}{ext}"),
+                              path = glue::glue("{dir}/{path_raw_body}_{codigo}.{ext}"),
                               overwrite = T)
 
   }

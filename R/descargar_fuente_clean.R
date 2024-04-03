@@ -9,8 +9,6 @@
 
 descargar_fuente_clean <- function(id_fuente, dir) {
 
-  stopifnot("Se requiere id_fuente o path_clean. Definir 1 de los dos parametros" = xor(!missing(id_fuente), !missing(path_clean)))
-
   dir <- gsub("/$", "", dir)
 
   stopifnot("dir debe ser string de un directorio existente" = dir.exists(dir))
@@ -22,22 +20,19 @@ descargar_fuente_clean <- function(id_fuente, dir) {
 
   if (is.numeric(id_fuente)) {
 
-    stopifnot("'id_fuente' no coincide con ningun 'id_fuente' en sheet fuentes_raw" = id_fuente %in% df_fuentes$id_fuente)
+    stopifnot("'id_fuente' no coincide con ningun 'id_fuente' en sheet fuentes_clean" = id_fuente %in% df_fuentes$id_fuente_clean)
 
-    codigo <- sprintf("R%dC0", id_fuente)
+    codigo <- df_fuentes[["codigo"]][df_fuentes["id_fuente_clean"] == id_fuente]
 
   } else if (is.character(id_fuente)) {
-
-    stopifnot("'id_fuente' no coincide con ningun 'codigo' en sheet de fuentes. Ver `fuentes_raw()`." = id_fuente %in% df_fuentes$codigo )
+    
+    stopifnot("'id_fuente' no coincide con ningun 'codigo' en sheet de fuentes. Ver `fuentes_clean()`." = id_fuente %in% df_fuentes$codigo )
 
     codigo <- id_fuente
 
-    id_fuente <- regmatches(id_fuente, m = regexpr("(?<=R)(\\d+)", text = id_fuente, perl = T))
-
-    id_fuente <- as.numeric(id_fuente)
   }
 
-  path_clean <- df_fuentes[df_fuentes$id_fuente == id_fuente,][[ "path_clean"]]
+  path_clean <- df_fuentes[df_fuentes$codigo == id_fuente,][[ "path_clean"]]
 
   path_clean_body <- gsub("\\.[^\\.]*$", "", path_clean)
 
@@ -51,7 +46,7 @@ descargar_fuente_clean <- function(id_fuente, dir) {
 
 
   googledrive::drive_download(file = googledrive::as_id(fuente_gd_id),
-                              path = glue::glue("{dir}/{path_clean}_{codigo}{ext}"),
+                              path = glue::glue("{dir}/{path_clean_body}_{codigo}{ext}"),
                               overwrite = T)
 
 }

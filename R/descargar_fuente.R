@@ -25,19 +25,19 @@ descargar_fuente <- function(codigo, dir = NULL) {
   
   if (grepl("R\\d+C0", codigo)) { 
     
-    codigo <- regmatches(codigo, m = regexpr("(?<=R)(\\d+)", text = codigo, perl = T))
+    # codigo <- regmatches(codigo, m = regexpr("(?<=R)(\\d+)", text = codigo, perl = T))
     
-    id <- as.numeric(codigo)
+    # id <- as.numeric(codigo)
     
-    descargar_fuente_raw(id_fuente = id, dir = dir)
+    descargar_fuente_raw(id_fuente = codigo, dir = dir)
     
   } else if (grepl("C[1-9]+", codigo)) {
       
-    codigo <- regmatches(codigo, m = regexpr("(?<=C)(\\d+)", text = codigo, perl = T))
+    # codigo <- regmatches(codigo, m = regexpr("(?<=C)(\\d+)", text = codigo, perl = T))
     
-    id <- as.numeric(codigo)
+    # id <- as.numeric(codigo)
     
-    descargar_fuente_clean(id_fuente = id, dir = dir)
+    descargar_fuente_clean(id_fuente = codigo, dir = dir)
     
     
   }

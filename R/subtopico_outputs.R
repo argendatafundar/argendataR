@@ -8,15 +8,19 @@
 #'
 
 subtopico_outputs <- function(subtopico_nombre, entrega_subtopico) {
-  
+
+  stopifnot("'subtopico_nombre' debe ser string" = is.character(subtopico_nombre))
+
+  stopifnot("'entrega_subtopico' debe ser string" = is.character(entrega_subtopico))
+
   subtopicos_dir_df <- subtopicos_dir()
-  
+
   filetemp <- list.files(tempdir(), full.names = T)[grepl("subtopico_outputs", list.files(tempdir()))]
-  
-  if (length(filetemp) == 1) { 
-    
+
+  if (length(filetemp) == 1) {
+
     readr::read_rds(filetemp)
-    
+
   } else {
 
   files_subtopico <- googledrive::drive_ls(googledrive::as_id(subtopicos_dir_df$tree$id[subtopicos_dir_df$tree$name == subtopico_nombre]))
@@ -24,19 +28,20 @@ subtopico_outputs <- function(subtopico_nombre, entrega_subtopico) {
   datasets_id <- files_subtopico[files_subtopico["name"] == "datasets",][["id"]]
 
   datasets <- googledrive::drive_ls(googledrive::as_id(datasets_id))
-  
+
   outputs_id <- datasets$id[datasets$name == "outputs"]
 
   outputs <- googledrive::drive_ls(googledrive::as_id(outputs_id))
-  
+
   entregas_id <- outputs[grepl(entrega_subtopico, outputs[["name"]]),][["id"]]
 
   entregas_dir <- googledrive::drive_ls(googledrive::as_id(entregas_id))
-  
+
+
   readr::write_rds(entregas_dir,
-                   file = tempfile(pattern = "subtopico_outputs", fileext = ".rds"))
+                   file = tempfile(pattern = "subtopico_outputs_argdt", fileext = ".rds"))
 
   entregas_dir
-  
+
   }
 }

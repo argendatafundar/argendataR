@@ -1,9 +1,14 @@
-#' Comparar un data.frame con un csv cargado en el drive de Argendata
+#' Comparar un data.frame con un output cargado en el drive de Argendata como csv
 #'
-#' @return
+#' @param df data.frame dataframe a comparar con el output cargado en el drive
+#' @param nombre  string nombre del output en el drive
+#' @param subtopico string subtopico al que pertenece el output
+#' @param entrega_subtopico string nombre de la carpeta de entrega donde buscar el output 
+#' @param pk string Vector con los nombres de columnas que son primary key del dataframe
+#' @param drop_output_drive logical Si es TRUE (defatult) el resultado incluye el output cargado en el drive usado para comparar.
+#'
+#' @return Devuelve una lista con los resultados de los chequeos realizados
 #' @export
-#'
-#' @examples
 #'
 
 comparar_outputs <- function(df, nombre, subtopico, entrega_subtopico = "primera_entrega", pk = NULL, drop_output_drive = T) {
@@ -17,7 +22,7 @@ comparar_outputs <- function(df, nombre, subtopico, entrega_subtopico = "primera
 
   if (length(filetemp) == 1) {
 
-    output_drive <- read.csv2(filetemp, dec = ".")
+    output_drive <- readr::read_csv(filetemp)
 
   } else {
 
@@ -30,7 +35,7 @@ comparar_outputs <- function(df, nombre, subtopico, entrega_subtopico = "primera
 
   googledrive::drive_download(file = googledrive::as_id(id_output), path = filetemp)
 
-  output_drive <-  read.csv2(filetemp, dec = ".")
+  output_drive <-  readr::read_csv(filetemp)
 
 
 
@@ -91,7 +96,7 @@ comparar_outputs <- function(df, nombre, subtopico, entrega_subtopico = "primera
   if(any(!df_clases$coinciden)) {
 
     comparacion_clases <- paste0("Mismatch de clases:\n",
-                                 paste(capture.output(print(df_clases[! df_clases$coinciden,])),
+                                 paste(utils::capture.output(print(df_clases[! df_clases$coinciden,])),
                                        collapse = "\n")
                                  )
 

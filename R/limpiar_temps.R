@@ -1,12 +1,10 @@
-#' Borra archivos temporales de uso del paquete argendataR
+#' Borra archivos temporales usados por el paquete argendataR
 #'
-#' @return
 #' @export
 #'
-#' @examples
 #'
 
-function() {
+limpiar_temps <- function() {
 
   archivos <- list.files(tempdir(), "_argdt", full.names = T)
 

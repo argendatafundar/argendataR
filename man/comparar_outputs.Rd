@@ -18,13 +18,13 @@ comparar_outputs(
 
 \item{nombre}{string nombre del output en el drive}
 
-\item{subtopico}{string subtopico al que pertenece el output}
+\item{subtopico}{string subtopico al que pertenece el output. Si no esta definido el parametro busca en el ambiente global de la sesion un objeto llamado "subtopico"}
 
 \item{entrega_subtopico}{string nombre de la carpeta de entrega donde buscar el output}
 
 \item{pk}{string Vector con los nombres de columnas que son primary key del dataframe}
 
-\item{drop_output_drive}{logical Si es TRUE (defatult) el resultado incluye el output cargado en el drive usado para comparar.}
+\item{drop_output_drive}{logical Si es FALSE (default) el resultado incluye el output cargado en el drive usado para comparar. Si es TRUE no lo incluye.}
 }
 \value{
 Devuelve una lista con los resultados de los chequeos realizados

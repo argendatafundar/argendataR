@@ -2,10 +2,10 @@
 #'
 #' @param df data.frame dataframe a comparar con el output cargado en el drive
 #' @param nombre  string nombre del output en el drive
-#' @param subtopico string subtopico al que pertenece el output
-#' @param entrega_subtopico string nombre de la carpeta de entrega donde buscar el output 
+#' @param subtopico string subtopico al que pertenece el output. Si no esta definido el parametro busca en el ambiente global de la sesion un objeto llamado "subtopico"
+#' @param entrega_subtopico string nombre de la carpeta de entrega donde buscar el output
 #' @param pk string Vector con los nombres de columnas que son primary key del dataframe
-#' @param drop_output_drive logical Si es TRUE (defatult) el resultado incluye el output cargado en el drive usado para comparar.
+#' @param drop_output_drive logical Si es FALSE (default) el resultado incluye el output cargado en el drive usado para comparar. Si es TRUE no lo incluye.
 #'
 #' @return Devuelve una lista con los resultados de los chequeos realizados
 #' @export
@@ -176,7 +176,7 @@ comparar_valores <- function(x, pk, df) {
                                coinciden_valores))
 
     list("nuevos_na" = nuevos_na,
-         "suma_mismatches" = sum(coinciden_valores),
+         "suma_mismatches" = sum(!coinciden_valores),
          "metricas_filas" = df_col)
 
   } else {

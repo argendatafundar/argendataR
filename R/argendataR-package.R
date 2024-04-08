@@ -14,6 +14,7 @@
 #' @importFrom googlesheets4 sheet_append
 #' @importFrom jsonlite fromJSON
 #' @importFrom lifecycle deprecated
+#' @importFrom mgsub mgsub
 #' @importFrom readr read_csv
 #' @importFrom readr read_rds
 #' @importFrom readr write_csv

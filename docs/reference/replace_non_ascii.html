@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Agregar nueva fuente clean — agregar_fuente_clean • argendataR</title>
+<title>Replace Common Non-ASCII Characters — replace_non_ascii • argendataR</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,11 @@
 
 
 
-<meta property="og:title" content="Agregar nueva fuente clean — agregar_fuente_clean" />
-<meta property="og:description" content="Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace drive_upload() con overwrite = F de la fuente." />
+<meta property="og:title" content="Replace Common Non-ASCII Characters — replace_non_ascii" />
+<meta property="og:description" content="Esta funcion es una adapcacion minima de textclean::replace_non_ascii
+replace_curly_quote - Replaces curly single and double quotes.  This
+provides a subset of functionality found in replace_non_ascii specific
+to quotes." />
 
 
 
@@ -103,46 +106,52 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Agregar nueva fuente clean</h1>
+    <h1>Replace Common Non-ASCII Characters</h1>
     
-    <div class="hidden name"><code>agregar_fuente_clean.Rd</code></div>
+    <div class="hidden name"><code>replace_non_ascii.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace <code>drive_upload()</code> con overwrite = F de la fuente.</p>
+    <p>Esta funcion es una adapcacion minima de textclean::replace_non_ascii</p>
+<p><code>replace_curly_quote</code> - Replaces curly single and double quotes.  This
+provides a subset of functionality found in <code>replace_non_ascii</code> specific
+to quotes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>agregar_fuente_clean</span><span class='op'>(</span>
-  id_fuente_raw <span class='op'>=</span> <span class='cn'>NULL</span>,
-  path_clean <span class='op'>=</span> <span class='cn'>NULL</span>,
-  nombre <span class='op'>=</span> <span class='cn'>NULL</span>,
-  script <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>replace_non_ascii</span><span class='op'>(</span><span class='va'>x</span>, replacement <span class='op'>=</span> <span class='st'>""</span>, remove.nonconverted <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>replace_curly_quote</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>id_fuente_raw</th>
-      <td><p>integer id numerico que permite seleccionar la fuente raw segun aparece en el sheet. Para consultar ids usar  <code><a href='fuentes_raw.html'>fuentes_raw()</a></code></p></td>
+      <th>x</th>
+      <td><p>The text variable.</p></td>
     </tr>
     <tr>
-      <th>path_clean</th>
-      <td><p>string Nombre del archivo de la fuente tal cual fue guardado en el directorio data/_FUENTES/clean/ de argendata-etl</p></td>
+      <th>replacement</th>
+      <td><p>Character string equal in length to pattern or of length
+one which are a replacement for matched pattern.</p></td>
     </tr>
     <tr>
-      <th>nombre</th>
-      <td><p>string Nombre único que identifica a la fuente en su versión 'clean'.</p></td>
+      <th>remove.nonconverted</th>
+      <td><p>logical.  If <code>TRUE</code> unmapped encodings are
+deleted from the string.</p></td>
     </tr>
     <tr>
-      <th>script</th>
-      <td><p>string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl</p></td>
+      <th>...</th>
+      <td><p>ignored.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Returns a text variable (character sting) with non-ASCII characters
+replaced.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Más de una fuente clean puede referir a una misma fuente raw. Por ejemplo, si la fuente raw consiste en un excel de multiples hojas, cada hoja debería pasar a ser un csv independiente.</p>
+    <p><code>replace_non_ascii</code> - Replaces common non-ASCII characters.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -141,24 +141,25 @@ write_output( data = df_output,
 
 
 
-## Reference
+ **## Referencias**
 
-
-| Function | Description |
-|---|---|
-| `actualizar_fuente_clean()`: | Actualizar informacion de una fuente clean |
-| `actualizar_fuente_raw()`: | Actualizar informacion de una fuente raw |
-| `agregar_fuente_clean()`: | Agregar nueva fuente clean |
-| `agregar_fuente_raw()`: | Agregar nueva fuente raw |
-| `descargar_fuente_clean()`: | Descarga fuente version clean |
-| `descargar_fuente_raw()`: | Descarga fuente version raw |
-| `expansor_xvar()`: | Expandir una serie usando variaciones de otra serie |
-| `fuentes()`: | Fuentes |
-| `fuentes_clean()`: | Fuentes clean |
-| `fuentes_raw()`: | Fuentes raw |
-| `get_nomenclador_geografico()`: | Devuelve el nomenclador geografico para argendata |
-| `script_subtopico()`: | Crea un .R con el esquema basico de script para outputs |
-| `subtopico_outputs()`: | Consulta lista de outputs del subtopico/entrega en drive |
-| `write_csv_fundar()`: | write_csv estilo Fundar |
-| `write_output()`: | Genera json y csv con metadata y data de output para argendata |
-
+| Alias       | Title                       |
+|--------------|------------------------------|
+| actualizar_fuente_clean()       | Actualizar informacion de una fuente clean |
+| actualizar_fuente_raw()       | Actualizar informacion de una fuente raw |
+| agregar_fuente_clean()       | Agregar nueva fuente clean |
+| agregar_fuente_raw()       | Agregar nueva fuente raw |
+| comparar_outputs()       | Comparar un data.frame con un output cargado en el drive de Argendata como csv |
+| descargar_fuente()       | Descarga de fuentes de Argendata desde el drive |
+| descargar_fuente_clean()       | Descarga fuente version clean |
+| descargar_fuente_raw()       | Descarga fuente version raw |
+| expansor_xvar()       | Expandir una serie usando variaciones de otra serie |
+| fuentes()       | Fuentes |
+| fuentes_clean()       | Fuentes clean |
+| fuentes_raw()       | Fuentes raw |
+| get_nomenclador_geografico()       | Devuelve el nomenclador geografico para argendata |
+| limpiar_temps()       | Borra archivos temporales usados por el paquete argendataR |
+| script_subtopico()       | Crea un .R con el esquema basico de script para outputs |
+| subtopico_outputs()       | Consulta lista de outputs del subtopico/entrega en drive |
+| write_csv_fundar()       | write_csv estilo Fundar |
+| write_output()       | Genera json y csv con metadata y data de output para argendata |

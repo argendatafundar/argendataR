@@ -6,7 +6,7 @@
 
 fuentes_clean <- function() {
 
-  filetemp <- list.files(tempdir(), full.names = T)[grepl("fuentes_clean", list.files(tempdir()))]
+  filetemp <- list.files(tempdir(), full.names = T)[grepl("fuentes_clean_argdt", list.files(tempdir()))]
 
   if (length(filetemp) == 1) {
 

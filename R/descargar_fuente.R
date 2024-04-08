@@ -9,7 +9,7 @@
 
 descargar_fuente <- function(codigo, dir = NULL) {
   
-  df <- fuentes()
+  # df <- fuentes()
   
   if (is.null(dir)) {
     dir <- getwd()
@@ -21,7 +21,7 @@ descargar_fuente <- function(codigo, dir = NULL) {
   stopifnot("'dir' debe ser path a ubicacion existente" = dir.exists(dir))
   
   stopifnot("'codigo' debe ser string" = is.character(codigo))
-  stopifnot("'codigo' no corresponde a una fuente cargadas. Ver `fuentes()`" = codigo %in% df[["codigo"]])
+  # stopifnot("'codigo' no corresponde a una fuente cargadas. Ver `fuentes()`" = codigo %in% df[["codigo"]])
   
   if (grepl("R\\d+C0", codigo)) { 
     

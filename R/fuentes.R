@@ -5,8 +5,18 @@
 #'
 
 fuentes <- function() {
+  df_r <- fuentes_raw()
+  df_r <- df_r %>% 
+    dplyr::rename_with(.fn = function(x) {paste0(x,"_raw")})
   
-  df <- dplyr::bind_rows(fuentes_raw(), fuentes_clean())
+  df_c <- fuentes_clean()  
   
-  df
+  df_c <- df_c %>% 
+    dplyr::rename_with(.cols = -c("id_fuente_raw", "id_fuente_clean", "path_clean"),
+                .fn = function(x) paste0(x, "_clean"))
+  
+  df_c <- dplyr::left_join(df_c, df_r, by = c("id_fuente_raw" = "id_fuente_raw"))  
+  
+
+  df <- dplyr::bind_rows(df_r, df_c)
 }

@@ -15,7 +15,6 @@
 #' @keywords ascii
 #' @rdname replace_non_ascii
 #' @export
-#' @examples
 
 
 replace_non_ascii <- function (x, replacement = '',  

@@ -2,12 +2,13 @@
 #'
 #'
 #' @param path string Ruta y nombre del archivo a crear
+#' @param .navigate logical Si es TRUE (default) abre el editor del archivo creado.
 #' @returns Crea un archivo .R con el esquema basico para un script de subtopico
 #' @export
 #'
 
 
-script_subtopico <- function(path = NULL) {
+script_subtopico <- function(path = NULL, .navigate = T) {
   
   
   stopifnot("path debe ser charaacter de largo 1" = is.character(path) & length(path) == 1)
@@ -32,6 +33,10 @@ script_subtopico <- function(path = NULL) {
     return(NULL)
   } 
   
-  rstudioapi::navigateToFile(file = path)
+  if (isTRUE(.navigate)) {
+    rstudioapi::navigateToFile(file = path)
+  }
+  
+  
   
 }

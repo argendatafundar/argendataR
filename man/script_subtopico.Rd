@@ -4,10 +4,12 @@
 \alias{script_subtopico}
 \title{Crea un .R con el esquema basico de script para outputs}
 \usage{
-script_subtopico(path = NULL)
+script_subtopico(path = NULL, .navigate = T)
 }
 \arguments{
 \item{path}{string Ruta y nombre del archivo a crear}
+
+\item{.navigate}{logical Si es TRUE (default) abre el editor del archivo creado.}
 }
 \value{
 Crea un archivo .R con el esquema basico para un script de subtopico

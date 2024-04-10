@@ -4,10 +4,14 @@
 \alias{init_subtopico}
 \title{Crear sripts y md del subtopico}
 \usage{
-init_subtopico(subtopico)
+init_subtopico(subtopico, scripts = T, md = T)
 }
 \arguments{
 \item{subtopico}{string codigo de 6 letras del subtopico}
+
+\item{scripts}{logical Si es TRUE (default) crea los esqueletos de scripts}
+
+\item{md}{logical Si es TRUE (default) crea un archivo md con la guia del subtopico}
 }
 \description{
 Crear sripts y md del subtopico

@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">argendataR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9023</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -59,137 +55,92 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="argendatar" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#argendatar" class="anchor"></a>argendataR</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="argendatar">argendataR<a class="anchor" aria-label="anchor" href="#argendatar"></a>
+</h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>Este paquete es un conjunto de funciones para facilitar el flujo de
-trabajo con fuentes y outputs en Argendata usando R.</p>
-<div id="requisito" class="section level2">
-<h2 class="hasAnchor">
-<a href="#requisito" class="anchor"></a>Requisito</h2>
-<p>Para usar muchas de las funciones de este paquete es necesario tener
-seteado en el .Renviron la variable ‘ARGENDATA_DRIVE’ con el id del
-directorio de Argendata. Para editar el .Renviron se puede usar
-<code><a href="https://usethis.r-lib.org/reference/edit.html">usethis::edit_r_environ()</a></code>. Allí se declara de la siguiente
-forma:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ARGENDATA_DRIVE<span class="ot">=</span><span class="st">'xaskooasdklaslkaldd'</span></span></code></pre></div>
+<p>Este paquete es un conjunto de funciones para facilitar el flujo de trabajo con fuentes y outputs en Argendata usando R.</p>
+<div class="section level2">
+<h2 id="requisito">Requisito<a class="anchor" aria-label="anchor" href="#requisito"></a>
+</h2>
+<p>Para usar muchas de las funciones de este paquete es necesario tener seteado en el .Renviron la variable ‘ARGENDATA_DRIVE’ con el id del directorio de Argendata. Para editar el .Renviron se puede usar <code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code>. Allí se declara de la siguiente forma:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>ARGENDATA_DRIVE<span class="ot">=</span><span class="st">'xaskooasdklaslkaldd'</span></span></code></pre></div>
 </div>
-<div id="instalacion" class="section level2">
-<h2 class="hasAnchor">
-<a href="#instalacion" class="anchor"></a>Instalacion</h2>
-<p>Para instalar el paquete se puede clonar este proyecto y luego abrir
-el proyecto y usar la función</p>
+<div class="section level2">
+<h2 id="instalacion">Instalacion<a class="anchor" aria-label="anchor" href="#instalacion"></a>
+</h2>
+<p>Para instalar el paquete se puede clonar este proyecto y luego abrir el proyecto y usar la función</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_local</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>La función también se puede usar sin abrir el proyecto pero hay que
-pasarle la ruta a la carpeta del proyecto de
-<code>argendataR</code>.</p>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_local.html" class="external-link">install_local</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>La función también se puede usar sin abrir el proyecto pero hay que pasarle la ruta a la carpeta del proyecto de <code>argendataR</code>.</p>
 <p>Para instalar directo desde github se puede usar</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"argendata/argendataR"</span><span class="op">)</span></code></pre></div>
-<p>Pero esta función requiere que esté configurada la variable de
-entorno ‘GITHUB_PAT’ con el token del PAT de github del usuario, con el
-que debe tener los permisos necesarios para acceder al repositorio.</p>
+<code class="sourceCode R"><span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"argendata/argendataR"</span><span class="op">)</span></span></code></pre></div>
+<p>Pero esta función requiere que esté configurada la variable de entorno ‘GITHUB_PAT’ con el token del PAT de github del usuario, con el que debe tener los permisos necesarios para acceder al repositorio.</p>
 </div>
-<div id="fuentes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fuentes" class="anchor"></a>Fuentes</h2>
-<p>Para el trabajo con fuentes hay dos grandes set de
-funciones<code>raw</code> y <code>clean</code>. Las primeras se usan
-para el proceso con fuentes en su estado original, las segundas para
-trabajar con fuentes ya limpias.</p>
-<p>Con <code><a href="reference/agregar_fuente_raw.html">agregar_fuente_raw()</a></code> se registra una fuente en la
-sheet de fuentes raw y carga en la carpeta de
-<code>BASES DE DATOS/Fuentes/raw</code> el archivo de path_raw. A cada
-fuente se le asigna automaticamente un id numerico que permite
-seleccionar la fuente segun aparece en el sheet. Para consultar ids usar
-<code><a href="reference/fuentes_raw.html">fuentes_raw()</a></code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(argendataR)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## basic example code</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">agregar_fuente_raw</span>(<span class="at">url =</span> <span class="st">"https://www.ejemplo.com"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nombre =</span> <span class="st">"Ejemplo"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">institucion =</span> <span class="st">"Ejemplo"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">actualizable =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fecha_descarga =</span> <span class="st">"2021-01-01"</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fecha_actualizar =</span> <span class="st">"2022-01-01"</span>,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">path_raw =</span> <span class="st">"ejemplo.csv"</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">script =</span> <span class="st">"ejemplo.R"</span>)</span></code></pre></div>
-<p>Un bloque de código análogo se espera que se use la primera vez que
-se ejecute un script de descarga de una fuente desde su origen.
-Sucesivas descargas de una fuente ya registrada deberían usar en
-cambio:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">actualizar_fuente_raw</span>(<span class="at">id_fuente =</span> <span class="dv">1</span>,</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">fecha_actualizar =</span> <span class="st">"2023-01-01"</span>)</span></code></pre></div>
-<p>Esta función actualiza ‘fecha_descarga’ y ‘fecha_actualizar’ de una
-fuente en la sheet de fuentes en el drive de Argendata. Hace
-<code>google::drive_upload()</code> de la fuente con overwrite = T
-pisando la version anterior en el drive. Las fuentes raw se pueden
-consultar con <code><a href="reference/fuentes_raw.html">fuentes_raw()</a></code>.</p>
-<p>Existen funciones analogas para el trabajo con fuentes clean. Las
-fuentes clean refieren a cada csv disponibilizado a partir de una fuente
-descargada que debería cumplir con una minima limpieza de nombres de
-columnas y estar en formato longer. Las funciones no evalúan esas
-condiciones pero ayudan en su registro sistematico. Vean los
-siguientes.</p>
+<div class="section level2">
+<h2 id="fuentes">Fuentes<a class="anchor" aria-label="anchor" href="#fuentes"></a>
+</h2>
+<p>Para el trabajo con fuentes hay dos grandes set de funciones<code>raw</code> y <code>clean</code>. Las primeras se usan para el proceso con fuentes en su estado original, las segundas para trabajar con fuentes ya limpias.</p>
+<p>Con <code><a href="reference/agregar_fuente_raw.html">agregar_fuente_raw()</a></code> se registra una fuente en la sheet de fuentes raw y carga en la carpeta de <code>BASES DE DATOS/Fuentes/raw</code> el archivo de path_raw. A cada fuente se le asigna automaticamente un id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar <code><a href="reference/fuentes_raw.html">fuentes_raw()</a></code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">library</span>(argendataR)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="do">## basic example code</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">agregar_fuente_raw</span>(<span class="at">url =</span> <span class="st">"https://www.ejemplo.com"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>                   <span class="at">nombre =</span> <span class="st">"Ejemplo"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>                   <span class="at">institucion =</span> <span class="st">"Ejemplo"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>                   <span class="at">actualizable =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>                   <span class="at">fecha_descarga =</span> <span class="st">"2021-01-01"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>                   <span class="at">fecha_actualizar =</span> <span class="st">"2022-01-01"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>                   <span class="at">path_raw =</span> <span class="st">"ejemplo.csv"</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>                   <span class="at">script =</span> <span class="st">"ejemplo.R"</span>)</span></code></pre></div>
+<p>Un bloque de código análogo se espera que se use la primera vez que se ejecute un script de descarga de una fuente desde su origen. Sucesivas descargas de una fuente ya registrada deberían usar en cambio:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">actualizar_fuente_raw</span>(<span class="at">id_fuente =</span> <span class="dv">1</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>                      <span class="at">fecha_actualizar =</span> <span class="st">"2023-01-01"</span>)</span></code></pre></div>
+<p>Esta función actualiza ‘fecha_descarga’ y ‘fecha_actualizar’ de una fuente en la sheet de fuentes en el drive de Argendata. Hace <code>google::drive_upload()</code> de la fuente con overwrite = T pisando la version anterior en el drive. Las fuentes raw se pueden consultar con <code><a href="reference/fuentes_raw.html">fuentes_raw()</a></code>.</p>
+<p>Existen funciones analogas para el trabajo con fuentes clean. Las fuentes clean refieren a cada csv disponibilizado a partir de una fuente descargada que debería cumplir con una minima limpieza de nombres de columnas y estar en formato longer. Las funciones no evalúan esas condiciones pero ayudan en su registro sistematico. Vean los siguientes.</p>
 <p>Bloque 1</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">agregar_fuente_clean</span>(<span class="at">id_fuente_raw =</span> <span class="dv">1</span>,</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">path_clean =</span> <span class="st">"ejemplo.csv"</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">nombre =</span> <span class="st">"Ejemplo 1"</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">script =</span> <span class="st">"ejemplo1.R"</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                     )</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">agregar_fuente_clean</span>(<span class="at">id_fuente_raw =</span> <span class="dv">1</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                     <span class="at">path_clean =</span> <span class="st">"ejemplo.csv"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>                     <span class="at">nombre =</span> <span class="st">"Ejemplo 1"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>                     <span class="at">script =</span> <span class="st">"ejemplo1.R"</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>                     )</span></code></pre></div>
 <p>Bloque 2</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">agregar_fuente_clean</span>(<span class="at">id_fuente_raw =</span> <span class="dv">1</span>,</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">path_clean =</span> <span class="st">"ejemplo.csv"</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">nombre =</span> <span class="st">"Ejemplo 2"</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">script =</span> <span class="st">"ejemplo2.R"</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                     )</span></code></pre></div>
-<p>Muchas fuentes clean se pueden relacionar a una misma fuente raw pero
-cada una debería ser unica. Un bloque de codigo como los anteriores
-debería aparecer dentro del script que genera cada fuente limpia y
-usarse solo la primera vez que se ejecute el script. Las fuentes raw se
-pueden consultar con <code><a href="reference/fuentes_clean.html">fuentes_clean()</a></code>. Sucesivas
-actualizaciones de una fuente clean ya registrada deberían usar en
-cambio:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">actualizar_fuente_clean</span>(<span class="at">id_fuente_clean =</span> <span class="dv">1</span>)</span></code></pre></div>
-<p>Esta función actualiza ‘fecha’ de una fuente en la sheet de fuentes
-clean en el drive de Argendata y hace
-<code>google::drive_upload()</code> de la fuente con overwrite = T
-pisando la version anterior en el drive.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">agregar_fuente_clean</span>(<span class="at">id_fuente_raw =</span> <span class="dv">1</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>                     <span class="at">path_clean =</span> <span class="st">"ejemplo.csv"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>                     <span class="at">nombre =</span> <span class="st">"Ejemplo 2"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>                     <span class="at">script =</span> <span class="st">"ejemplo2.R"</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>                     )</span></code></pre></div>
+<p>Muchas fuentes clean se pueden relacionar a una misma fuente raw pero cada una debería ser unica. Un bloque de codigo como los anteriores debería aparecer dentro del script que genera cada fuente limpia y usarse solo la primera vez que se ejecute el script. Las fuentes raw se pueden consultar con <code><a href="reference/fuentes_clean.html">fuentes_clean()</a></code>. Sucesivas actualizaciones de una fuente clean ya registrada deberían usar en cambio:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">actualizar_fuente_clean</span>(<span class="at">id_fuente_clean =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p>Esta función actualiza ‘fecha’ de una fuente en la sheet de fuentes clean en el drive de Argendata y hace <code>google::drive_upload()</code> de la fuente con overwrite = T pisando la version anterior en el drive.</p>
 </div>
-<div id="outputs" class="section level2">
-<h2 class="hasAnchor">
-<a href="#outputs" class="anchor"></a>Outputs</h2>
-<p>El paquete tambien incluye funciones para el trabajo con outputs. La
-principal funcion es <code><a href="reference/write_output.html">write_output()</a></code>. Esta funcion genera un
-json con la data y metadata que el proyecto de Argendata requiere para
-cada dataset. Opcionalmente también escribe un csv usando el estándar de
-Argendata (UTF-8, double quote agresivo, eol “\n”, na = ““). Esta
-función debería aparecer al final de cada script de generación de
-outputs.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_output</span>( <span class="at">data =</span> df_output,</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">extension =</span> <span class="st">'csv'</span>,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">output_name =</span> <span class="st">'A1_inb_pib'</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">subtopico =</span> <span class="st">'ACECON'</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">fuentes =</span> <span class="st">'World Development Indicators'</span>,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">analista =</span> <span class="st">'Andrés Salles'</span>,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">aclaraciones =</span> <span class="cn">NULL</span>,</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">exportar =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">pk =</span> <span class="fu">c</span>(<span class="st">"anio"</span>, <span class="st">"iso3"</span>),</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">es_serie_tiempo =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">columna_indice_tiempo =</span> <span class="st">"anio"</span>,</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">columna_geo_referencia =</span> <span class="st">"iso3"</span>,</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">nivel_agregacion =</span> <span class="st">"pais"</span>,</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">nullables =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">etiquetas_indicadores =</span> <span class="fu">list</span>(<span class="st">"diferencia_inb_pbi"</span> <span class="ot">=</span> <span class="st">"Diferencia entre Ingreso Bruto Nacional y PBI"</span>),</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">unidades =</span> <span class="st">"Porcentaje respecto al PBI"</span>,</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">classes =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<div class="section level2">
+<h2 id="outputs">Outputs<a class="anchor" aria-label="anchor" href="#outputs"></a>
+</h2>
+<p>El paquete tambien incluye funciones para el trabajo con outputs. La principal funcion es <code><a href="reference/write_output.html">write_output()</a></code>. Esta funcion genera un json con la data y metadata que el proyecto de Argendata requiere para cada dataset. Opcionalmente también escribe un csv usando el estándar de Argendata (UTF-8, double quote agresivo, eol “”, na = ““). Esta función debería aparecer al final de cada script de generación de outputs.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">write_output</span>( <span class="at">data =</span> df_output,</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>                <span class="at">extension =</span> <span class="st">'csv'</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>                <span class="at">output_name =</span> <span class="st">'A1_inb_pib'</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>                <span class="at">subtopico =</span> <span class="st">'ACECON'</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>                <span class="at">fuentes =</span> <span class="st">'World Development Indicators'</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>                <span class="at">analista =</span> <span class="st">'Andrés Salles'</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>                <span class="at">aclaraciones =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>                <span class="at">exportar =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>                <span class="at">pk =</span> <span class="fu">c</span>(<span class="st">"anio"</span>, <span class="st">"iso3"</span>),</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>                <span class="at">es_serie_tiempo =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>                <span class="at">columna_indice_tiempo =</span> <span class="st">"anio"</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>                <span class="at">columna_geo_referencia =</span> <span class="st">"iso3"</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>                <span class="at">nivel_agregacion =</span> <span class="st">"pais"</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>                <span class="at">nullables =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>                <span class="at">etiquetas_indicadores =</span> <span class="fu">list</span>(<span class="st">"diferencia_inb_pbi"</span> <span class="ot">=</span> <span class="st">"Diferencia entre Ingreso Bruto Nacional y PBI"</span>),</span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>                <span class="at">unidades =</span> <span class="st">"Porcentaje respecto al PBI"</span>,</span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>                <span class="at">classes =</span> <span class="cn">NULL</span>)</span></code></pre></div>
 </div>
-<div id="reference" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reference" class="anchor"></a>Reference</h2>
+<div class="section level2">
+<h2 id="reference">Reference<a class="anchor" aria-label="anchor" href="#reference"></a>
+</h2>
 <table class="table">
 <colgroup>
 <col width="34%">
@@ -283,34 +234,47 @@ outputs.</p>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>What license is it under?</li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CONTRIBUTING.html">Contributing guide</a></li>
 </ul>
 </div>
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing argendataR</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Juan Gabriel Juara <br><small class="roles"> Maintainer </small>  </li>
 </ul>
 </div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Juan Gabriel Juara.</p>
+  <p></p>
+<p>Developed by Juan Gabriel Juara.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -318,6 +282,8 @@ outputs.</p>
 
   
 
+
+  
 
   </body>
 </html>

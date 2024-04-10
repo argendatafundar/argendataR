@@ -82,13 +82,22 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
+    <loc>/reference/init_subtopico.html</loc>
+  </url>
+  <url>
     <loc>/reference/limpiar_temps.html</loc>
+  </url>
+  <url>
+    <loc>/reference/metadata.html</loc>
   </url>
   <url>
     <loc>/reference/outputs_subtopico.html</loc>
   </url>
   <url>
     <loc>/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>/reference/replace_non_ascii.html</loc>
   </url>
   <url>
     <loc>/reference/script_subtopico.html</loc>

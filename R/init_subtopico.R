@@ -138,12 +138,12 @@ init_subtopico <- function(subtopico, scripts = T, md = T) {
 
       escrito_md <-  TRUE
 
-    } else {
+    }
+
+  } else {
       escrito_md <-  FALSE
 
     }
-
-  }
 
   escritos_r <- sum(unlist(escritos_r))
   escrito_md <- sum(escrito_md)

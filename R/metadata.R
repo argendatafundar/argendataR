@@ -1,13 +1,15 @@
 #' Consulta metadata de subtopicos
 #'
 #' @param subtopico string Texto con el codigo de 6 letras del subtopico o patron de regex
-#'
+#' @param fuentes boolean Parametro logico. Por defecto FALSE. Cuando TRUE, devuelve
+#' una version resumida para el trabajo con fuentes
 #' @return dataframe con la metadata
 #' @export
 #'
 
 
-metadata <- function(subtopico = NULL) {
+metadata <- function(subtopico = NULL,
+                     fuentes = FALSE) {
 
   stopifnot("'subtopico' debe ser string con codigo de 6 letras de subtopico" = is.character(subtopico))
 
@@ -46,4 +48,22 @@ metadata <- function(subtopico = NULL) {
   # Filtra el dataframe resultante para eliminar las filas donde todos los valores son NA (datos faltantes)
   metadata <- metadata %>%
     dplyr::filter(!dplyr::if_all(dplyr::everything(), is.na))
+  
+  # Devuelve df con selección de columnas para trabajo con fuentes
+  
+    if(fuentes == FALSE){
+  
+      metadata <- metadata %>%
+        dplyr::filter(!dplyr::if_all(dplyr::everything(), is.na))
+      
+      } else {
+      
+        metadata <- metadata %>%
+          dplyr::select(fuente_nombre, url_path)  %>% 
+          dplyr::distinct()
+    
+      }
+  
+  return(metadata)
+  
 }

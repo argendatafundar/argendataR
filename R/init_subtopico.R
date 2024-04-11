@@ -45,7 +45,7 @@ init_subtopico <- function(subtopico, scripts = T, md = T) {
 
 
 
-  path_md <- sprintf("scripts/subtopicos/CAMCLI/%s.md", subtopico)
+  path_md <- sprintf("scripts/subtopicos/%s/%s.md", subtopico)
 
 
   if (isTRUE(md)) {
@@ -137,6 +137,9 @@ init_subtopico <- function(subtopico, scripts = T, md = T) {
 
 
       escrito_md <-  TRUE
+
+    } else {
+      escrito_md <-  FALSE
 
     }
 

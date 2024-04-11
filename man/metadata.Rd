@@ -4,10 +4,13 @@
 \alias{metadata}
 \title{Consulta metadata de subtopicos}
 \usage{
-metadata(subtopico = NULL)
+metadata(subtopico = NULL, fuentes = FALSE)
 }
 \arguments{
 \item{subtopico}{string Texto con el codigo de 6 letras del subtopico o patron de regex}
+
+\item{fuentes}{boolean Parametro logico. Por defecto FALSE. Cuando TRUE, devuelve
+una version resumida para el trabajo con fuentes}
 }
 \value{
 dataframe con la metadata

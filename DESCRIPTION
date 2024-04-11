@@ -5,7 +5,7 @@ Version: 0.0.9025
 Author: Fundar
 Maintainer: Juan Gabriel Juara <jgjuara@fund.ar>
 Description: Paquete de herramientas para el flujo de outputs Argendata.
-License: What license is it under?
+License: CC BY 4.0
 Imports: 
     dplyr,
     fs,
@@ -25,5 +25,5 @@ Imports:
     tidyr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)

@@ -8,7 +8,7 @@
 #' @param nombre string Nombre único que identifica a la fuente en su versión 'clean'.
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl
 #' @param path_clean string Nombre del archivo de la fuente tal cual fue guardado en el directorio data/_FUENTES/clean/ de argendata-etl
-#'
+#' @param prompt logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacoion antes de continuar.
 #' @details
 #' Más de una fuente clean puede referir a una misma fuente raw. Por ejemplo, si la fuente raw consiste en un excel de multiples hojas, cada hoja debería pasar a ser un csv independiente.
 #'
@@ -20,7 +20,8 @@
 agregar_fuente_clean <- function(id_fuente_raw = NULL,
                                path_clean = NULL,
                                nombre = NULL,
-                               script = NULL) {
+                               script = NULL,
+                               prompt = TRUE) {
 
 
 
@@ -42,8 +43,20 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
   df_fuentes_raw <- fuentes_raw()
 
   stopifnot("El id_fuente_raw no existe en la sheet de fuentes raw. Verificar si es un id valido en  `fuentes_raw()`" = id_fuente_raw %in% df_fuentes_raw$id_fuente)
-
+  
   df_fuentes <- fuentes_clean()
+  
+  control <- df_fuentes[df_fuentes$id_fuente_raw == id_fuente_raw,]
+  
+  
+  if (!isFALSE(prompt) & nrow(control) > 0) {
+    warning(sprintf("Hay %d fuentes clean cargadas con el id %d", nrow(control), id_fuente_raw))
+    print(control)
+    ok <- readline(prompt = "¿Continuar con el registro de fuente clean? Y/N")
+    
+    stopifnot("Registro cancelado." = ok == "Y")
+    
+  }
 
   if (nrow(df_fuentes[df_fuentes$nombre == inputs$nombre & df_fuentes$id_fuente_raw == inputs$id_fuente_raw,]) != 0) {
 

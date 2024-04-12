@@ -9,6 +9,7 @@
 #' @param nombre string Nombre único que identifica a la fuente en su versión 'clean'.
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl
 #' @param path_clean string Nombre del archivo de la fuente tal cual fue guardado en el directorio data/_FUENTES/clean/ de argendata-etl
+#' @param prompt logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacoion antes de continuar.
 #' @param actualizar logical Si es TRUE registra la fuente como una nueva mediante [agregar_fuente_clean()]. Si es FALSE actuliza la  fuente  ya cargada con [actualizar_fuente_raw()].
 #'
 #' @export
@@ -17,25 +18,27 @@
 cargar_fuente_clean <- function(id_fuente_raw = id_fuente_raw,
                               path_clean = path_clean,
                               nombre = nombre,
-                              script = script) {
+                              script = script, 
+                              prompt = TRUE,
+                              actualizar = FALSE) {
   
   
   
   if (actualizar == F) {
     
     agregar_fuente_clean(id_fuente_raw = id_fuente_raw, path_clean = path_clean,
-                         nombre = nombre, script = script)
+                         nombre = nombre, script = script, prompt = prompt)
     
   } else if(actualizar == T) {
     df_fuentes <- fuentes_raw()
     
-    id_fuente <- df_fuentes[df_fuentes$url == url & 
+    id_fuente_clean <- df_fuentes[df_fuentes$url == url & 
                               df_fuentes$nombre == nombre &
-                              df_fuentes$path_raw == path_raw &
-                              df_fuentes$script == script,][["id_fuente"]]
+                              df_fuentes$path_clean == path_clean &
+                              df_fuentes$script == script,][["id_fuente_clean"]]
     
     
-    actualizar_fuente_clean(id_fuente = id_fuente, fecha_actualizar = fecha_actualizar)
+    actualizar_fuente_clean(id_fuente_clean = id_fuente_clean)
     
   } else {
     stop("param 'actualizar' debe ser TRUE o FALSE.")

@@ -8,7 +8,8 @@ agregar_fuente_clean(
   id_fuente_raw = NULL,
   path_clean = NULL,
   nombre = NULL,
-  script = NULL
+  script = NULL,
+  prompt = TRUE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ agregar_fuente_clean(
 \item{nombre}{string Nombre único que identifica a la fuente en su versión 'clean'.}
 
 \item{script}{string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl}
+
+\item{prompt}{logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacoion antes de continuar.}
 }
 \description{
 Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace \code{drive_upload()} con overwrite = F de la fuente.

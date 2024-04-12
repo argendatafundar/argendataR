@@ -12,7 +12,7 @@ descargar_fuente <- function(codigo, dir = NULL) {
   # df <- fuentes()
   
   if (is.null(dir)) {
-    dir <- getwd()
+    dir <- tempdir()
   }
   
   

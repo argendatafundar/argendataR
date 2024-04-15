@@ -8,7 +8,7 @@
 #'
 
 
-script_subtopico <- function(path = NULL, .navigate = F) {
+script_fuentes <- function(path = NULL, .navigate = F) {
 
 
   stopifnot("path debe ser charaacter de largo 1" = is.character(path) & length(path) == 1)
@@ -23,13 +23,13 @@ script_subtopico <- function(path = NULL, .navigate = F) {
 
   file.create(path)
 
-  lineas_base <- readLines(fs::path_package("argendataR", "subtopico_script_esquema.txt") )
+  lineas_base <- readLines(fs::path_package("argendataR", "fuentes_SUBTOP.txt") )
 
   stringi::stri_write_lines(lineas_base, con = path,encoding = "UTF-8", sep = "\n")
 
 
   if (!rstudioapi::isAvailable()) {
-    sprintf("Se creo el archivo %s con el esquema de script de argendata", path)
+    sprintf("Se creo el archivo %s con el esquema de descarga de fuentes", path)
     return(NULL)
   }
 

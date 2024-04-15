@@ -4,7 +4,7 @@
 \alias{init_subtopico}
 \title{Crear sripts y md del subtopico}
 \usage{
-init_subtopico(subtopico, scripts = T, md = T)
+init_subtopico(subtopico, scripts = T, md = T, fuentes = T, source_zero = T)
 }
 \arguments{
 \item{subtopico}{string codigo de 6 letras del subtopico}
@@ -12,6 +12,10 @@ init_subtopico(subtopico, scripts = T, md = T)
 \item{scripts}{logical Si es TRUE (default) crea los esqueletos de scripts}
 
 \item{md}{logical Si es TRUE (default) crea un archivo md con la guia del subtopico}
+
+\item{fuentes}{logical  Si es TRUE (default) crea un archivo .R para la descarga de fuentes de argendata}
+
+\item{source_zero}{logical  Si es TRUE (default) crea un archivo .R para la ejecucion unficada del subtopico}
 }
 \description{
 Crear sripts y md del subtopico

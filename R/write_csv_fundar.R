@@ -9,9 +9,11 @@
 
 
 write_csv_fundar <- function(x, file) {
-    
+
     x <- dplyr::mutate(x, dplyr::across(dplyr::everything(), as.character))
-     
+
+    file <- gsub("\\s","_",replace_non_ascii(file))
+
     readr::write_csv(x = x,
                      file = file,
                      quote = "all",

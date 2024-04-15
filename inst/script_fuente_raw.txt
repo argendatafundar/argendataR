@@ -1,0 +1,37 @@
+################################################################################
+##                              Fuente clean:                                 ##
+################################################################################
+
+
+#-- Descripcion ----
+#' Breve descripcion de output creado
+#'
+
+
+#-- Librerias ----
+
+
+#-- Proceso ----
+
+
+#-- Registro ----
+
+
+argendataR::cargar_fuente_raw(url = "url de descarga",
+                              nombre = "nombre especifico de la fuente",
+                              institucion = "nombre de la institucion",
+                              #TRUE/FALSE segun si la fuente debe ser actualizada a futuro
+                              actualizable = ,
+                              #fecha en que se realizo la descarga
+                              fecha_descarga = ,
+                              #fecha en que se debe volver a descargar
+                              fecha_actualizar = ,
+                              #nombre del archivo descargado
+                              path_raw = ,
+                              #nombre de este script
+                              script = ,
+                              # TRUE / FALSE segun si es una api o no la fuente consultada
+                              api = ,
+                              # actualizar: cambiar a TRUE para actualizar una fuente ya registrada
+                              # dejar en FALSE para registrar una fuente por primera vez
+                              actualizar = FALSE)

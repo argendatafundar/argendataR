@@ -1,0 +1,41 @@
+################################################################################
+##                              Fuente clean:                                 ##
+################################################################################
+
+
+#-- Descripcion ----
+#' Breve descripcion de output creado
+#'
+
+
+#-- Librerias ----
+
+
+#-- Carga Fuente Raw ----
+# descargar la fuente raw a tempdir() segun su codigo en fuentes_raw(). Ej.: R1C0
+
+argendataR::descargar_fuente("RXXC0")
+data <- read_*(argendataR::get_temp_path("RXXC0"))
+
+
+#-- Proceso ----
+
+
+
+#-- Exportar csv ----
+
+# guardar como csv en utf-8
+argendataR::write_csv_fundar(x = , file ="data/_FUENTES/clean/nombre_fuente_clean.csv")
+
+#-- Registro ----
+
+cargar_fuente_clean(
+  id_fuente_raw = "RXXC0",
+  path_clean = "data/_FUENTES/clean/nombre_fuente_clean.csv",
+  nombre = "nombre especifico del recurso clean creado",
+  script = "nombre de este script",
+  prompt = TRUE,
+  # actualizar: cambiar a TRUE para actualizar una fuente ya registrada
+  # dejar en FALSE para registrar una fuente por primera vez
+  actualizar = FALSE
+)

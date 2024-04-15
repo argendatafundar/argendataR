@@ -2,7 +2,7 @@
 % Please edit documentation in R/script_fuentes.R
 \name{script_fuentes}
 \alias{script_fuentes}
-\title{Crea un .R con el esquema basico de script para outputs}
+\title{Crea un .R con el esquema basico de script para la descarga de fuentes desde el drive de Argendata}
 \usage{
 script_fuentes(path = NULL, .navigate = F)
 }
@@ -15,5 +15,5 @@ script_fuentes(path = NULL, .navigate = F)
 Crea un archivo .R con el esquema basico para un script de subtopico
 }
 \description{
-Crea un .R con el esquema basico de script para outputs
+Crea un .R con el esquema basico de script para la descarga de fuentes desde el drive de Argendata
 }

@@ -1,4 +1,4 @@
-#' Crea un .R con el esquema basico de script para la descarga de fuentes desde el drive de Argendata
+#' Crea un .R con el esquema basico de script para outputs
 #'
 #'
 #' @param path string Ruta y nombre del archivo a crear
@@ -8,7 +8,7 @@
 #'
 
 
-script_fuentes <- function(path = NULL, .navigate = F) {
+script_fuente_raw <- function(path = NULL, .navigate = F) {
 
 
   stopifnot("path debe ser charaacter de largo 1" = is.character(path) & length(path) == 1)
@@ -23,13 +23,13 @@ script_fuentes <- function(path = NULL, .navigate = F) {
 
   file.create(path)
 
-  lineas_base <- readLines(fs::path_package("argendataR", "fuentes_SUBTOP.txt") )
+  lineas_base <- readLines(fs::path_package("argendataR", "subtopico_script_esquema.txt") )
 
   stringi::stri_write_lines(lineas_base, con = path,encoding = "UTF-8", sep = "\n")
 
 
   if (!rstudioapi::isAvailable()) {
-    sprintf("Se creo el archivo %s con el esquema de descarga de fuentes", path)
+    sprintf("Se creo el archivo %s con el esquema de script de argendata", path)
     return(NULL)
   }
 

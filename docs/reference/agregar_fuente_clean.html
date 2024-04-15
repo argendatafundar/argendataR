@@ -17,13 +17,16 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">argendataR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.9027</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -48,7 +51,8 @@
 <span>  id_fuente_raw <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  path_clean <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  nombre <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  script <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  script <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  prompt <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -68,6 +72,10 @@
 
 <dt>script</dt>
 <dd><p>string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl</p></dd>
+
+
+<dt>prompt</dt>
+<dd><p>logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacoion antes de continuar.</p></dd>
 
 </dl></div>
     <div id="details">

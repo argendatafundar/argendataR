@@ -13,6 +13,12 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>/news/index.html</loc>
+  </url>
+  <url>
     <loc>/reference/actualizar_fuente_clean.html</loc>
   </url>
   <url>
@@ -32,6 +38,12 @@
   </url>
   <url>
     <loc>/reference/bbdd_dir.html</loc>
+  </url>
+  <url>
+    <loc>/reference/cargar_fuente_clean.html</loc>
+  </url>
+  <url>
+    <loc>/reference/cargar_fuente_raw.html</loc>
   </url>
   <url>
     <loc>/reference/comparar_outputs.html</loc>
@@ -79,6 +91,9 @@
     <loc>/reference/get_nomenclador_paises.html</loc>
   </url>
   <url>
+    <loc>/reference/get_temp_path.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
@@ -98,6 +113,15 @@
   </url>
   <url>
     <loc>/reference/replace_non_ascii.html</loc>
+  </url>
+  <url>
+    <loc>/reference/script_fuentes.html</loc>
+  </url>
+  <url>
+    <loc>/reference/script_fuente_clean.html</loc>
+  </url>
+  <url>
+    <loc>/reference/script_fuente_raw.html</loc>
   </url>
   <url>
     <loc>/reference/script_subtopico.html</loc>

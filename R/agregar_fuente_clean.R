@@ -50,7 +50,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
   
   
   if (!isFALSE(prompt) & nrow(control) > 0) {
-    warning(sprintf("Hay %d fuentes clean cargadas con el id %d", nrow(control), id_fuente_raw))
+    print(sprintf("Hay %d fuentes clean cargadas con el id %d", nrow(control), id_fuente_raw))
     print(control)
     ok <- readline(prompt = "Continuar con el registro de fuente clean? Y/N")
     

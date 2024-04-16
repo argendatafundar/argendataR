@@ -86,7 +86,7 @@ write_output <- function(
   fuentes_df <- fuentes()
   
   if (is.character(fuentes)) {
-    stopifnot("Alguna/s de las fuentes no estan cargadas. Ver codigos en `fuentes()`" = all(fuentes %in% fuentes_df[["codigo"]]))
+    stopifnot("Alguna/s de las fuentes no estan cargadas. Ver codigos en `fuentes()`" = all(fuentes %in% fuentes_df[["codigo_raw"]] | fuentes %in% fuentes_df[["codigo_clean"]]))
   } else {
     stop("Input de fuentes invalido. Debe ser vector de strings con codigos de fuentes registradas")
   }
@@ -157,6 +157,7 @@ write_output <- function(
     stopifnot("hay 'unidades' invalidas. Deben ser character no vacios." = all(sapply(unidades, function(x) {is.character(x) & x != ""})))
   } else if (is.null(unidades)) {
     stopifnot("No se encontro la columna 'unidad' en 'data'. No es posible leer las unidades en 'data'" = "unidad" %in% columnas)
+    stopifnot("No se encontro la columna 'indicador' en 'data'. No es posible leer las unidades en 'data'" = "indicador" %in% columnas)
     unidades <- as.list(dplyr::distinct(data, dplyr::pick("indicador", "unidad"))[["unidad"]])
     names(unidades) <- dplyr::distinct(data, dplyr::pick("indicador", "unidad"))[["indicador"]]
   } else if (!is.null(unidades)) {

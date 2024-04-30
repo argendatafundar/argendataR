@@ -21,6 +21,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
                                path_clean = NULL,
                                nombre = NULL,
                                script = NULL,
+                               descripcion_clean = NULL,
                                prompt = TRUE) {
 
 
@@ -43,19 +44,19 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
   df_fuentes_raw <- fuentes_raw()
 
   stopifnot("El id_fuente_raw no existe en la sheet de fuentes raw. Verificar si es un id valido en  `fuentes_raw()`" = id_fuente_raw %in% df_fuentes_raw$id_fuente)
-  
+
   df_fuentes <- fuentes_clean()
-  
+
   control <- df_fuentes[df_fuentes$id_fuente_raw == id_fuente_raw,]
-  
-  
+
+
   if (!isFALSE(prompt) & nrow(control) > 0) {
     warning(sprintf("Hay %d fuentes clean cargadas con el id %d", nrow(control), id_fuente_raw))
     print(control)
     ok <- readline(prompt = "Continuar con el registro de fuente clean? Y/N")
-    
+
     stopifnot("Registro cancelado." = ok == "Y")
-    
+
   }
 
   if (nrow(df_fuentes[df_fuentes$nombre == inputs$nombre & df_fuentes$id_fuente_raw == inputs$id_fuente_raw,]) != 0) {
@@ -85,6 +86,10 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
 
   inputs$codigo <- sprintf("R%dC%d", inputs$id_fuente_raw, inputs$id_fuente_clean )
 
+  stopifnot("'descripcion_clean' debe ser null o character" = is.null(descripcion_clean) | is.character(descripcion_clean))
+
+  inputs$descripcion_clean <- descripcion_clean
+
   print(paste("La fuente quedara registrada con el codigo:", inputs$codigo))
 
   print(
@@ -96,7 +101,8 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
                       "nombre",
                       "script",
                       "fecha",
-                      "codigo")
+                      "codigo",
+                      "descripcion_clean")
   )
 
 
@@ -123,7 +129,8 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
                     "nombre",
                     "script",
                     "fecha",
-                    "codigo")  %>%
+                    "codigo",
+                    "descripcion_clean")  %>%
     googlesheets4::sheet_append(ss = fuentes_clean_sheet_id())
 
 }

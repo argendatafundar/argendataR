@@ -30,10 +30,10 @@ cargar_fuente_clean <- function(id_fuente_raw = id_fuente_raw,
                          nombre = nombre, script = script, prompt = prompt)
     
   } else if(actualizar == T) {
-    df_fuentes <- fuentes_raw()
+    df_fuentes <- fuentes_clean()
     
-    id_fuente_clean <- df_fuentes[df_fuentes$url == url & 
-                              df_fuentes$nombre == nombre &
+    id_fuente_clean <- df_fuentes[df_fuentes$id_fuente_raw == id_fuente_raw &
+                                  df_fuentes$nombre == nombre &
                               df_fuentes$path_clean == path_clean &
                               df_fuentes$script == script,][["id_fuente_clean"]]
     

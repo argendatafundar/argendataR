@@ -13,7 +13,8 @@ agregar_fuente_raw(
   fecha_actualizar = NULL,
   path_raw = NULL,
   script = NULL,
-  api = FALSE
+  api = FALSE,
+  dir = NULL
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ agregar_fuente_raw(
 \item{script}{string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl}
 
 \item{api}{logical TRUE o FALSE indicando si la fuente es una api o no.}
+
+\item{dir}{string Ruta al directorio desde el cual cargar el archivp}
 }
 \description{
 Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace \code{drive_upload()} con overwrite = F de la fuente.

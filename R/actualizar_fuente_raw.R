@@ -7,14 +7,38 @@
 #' La fecha será actualizada usando `Sys.time()` al momento de su ejecución.
 #'
 #' @param id_fuente integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  `fuentes_raw()`
-#' @param fecha_actualizar string or date Valor de la fecha en que se debe actualizar la descarga. Puede ser clase 'date' como producto de `Sys.Date()` o un string parseable por `as.Date()`
+#' @param url string Link directo a la fuente si existiera o link a la página web más inmediata a la  fuente.
+#' @param nombre string Nombre único que identifica a la fuente
+#' @param institucion string Nombre oficial de la institucion
+#' @param actualizable logical TRUE o FALSE  sobre si la fuente será actualizada y debe volver a ser descargada en nueva versión en el futuro.
+#' @param fecha_descarga date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por `as.Date()`. Si es null toma la fecha de `Sys.Date()`
+#' @param fecha_actualizar date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por `as.Date()`. Si es null toma fecha actual más 6 meses
+#' @param path_raw string Nombre del archivo de la fuente tal cual fue descargado en el directorio data/_FUENTES/raw/ de argendata-etl
+#' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl
+#' @param api logical TRUE o FALSE indicando si la fuente es una api o no.
+#' @param dir string Ruta al directorio desde el cual cargar el archivp
 #'
 #' @export
 #'
 #'
 
 actualizar_fuente_raw <- function(id_fuente,
-                              fecha_actualizar = NULL) {
+                                  url = NULL,
+                                  nombre = NULL,
+                                  institucion = NULL,
+                                  actualizable = NULL,
+                                  fecha_descarga = NULL,
+                                  fecha_actualizar = NULL,
+                                  path_raw = NULL,
+                                  script = NULL,
+                                  api = NULL,
+                                  dir = NULL) {
+
+  if (is.null(dir)) {
+    dir <- tempdir()
+  } else {
+    stopifnot("'dir' debe ser string a una ruta valida" = dir.exists(dir))
+  }
 
   stopifnot("'id_fuente' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente) | is.character(id_fuente))
 
@@ -53,10 +77,18 @@ actualizar_fuente_raw <- function(id_fuente,
 
 
 
+
   inputs <- list(
     "id_fuente" = id_fuente,
-    "fecha_descarga" = fecha_descarga ,
-    "fecha_actualizar" =  fecha_actualizar
+    "url" = url ,
+    "nombre" = nombre ,
+    "institucion" = institucion,
+    "actualizable" = actualizable ,
+    "fecha_descarga" = as.Date(fecha_descarga),
+    "fecha_actualizar" =  fecha_actualizar ,
+    "path_raw" = path_raw,
+    "script" = script,
+    "api" = api
   )
 
   inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
@@ -73,7 +105,7 @@ actualizar_fuente_raw <- function(id_fuente,
 
   print( df_fuentes[df_fuentes$id_fuente == inputs$id_fuente ,])
 
-  googledrive::drive_upload(media = paste0("data/_FUENTES/raw/", df_fuentes$path_raw),
+  googledrive::drive_upload(media = normalizePath(paste(dir, df_fuentes$path_raw, sep = "/")),
                             path = googledrive::as_id(fuentes_raw_dir()$id),
                             name = df_fuentes$path_raw, overwrite = T)
 

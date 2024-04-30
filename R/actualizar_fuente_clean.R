@@ -7,12 +7,18 @@
 #' La fecha será actualizada usando `Sys.time()` al momento de su ejecución.
 #'
 #' @param id_fuente_clean integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  `fuentes_clean()`
-#'
+#' @param dir string Ruta al directorio desde el cual cargar el archivp
 #' @export
 #'
 #'
 
-actualizar_fuente_clean <- function(id_fuente_clean) {
+actualizar_fuente_clean <- function(id_fuente_clean, dir = NULL) {
+
+  if (is.null(dir)) {
+    dir <- tempdir()
+  } else {
+    stopifnot("'dir' debe ser string a una ruta valida" = dir.exists(dir))
+  }
 
   stopifnot("'id_fuente_clean' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente_clean) | is.character(id_fuente_clean))
 
@@ -44,14 +50,14 @@ actualizar_fuente_clean <- function(id_fuente_clean) {
   df_fuentes$fecha <-  inputs$fecha
 
 
-  if (!file.exists(paste0("data/_FUENTES/clean/", df_fuentes$path_clean))) {
-    stop("No se encontro el archivo clean en data/_FUENTES/clean/\nGuardarlo en la ubicacion antes de continuar")
+  if (!file.exists(normalizePath(paste(dir, df_fuentes$path_clean, sep = "/")))) {
+    stop("No se encontro el archivo clean, guardarlo en la ubicacion antes de continuar")
   }
 
 
   print( df_fuentes[df_fuentes$id_fuente_clean == inputs$id_fuente_clean ,])
 
-  googledrive::drive_upload(media = paste0("data/_FUENTES/clean/", df_fuentes$path_clean),
+  googledrive::drive_upload(media = normalizePath(paste(dir, df_fuentes$path_clean, sep = "/")),
                             path = googledrive::as_id(fuentes_clean_dir()$id),
                             name = df_fuentes$path_clean, overwrite = T)
 

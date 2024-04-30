@@ -8,6 +8,8 @@
 #' @param nombre string Nombre único que identifica a la fuente en su versión 'clean'.
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl
 #' @param path_clean string Nombre del archivo de la fuente tal cual fue guardado en el directorio data/_FUENTES/clean/ de argendata-etl
+#' @param descripcion_clean string Descripcion del dataset
+#' @param dir string Ruta al directorio desde el cual cargar el archivo
 #' @param prompt logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacoion antes de continuar.
 #' @details
 #' Más de una fuente clean puede referir a una misma fuente raw. Por ejemplo, si la fuente raw consiste en un excel de multiples hojas, cada hoja debería pasar a ser un csv independiente.
@@ -22,6 +24,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
                                nombre = NULL,
                                script = NULL,
                                descripcion_clean = NULL,
+                               dir = NULL,
                                prompt = TRUE) {
 
 
@@ -65,8 +68,8 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
     stop("Ya existe esa combinacion nombre y id_fuente_raw. Verificar si es una posible duplicacion o cambiar de nombre")
   }
 
-  if (!file.exists(paste0("data/_FUENTES/clean/", inputs$path_clean))) {
-    stop("No se encontro el archivo clean en data/_FUENTES/clean Guardarlo en la ubicacion antes de continuar")
+  if (!file.exists(normalizePath(paste(dir, inputs$path_clean, sep = "/")))) {
+    stop("No se encontro el archivo clean, guardarlo en la ubicacion antes de continuar")
   }
 
   if (!file.exists(paste0("scripts/limpieza_fuentes/", inputs$script))) {
@@ -116,7 +119,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
 
   }
 
-  googledrive::drive_upload(media = paste0("data/_FUENTES/clean/", path_clean),
+  googledrive::drive_upload(media = normalizePath(paste(dir, inputs$path_clean, sep = "/")),
                             path = googledrive::as_id(fuentes_clean_dir$id),
                             name = path_clean)
 

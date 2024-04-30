@@ -9,6 +9,8 @@ agregar_fuente_clean(
   path_clean = NULL,
   nombre = NULL,
   script = NULL,
+  descripcion_clean = NULL,
+  dir = NULL,
   prompt = TRUE
 )
 }
@@ -20,6 +22,10 @@ agregar_fuente_clean(
 \item{nombre}{string Nombre único que identifica a la fuente en su versión 'clean'.}
 
 \item{script}{string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl}
+
+\item{descripcion_clean}{string Descripcion del dataset}
+
+\item{dir}{string Ruta al directorio desde el cual cargar el archivo}
 
 \item{prompt}{logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacoion antes de continuar.}
 }

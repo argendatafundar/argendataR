@@ -13,6 +13,7 @@
 #' @param path_raw string Nombre del archivo de la fuente tal cual fue descargado en el directorio data/_FUENTES/raw/ de argendata-etl
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl
 #' @param api logical TRUE o FALSE indicando si la fuente es una api o no.
+#' @param dir string Ruta al directorio desde el cual cargar el archivp
 #'
 #' @export
 #'
@@ -27,7 +28,14 @@ agregar_fuente_raw <- function(
                            fecha_actualizar = NULL,
                            path_raw = NULL,
                            script = NULL,
-                           api = FALSE) {
+                           api = FALSE,
+                           dir = NULL) {
+
+  if (is.null(dir)) {
+    dir <- tempdir()
+  } else {
+    stopifnot("'dir' debe ser string a una ruta valida" = dir.exists(dir))
+  }
 
   if (is.character(fecha_actualizar)) {
 
@@ -153,7 +161,7 @@ agregar_fuente_raw <- function(
 
   }
 
-  googledrive::drive_upload(media = paste0("data/_FUENTES/raw/", path_raw),
+  googledrive::drive_upload(media = normalizePath(paste(dir, inputs$path_raw, sep = "/")),
                             path = googledrive::as_id(fuentes_raw_dir$id),
                             name = path_raw)
 

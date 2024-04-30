@@ -4,12 +4,42 @@
 \alias{actualizar_fuente_raw}
 \title{Actualizar informacion de una fuente raw}
 \usage{
-actualizar_fuente_raw(id_fuente, fecha_actualizar = NULL)
+actualizar_fuente_raw(
+  id_fuente,
+  url = NULL,
+  nombre = NULL,
+  institucion = NULL,
+  actualizable = NULL,
+  fecha_descarga = NULL,
+  fecha_actualizar = NULL,
+  path_raw = NULL,
+  script = NULL,
+  api = NULL,
+  dir = NULL
+)
 }
 \arguments{
 \item{id_fuente}{integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  \code{fuentes_raw()}}
 
-\item{fecha_actualizar}{string or date Valor de la fecha en que se debe actualizar la descarga. Puede ser clase 'date' como producto de \code{Sys.Date()} o un string parseable por \code{as.Date()}}
+\item{url}{string Link directo a la fuente si existiera o link a la página web más inmediata a la  fuente.}
+
+\item{nombre}{string Nombre único que identifica a la fuente}
+
+\item{institucion}{string Nombre oficial de la institucion}
+
+\item{actualizable}{logical TRUE o FALSE  sobre si la fuente será actualizada y debe volver a ser descargada en nueva versión en el futuro.}
+
+\item{fecha_descarga}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por \code{as.Date()}. Si es null toma la fecha de \code{Sys.Date()}}
+
+\item{fecha_actualizar}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por \code{as.Date()}. Si es null toma fecha actual más 6 meses}
+
+\item{path_raw}{string Nombre del archivo de la fuente tal cual fue descargado en el directorio data/_FUENTES/raw/ de argendata-etl}
+
+\item{script}{string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl}
+
+\item{api}{logical TRUE o FALSE indicando si la fuente es una api o no.}
+
+\item{dir}{string Ruta al directorio desde el cual cargar el archivp}
 }
 \description{
 Actualiza 'fecha_descarga' y 'fecha_actualizar' de una fuente en la sheet de fuentes en el drive de Argendata. Hace \code{drive_upload()} con overwrite = T pisando la version anterior de la fuente en el drive.

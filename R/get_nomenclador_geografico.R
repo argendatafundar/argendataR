@@ -10,15 +10,14 @@ get_nomenclador_geografico <- function() {
 
   if (length(filetemp) == 1) {
 
-    jsonlite::fromJSON(filetemp) %>%
-      tidyr::as_tibble() %>%
+    readxl::read_excel(filetemp, sheet = 1) %>%
       suppressMessages()
 
 
   } else {
 
     temp <- tempfile(pattern = "nomenclador_geografico_argdt",
-                     fileext = ".json")
+                     fileext = ".xlsx")
 
     bbdd_tree <- bbdd_dir()$tree
 
@@ -26,12 +25,13 @@ get_nomenclador_geografico <- function() {
 
     geograficos <- googledrive::drive_ls(googledrive::as_id(clasificadores_nomecladores[clasificadores_nomecladores$name == "GEOGRAFICOS",][["id"]]))
 
-    id <-  geograficos[grepl("consolidado_fundar_paises_agregaciones3.json",
+    id <-  geograficos[grepl("consolidado_fundar_paises_agregaciones3.xlsx",
                              geograficos$name),]$id
 
     googledrive::drive_download(googledrive::as_id(id), path = temp)
 
-    jsonlite::fromJSON(temp) %>% tidyr::as_tibble() %>%  suppressMessages()
+    readxl::read_excel(temp, sheet = 1)
+    
 
 
     }

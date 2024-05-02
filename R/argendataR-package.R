@@ -19,6 +19,7 @@
 #' @importFrom readr read_rds
 #' @importFrom readr write_csv
 #' @importFrom readr write_rds
+#' @importFrom readxl read_excel
 #' @importFrom rstudioapi isAvailable
 #' @importFrom rstudioapi navigateToFile
 #' @importFrom stringi stri_write_lines

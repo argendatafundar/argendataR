@@ -30,6 +30,8 @@ agregar_fuente_raw <- function(
                            script = NULL,
                            api = FALSE,
                            dir = NULL) {
+  
+  limpiar_temps()
 
   if (is.null(dir)) {
     dir <- tempdir()

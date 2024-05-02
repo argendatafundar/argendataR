@@ -27,7 +27,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
                                dir = NULL,
                                prompt = TRUE) {
 
-
+  limpiar_temps()
 
   inputs <- list(
     id_fuente_raw = id_fuente_raw,

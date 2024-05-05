@@ -19,4 +19,6 @@ fuentes <- function() {
   
 
   df <- dplyr::bind_rows(df_r, df_c)
+  
+  return(df)
 }

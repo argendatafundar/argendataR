@@ -20,7 +20,7 @@ fuentes_raw <- function() {
       readr::write_csv(tempfile("fuentes_raw_argdt", fileext = ".csv"), ) %>%
       suppressMessages()
 
-    df
+    return(df)
   }
 
 

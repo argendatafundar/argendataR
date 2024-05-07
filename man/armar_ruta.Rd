@@ -15,7 +15,3 @@ string Devuelve un string con la ruta
 \description{
 Armar path a un archivo usando normalizePath(glue())
 }
-\examples{
-armar_ruta("{tempdir()}/archivo.csv")
-
-}

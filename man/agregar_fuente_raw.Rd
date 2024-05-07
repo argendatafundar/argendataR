@@ -14,7 +14,7 @@ agregar_fuente_raw(
   path_raw = NULL,
   script = NULL,
   api = FALSE,
-  dir = NULL
+  directorio = NULL
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ agregar_fuente_raw(
 
 \item{api}{logical TRUE o FALSE indicando si la fuente es una api o no.}
 
-\item{dir}{string Ruta al directorio desde el cual cargar el archivp}
+\item{directorio}{string Ruta al directorio desde el cual cargar el archivp}
 }
 \description{
 Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace \code{drive_upload()} con overwrite = F de la fuente.

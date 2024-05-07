@@ -13,7 +13,7 @@
 #' @param path_raw string Nombre del archivo de la fuente tal cual fue descargado en el directorio data/_FUENTES/raw/ de argendata-etl
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl
 #' @param api logical TRUE o FALSE indicando si la fuente es una api o no.
-#' @param dir string Ruta al directorio desde el cual cargar el archivp
+#' @param directorio string Ruta al directorio desde el cual cargar el archivp
 #'
 #' @export
 #'
@@ -29,14 +29,14 @@ agregar_fuente_raw <- function(
                            path_raw = NULL,
                            script = NULL,
                            api = FALSE,
-                           dir = NULL) {
-  
+                           directorio = NULL) {
+
   limpiar_temps()
 
-  if (is.null(dir)) {
-    dir <- tempdir()
+  if (is.null(directorio)) {
+    directorio <- tempdir()
   } else {
-    stopifnot("'dir' debe ser string a una ruta valida" = dir.exists(dir))
+    stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
   }
 
   if (is.character(fecha_actualizar)) {
@@ -113,8 +113,8 @@ agregar_fuente_raw <- function(
     stop("Ya existe esa combinacion nombre, institucion y url. Verificar si es una posible duplicacion o cambiar de nombre, institucion o url")
   }
 
-  if (!file.exists(paste0("data/_FUENTES/raw/", inputs$path_raw))) {
-    stop("No se encontro el archivo raw en data/_FUENTES/raw. Guardarlo en la ubicacion antes de continuar")
+  if (!file.exists(normalizePath(glue::glue("{directorio}/{inputs$path_raw}")))) {
+    stop("No se encontro el archivo raw en el directorio. Guardarlo en la ubicacion antes de continuar")
   }
 
   if (!file.exists(paste0("scripts/descarga_fuentes/", inputs$script))) {
@@ -163,7 +163,7 @@ agregar_fuente_raw <- function(
 
   }
 
-  googledrive::drive_upload(media = normalizePath(paste(dir, inputs$path_raw, sep = "/")),
+  googledrive::drive_upload(media = normalizePath(glue::glue("{directorio}/{inputs$path_raw}")),
                             path = googledrive::as_id(fuentes_raw_dir$id),
                             name = path_raw)
 

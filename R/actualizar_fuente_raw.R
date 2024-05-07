@@ -16,7 +16,7 @@
 #' @param path_raw string Nombre del archivo de la fuente tal cual fue descargado en el directorio data/_FUENTES/raw/ de argendata-etl
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl
 #' @param api logical TRUE o FALSE indicando si la fuente es una api o no.
-#' @param dir string Ruta al directorio desde el cual cargar el archivp
+#' @param directorio string Ruta al directorio desde el cual cargar el archivp
 #'
 #' @export
 #'
@@ -32,13 +32,14 @@ actualizar_fuente_raw <- function(id_fuente,
                                   path_raw = NULL,
                                   script = NULL,
                                   api = NULL,
-                                  dir = NULL) {
+                                  directorio = NULL) {
 
-  if (is.null(dir)) {
-    dir <- tempdir()
+  if (is.null(directorio)) {
+    directorio <- tempdir()
   } else {
-    stopifnot("'dir' debe ser string a una ruta valida" = dir.exists(dir))
+    stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
   }
+
 
   stopifnot("'id_fuente' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente) | is.character(id_fuente))
 
@@ -102,10 +103,12 @@ actualizar_fuente_raw <- function(id_fuente,
 
   }
 
+  stopifnot("No existe el archivo fuente en la ruta especificada" = file.exists(normalizePath(glue::glue("{directorio}/{df_fuentes$path_raw}"))))
+
 
   print( df_fuentes[df_fuentes$id_fuente == inputs$id_fuente ,])
 
-  googledrive::drive_upload(media = normalizePath(paste(dir, df_fuentes$path_raw, sep = "/")),
+  googledrive::drive_upload(media = normalizePath(glue::glue("{directorio}/{df_fuentes$path_raw}")),
                             path = googledrive::as_id(fuentes_raw_dir()$id),
                             name = df_fuentes$path_raw, overwrite = T)
 

@@ -15,7 +15,7 @@ actualizar_fuente_raw(
   path_raw = NULL,
   script = NULL,
   api = NULL,
-  dir = NULL
+  directorio = NULL
 )
 }
 \arguments{
@@ -39,7 +39,7 @@ actualizar_fuente_raw(
 
 \item{api}{logical TRUE o FALSE indicando si la fuente es una api o no.}
 
-\item{dir}{string Ruta al directorio desde el cual cargar el archivp}
+\item{directorio}{string Ruta al directorio desde el cual cargar el archivp}
 }
 \description{
 Actualiza 'fecha_descarga' y 'fecha_actualizar' de una fuente en la sheet de fuentes en el drive de Argendata. Hace \code{drive_upload()} con overwrite = T pisando la version anterior de la fuente en el drive.

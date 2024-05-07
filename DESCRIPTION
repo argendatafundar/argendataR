@@ -1,7 +1,7 @@
 Type: Package
 Package: argendataR
 Title: Caja de herramientas para Argendata
-Version: 0.0.9030
+Version: 0.0.9031
 Author: Fundar
 Maintainer: Juan Gabriel Juara <jgjuara@fund.ar>
 Description: Paquete de herramientas para el flujo de outputs Argendata.
@@ -12,6 +12,7 @@ Imports:
     glue,
     googledrive,
     googlesheets4,
+    httr2,
     jsonlite,
     lifecycle,
     magrittr,
@@ -21,7 +22,9 @@ Imports:
     readxl,
     rlang,
     rstudioapi,
+    rvest,
     stringi,
+    stringr,
     tibble,
     tidyr
 Encoding: UTF-8

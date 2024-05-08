@@ -91,7 +91,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
 
   stopifnot("'descripcion_clean' debe ser null o character" = is.null(descripcion_clean) | is.character(descripcion_clean))
 
-  inputs$descripcion_clean <- descripcion_clean
+  inputs$descripcion_clean <- ifelse(!is.character(descripcion_clean), "", descripcion_clean)
 
   print(paste("La fuente quedara registrada con el codigo:", inputs$codigo))
 

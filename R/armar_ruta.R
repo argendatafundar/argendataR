@@ -1,4 +1,4 @@
-#' Armar path a un archivo usando normalizePath(glue())
+#' Deprecated
 #'
 #' @param x string Cadena de texto con funcionalidades de glue
 #'

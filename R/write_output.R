@@ -234,13 +234,13 @@ write_output <- function(
   if (exportar) {
     data  %>% 
       dplyr::mutate(dplyr::across(dplyr::everything(), as.character))  %>% 
-      readr::write_csv(file = normalizePath(glue::glue("{directorio}/{subtopico}/{output_name}.{extension}")),
+      readr::write_csv(file = normalizePath(glue::glue("{directorio}/{output_name}.{extension}")),
                        eol = "\n",
                        quote = "all",
                        escape = "none",
                        na = "")
   }
 
-  jsonlite::write_json(x = inputs, path = normalizePath(glue::glue("{directorio}/{subtopico}/{output_name}.json")))
+  jsonlite::write_json(x = inputs, path = normalizePath(glue::glue("{directorio}/{output_name}.json")))
   
 }

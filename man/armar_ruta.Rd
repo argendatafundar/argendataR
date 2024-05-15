@@ -2,7 +2,7 @@
 % Please edit documentation in R/armar_ruta.R
 \name{armar_ruta}
 \alias{armar_ruta}
-\title{Armar path a un archivo usando normalizePath(glue())}
+\title{Deprecated}
 \usage{
 armar_ruta(x)
 }
@@ -13,5 +13,5 @@ armar_ruta(x)
 string Devuelve un string con la ruta
 }
 \description{
-Armar path a un archivo usando normalizePath(glue())
+Deprecated
 }

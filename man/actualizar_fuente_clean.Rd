@@ -4,12 +4,12 @@
 \alias{actualizar_fuente_clean}
 \title{Actualizar informacion de una fuente clean}
 \usage{
-actualizar_fuente_clean(id_fuente_clean, dir = NULL)
+actualizar_fuente_clean(id_fuente_clean, directorio = NULL)
 }
 \arguments{
 \item{id_fuente_clean}{integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  \code{fuentes_clean()}}
 
-\item{dir}{string Ruta al directorio desde el cual cargar el archivp}
+\item{directorio}{string Ruta al directorio desde el cual cargar el archivo. Si es NULL toma tempdir()}
 }
 \description{
 Hace \code{drive_upload()} con overwrite = T pisando la version anterior de la fuente en el drive y actualiza 'timestamp' de una fuente en la sheet de fuentes clean en el drive de Argendata.

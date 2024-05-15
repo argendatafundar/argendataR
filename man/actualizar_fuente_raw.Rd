@@ -33,7 +33,7 @@ actualizar_fuente_raw(
 
 \item{fecha_actualizar}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por \code{as.Date()}. Si es null toma fecha actual más 6 meses}
 
-\item{path_raw}{string Nombre del archivo de la fuente tal cual fue descargado en el directorio data/_FUENTES/raw/ de argendata-etl}
+\item{path_raw}{string Nombre del archivo de la fuente tal cual fue guardado.}
 
 \item{script}{string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl}
 

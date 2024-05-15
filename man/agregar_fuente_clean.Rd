@@ -9,25 +9,25 @@ agregar_fuente_clean(
   path_clean = NULL,
   nombre = NULL,
   script = NULL,
-  descripcion_clean = NULL,
-  dir = NULL,
+  descripcion = NULL,
+  directorio = NULL,
   prompt = TRUE
 )
 }
 \arguments{
 \item{id_fuente_raw}{integer id numerico que permite seleccionar la fuente raw segun aparece en el sheet. Para consultar ids usar  \code{fuentes_raw()}}
 
-\item{path_clean}{string Nombre del archivo de la fuente tal cual fue guardado en el directorio data/_FUENTES/clean/ de argendata-etl}
+\item{path_clean}{string Nombre del archivo de la fuente tal cual fue guardado.}
 
 \item{nombre}{string Nombre único que identifica a la fuente en su versión 'clean'.}
 
 \item{script}{string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl}
 
-\item{descripcion_clean}{string Descripcion del dataset}
+\item{descripcion}{string Descripcion del dataset}
 
-\item{dir}{string Ruta al directorio desde el cual cargar el archivo}
+\item{directorio}{string Ruta al directorio desde el cual cargar el archivo. Si es NULL toma tempdir()}
 
-\item{prompt}{logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacoion antes de continuar.}
+\item{prompt}{logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacion antes de continuar.}
 }
 \description{
 Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace \code{drive_upload()} con overwrite = F de la fuente.

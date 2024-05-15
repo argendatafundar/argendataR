@@ -2,13 +2,15 @@
 % Please edit documentation in R/cargar_fuente_clean.R
 \name{cargar_fuente_clean}
 \alias{cargar_fuente_clean}
-\title{Agregar o actualizar una fuente clean}
+\title{(Experimental) Agregar o actualizar una fuente clean}
 \usage{
 cargar_fuente_clean(
-  id_fuente_raw = id_fuente_raw,
-  path_clean = path_clean,
-  nombre = nombre,
-  script = script,
+  id_fuente_raw = NULL,
+  path_clean = NULL,
+  nombre = NULL,
+  script = NULL,
+  descripcion = NULL,
+  directorio = NULL,
   prompt = TRUE,
   actualizar = FALSE
 )
@@ -21,6 +23,10 @@ cargar_fuente_clean(
 \item{nombre}{string Nombre único que identifica a la fuente en su versión 'clean'.}
 
 \item{script}{string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl}
+
+\item{descripcion}{string Descripcion del dataset}
+
+\item{directorio}{string Ruta al directorio desde el cual cargar el archivp}
 
 \item{prompt}{logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacoion antes de continuar.}
 

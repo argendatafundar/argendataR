@@ -4,7 +4,10 @@
 \alias{fuentes_raw}
 \title{Fuentes raw}
 \usage{
-fuentes_raw()
+fuentes_raw(limpiar_cache = F)
+}
+\arguments{
+\item{limpiar_cache}{Logical Si es TRUE borra el cache de consultas al drive de argendata. Si es FALSE reutiliza el cache existente.}
 }
 \value{
 tibble con la sheet de fuentes raw de googledrive Argendata

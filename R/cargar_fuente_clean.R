@@ -11,7 +11,9 @@
 #' @param path_clean string Nombre del archivo de la fuente tal cual fue guardado en el directorio data/_FUENTES/clean/ de argendata-etl
 #' @param prompt logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacoion antes de continuar.
 #' @param actualizar logical Si es TRUE registra la fuente como una nueva mediante [agregar_fuente_clean()]. Si es FALSE actuliza la  fuente  ya cargada con [actualizar_fuente_raw()].
-#'
+#' @param directorio string Ruta al directorio desde el cual cargar el archivp
+#' @param descripcion string Descripcion del dataset
+#' 
 #' @export
 #'
 

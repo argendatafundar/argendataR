@@ -32,6 +32,7 @@ write_output <- function(
     data = NULL,
     extension = 'csv',
     output_name = NULL,
+    directorio = NULL,
     subtopico = NULL,
     fuentes = NULL,
     analista = NULL,

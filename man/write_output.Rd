@@ -8,6 +8,7 @@ write_output(
   data = NULL,
   extension = "csv",
   output_name = NULL,
+  directorio = NULL,
   subtopico = NULL,
   fuentes = NULL,
   analista = NULL,
@@ -30,6 +31,8 @@ write_output(
 \item{extension}{string Extension con que se debe escribir el output exportado. Default = 'csv'}
 
 \item{output_name}{string Nombre del output tal cual se usa para escribir el archivo csv. Req. Default = NULL}
+
+\item{directorio}{string Ruta al directorio desde el cual cargar el archivo. Si es NULL toma tempdir()}
 
 \item{subtopico}{string Codigo de 6 letras del subtopico al que pertenece. Req. Default = NULL}
 

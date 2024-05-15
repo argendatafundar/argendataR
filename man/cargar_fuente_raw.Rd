@@ -2,7 +2,7 @@
 % Please edit documentation in R/cargar_fuente_raw.R
 \name{cargar_fuente_raw}
 \alias{cargar_fuente_raw}
-\title{Agregar o actualizar una fuente raw}
+\title{(Experimental) Agregar o actualizar una fuente raw}
 \usage{
 cargar_fuente_raw(
   url = NULL,
@@ -14,7 +14,8 @@ cargar_fuente_raw(
   path_raw = NULL,
   script = NULL,
   api = FALSE,
-  actualizar = FALSE
+  actualizar = FALSE,
+  directorio = NULL
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ cargar_fuente_raw(
 \item{api}{logical TRUE o FALSE indicando si la fuente es una api o no.}
 
 \item{actualizar}{logical Si es TRUE registra la fuente como una nueva mediante \code{\link[=agregar_fuente_raw]{agregar_fuente_raw()}}. Si es FALSE actuliza la  fuente  ya cargada con \code{\link[=actualizar_fuente_raw]{actualizar_fuente_raw()}}}
+
+\item{directorio}{string Ruta al directorio desde el cual cargar el archivp}
 }
 \description{
 Si \code{actualizar == FALSE} (default) Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace \code{googledrive::drive_upload()} con overwrite = F de la fuente.

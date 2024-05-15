@@ -1,4 +1,4 @@
-#' Agregar o actualizar una fuente raw
+#' (Experimental) Agregar o actualizar una fuente raw
 #'
 #' @description
 #' Si `actualizar == FALSE` (default) Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace `googledrive::drive_upload()` con overwrite = F de la fuente.
@@ -15,7 +15,8 @@
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl
 #' @param api logical TRUE o FALSE indicando si la fuente es una api o no.
 #' @param actualizar logical Si es TRUE registra la fuente como una nueva mediante [agregar_fuente_raw()]. Si es FALSE actuliza la  fuente  ya cargada con [actualizar_fuente_raw()]
-#'
+#' @param directorio string Ruta al directorio desde el cual cargar el archivp
+#' 
 #' @export
 #'
 
@@ -28,7 +29,8 @@ cargar_fuente_raw <- function(url = NULL,
                               path_raw = NULL,
                               script = NULL,
                               api = FALSE,
-                              actualizar = FALSE) {
+                              actualizar = FALSE,
+                              directorio = NULL) {
   
   
   
@@ -47,6 +49,7 @@ cargar_fuente_raw <- function(url = NULL,
     )
     
   } else if(actualizar == T) {
+    
     df_fuentes <- fuentes_raw()
     
     id_fuente <- df_fuentes[df_fuentes$url == url & 
@@ -55,7 +58,17 @@ cargar_fuente_raw <- function(url = NULL,
                               df_fuentes$script == script,][["id_fuente"]]
     
     
-    actualizar_fuente_raw(id_fuente = id_fuente, fecha_actualizar = fecha_actualizar)
+    actualizar_fuente_raw(id_fuente,
+                          url = url,
+                          nombre = nombre,
+                          institucion = institucion,
+                          actualizable = actualizable,
+                          fecha_descarga = fecha_descarga,
+                          fecha_actualizar = fecha_actualizar,
+                          path_raw = path_raw,
+                          script = script,
+                          api = api,
+                          directorio = directorio)
     
   } else {
     stop("param 'actualizar' debe ser TRUE o FALSE.")

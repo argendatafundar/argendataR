@@ -1,4 +1,4 @@
-#' Agregar o actualizar una fuente clean
+#' (Experimental) Agregar o actualizar una fuente clean
 #'
 #' @description
 #' Si `actualizar == FALSE` (default) Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace `googledrive::drive_upload()` con overwrite = F de la fuente.
@@ -15,19 +15,23 @@
 #' @export
 #'
 
-cargar_fuente_clean <- function(id_fuente_raw = id_fuente_raw,
-                              path_clean = path_clean,
-                              nombre = nombre,
-                              script = script, 
-                              prompt = TRUE,
-                              actualizar = FALSE) {
+cargar_fuente_clean <- function(id_fuente_raw = NULL,
+           path_clean = NULL,
+           nombre = NULL,
+           script = NULL,
+           descripcion = NULL,
+           directorio = NULL,
+           prompt = TRUE,
+           actualizar = FALSE
+  ) {
   
   
   
   if (actualizar == F) {
     
     agregar_fuente_clean(id_fuente_raw = id_fuente_raw, path_clean = path_clean,
-                         nombre = nombre, script = script, prompt = prompt)
+                         nombre = nombre, script = script, prompt = prompt,
+                         descripcion = descripcion, directorio = directorio)
     
   } else if(actualizar == T) {
     df_fuentes <- fuentes_clean()
@@ -38,7 +42,7 @@ cargar_fuente_clean <- function(id_fuente_raw = id_fuente_raw,
                               df_fuentes$script == script,][["id_fuente_clean"]]
     
     
-    actualizar_fuente_clean(id_fuente_clean = id_fuente_clean)
+    actualizar_fuente_clean(id_fuente_clean = id_fuente_clean, directorio = directorio)
     
   } else {
     stop("param 'actualizar' debe ser TRUE o FALSE.")

@@ -13,7 +13,7 @@
 #' @param actualizable logical TRUE o FALSE  sobre si la fuente será actualizada y debe volver a ser descargada en nueva versión en el futuro.
 #' @param fecha_descarga date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por `as.Date()`. Si es null toma la fecha de `Sys.Date()`
 #' @param fecha_actualizar date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por `as.Date()`. Si es null toma fecha actual más 6 meses
-#' @param path_raw string Nombre del archivo de la fuente tal cual fue descargado en el directorio data/_FUENTES/raw/ de argendata-etl
+#' @param path_raw string Nombre del archivo de la fuente tal cual fue guardado.
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl
 #' @param api logical TRUE o FALSE indicando si la fuente es una api o no.
 #' @param directorio string Ruta al directorio desde el cual cargar el archivp
@@ -33,6 +33,8 @@ actualizar_fuente_raw <- function(id_fuente,
                                   script = NULL,
                                   api = NULL,
                                   directorio = NULL) {
+  
+  limpiar_temps()
 
   if (is.null(directorio)) {
     directorio <- tempdir()

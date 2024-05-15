@@ -7,10 +7,10 @@
 #' @param id_fuente_raw integer id numerico que permite seleccionar la fuente raw segun aparece en el sheet. Para consultar ids usar  `fuentes_raw()`
 #' @param nombre string Nombre único que identifica a la fuente en su versión 'clean'.
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl
-#' @param path_clean string Nombre del archivo de la fuente tal cual fue guardado en el directorio data/_FUENTES/clean/ de argendata-etl
-#' @param descripcion_clean string Descripcion del dataset
-#' @param dir string Ruta al directorio desde el cual cargar el archivo
-#' @param prompt logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacoion antes de continuar.
+#' @param path_clean string Nombre del archivo de la fuente tal cual fue guardado.
+#' @param descripcion string Descripcion del dataset
+#' @param directorio string Ruta al directorio desde el cual cargar el archivo. Si es NULL toma tempdir()
+#' @param prompt logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacion antes de continuar.
 #' @details
 #' Más de una fuente clean puede referir a una misma fuente raw. Por ejemplo, si la fuente raw consiste en un excel de multiples hojas, cada hoja debería pasar a ser un csv independiente.
 #'
@@ -23,11 +23,17 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
                                path_clean = NULL,
                                nombre = NULL,
                                script = NULL,
-                               descripcion_clean = NULL,
-                               dir = NULL,
+                               descripcion = NULL,
+                               directorio = NULL,
                                prompt = TRUE) {
 
   limpiar_temps()
+  
+  if (is.null(directorio)) {
+    directorio <- tempdir()
+  } else {
+    stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
+  }
 
   inputs <- list(
     id_fuente_raw = id_fuente_raw,
@@ -68,7 +74,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
     stop("Ya existe esa combinacion nombre y id_fuente_raw. Verificar si es una posible duplicacion o cambiar de nombre")
   }
 
-  if (!file.exists(normalizePath(paste(dir, inputs$path_clean, sep = "/")))) {
+  if (!file.exists(normalizePath(paste(directorio, inputs$path_clean, sep = "/")))) {
     stop("No se encontro el archivo clean, guardarlo en la ubicacion antes de continuar")
   }
 
@@ -89,9 +95,9 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
 
   inputs$codigo <- sprintf("R%dC%d", inputs$id_fuente_raw, inputs$id_fuente_clean )
 
-  stopifnot("'descripcion_clean' debe ser null o character" = is.null(descripcion_clean) | is.character(descripcion_clean))
+  stopifnot("'descripcion' debe ser null o character" = is.null(descripcion) | is.character(descripcion))
 
-  inputs$descripcion_clean <- ifelse(!is.character(descripcion_clean), "", descripcion_clean)
+  inputs$descripcion_clean <- ifelse(!is.character(descripcion), "", descripcion)
 
   print(paste("La fuente quedara registrada con el codigo:", inputs$codigo))
 
@@ -105,7 +111,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
                       "script",
                       "fecha",
                       "codigo",
-                      "descripcion_clean")
+                      "descripcion")
   )
 
 
@@ -119,7 +125,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
 
   }
 
-  googledrive::drive_upload(media = normalizePath(paste(dir, inputs$path_clean, sep = "/")),
+  googledrive::drive_upload(media = normalizePath(paste(directorio, inputs$path_clean, sep = "/")),
                             path = googledrive::as_id(fuentes_clean_dir$id),
                             name = path_clean)
 
@@ -133,7 +139,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
                     "script",
                     "fecha",
                     "codigo",
-                    "descripcion_clean")  %>%
+                    "descripcion")  %>%
     googlesheets4::sheet_append(ss = fuentes_clean_sheet_id())
 
 }

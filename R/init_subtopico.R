@@ -5,11 +5,12 @@
 #' @param md logical Si es TRUE (default) crea un archivo md con la guia del subtopico
 #' @param fuentes logical  Si es TRUE (default) crea un archivo .R para la descarga de fuentes de argendata
 #' @param source_zero logical  Si es TRUE (default) crea un archivo .R para la ejecucion unficada del subtopico
-#'
+#' @aliases subtopico_init
+#' @aliases init_subtopico
 #' @export
 #'
 
-init_subtopico <- function(subtopico, scripts = T, md = T, fuentes = T, source_zero = T) {
+subtopico_init <- init_subtopico <- function(subtopico, scripts = T, md = T, fuentes = T, source_zero = T) {
 
   metadata_subtopico <- metadata(subtopico)
 
@@ -229,3 +230,5 @@ init_subtopico <- function(subtopico, scripts = T, md = T, fuentes = T, source_z
                   escritos_r, escrito_fuentes, escrito_md))
 
 }
+
+

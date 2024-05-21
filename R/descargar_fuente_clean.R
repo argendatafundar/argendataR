@@ -25,14 +25,14 @@ descargar_fuente_clean <- function(id_fuente, dir) {
     codigo <- df_fuentes[["codigo"]][df_fuentes["id_fuente_clean"] == id_fuente]
 
   } else if (is.character(id_fuente)) {
-    
+
     stopifnot("'id_fuente' no coincide con ningun 'codigo' en sheet de fuentes. Ver `fuentes_clean()`." = id_fuente %in% df_fuentes$codigo )
 
     codigo <- id_fuente
 
   }
 
-  path_clean <- df_fuentes[df_fuentes$codigo == id_fuente,][[ "path_clean"]]
+  path_clean <- df_fuentes[df_fuentes$codigo == codigo,][[ "path_clean"]]
 
   path_clean_body <- gsub("\\.[^\\.]*$", "", path_clean)
 

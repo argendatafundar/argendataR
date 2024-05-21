@@ -103,7 +103,7 @@ agregar_fuente_raw <- function(
 
   stopifnot("param 'fecha_actualizar' debe ser fecha" = !is.na(inputs$fecha_actualizar))
 
-  stopifnot("param 'url' debe ser una url valida" =  grepl("^(https|http)://",inputs$url))
+  # stopifnot("param 'url' debe ser una url valida" =  grepl("^(https|http)://",inputs$url))
 
  stopifnot("param 'api' debe ser T o F" = is.logical(api) & !is.na(api))
 

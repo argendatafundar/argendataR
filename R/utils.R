@@ -178,6 +178,10 @@ fuentes_clean_dir <- function() {
 
 }
 
+normalize_path <- function(path) {
+  suppressWarnings(normalizePath(path))
+}
+
 
 if(getRversion() >= "2.15.1")
   utils::globalVariables(c(".", "fuente_nombre", "url_path"))

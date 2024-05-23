@@ -13,7 +13,7 @@
 #'
 
 actualizar_fuente_clean <- function(id_fuente_clean, directorio = NULL) {
-  
+
   limpiar_temps()
 
   if (is.null(directorio)) {
@@ -29,18 +29,18 @@ actualizar_fuente_clean <- function(id_fuente_clean, directorio = NULL) {
   if (is.numeric(id_fuente_clean)) {
 
     stopifnot("'id_fuente_clean' no encontrado en sheet de fuentes. Ver `fuentes_clean()`." = id_fuente_clean %in% df_fuentes$id_fuente_clean )
-    
+
     df_fuentes <- df_fuentes[df_fuentes$id_fuente_clean == id_fuente_clean,]
-    
+
 
   } else if (is.character(id_fuente_clean)) {
 
     stopifnot("'id_fuente_clean' no coincide con ningun codigo en sheet de fuentes. Ver `fuentes_clean()`." = id_fuente_clean %in% df_fuentes$codigo )
 
     df_fuentes <- df_fuentes[df_fuentes$codigo == id_fuente_clean,]
-    
+
   }
-    
+
 
 
 
@@ -66,7 +66,7 @@ actualizar_fuente_clean <- function(id_fuente_clean, directorio = NULL) {
   df_fuentes %>%
     googlesheets4::range_write(col_names = F,
                                ss = fuentes_clean_sheet_id(),
-                               range = sprintf("A%d:H%d", df_fuentes$id_fuente_clean+1, df_fuentes$id_fuente_clean+1))
+                               range = sprintf("A%d:I%d", df_fuentes$id_fuente_clean+1, df_fuentes$id_fuente_clean+1))
 
 
 

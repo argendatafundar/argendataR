@@ -50,14 +50,14 @@ actualizar_fuente_clean <- function(id_fuente_clean, directorio = NULL) {
   df_fuentes$fecha <-  fecha
 
 
-  if (!file.exists(normalizePath(paste(directorio, df_fuentes$path_clean, sep = "/")))) {
+  if (!file.exists(normalize_path(paste(directorio, df_fuentes$path_clean, sep = "/")))) {
     stop("No se encontro el archivo clean, guardarlo en la ubicacion antes de continuar")
   }
 
 
   print( df_fuentes)
 
-  googledrive::drive_upload(media = normalizePath(glue::glue("{directorio}/{df_fuentes$path_clean}")),
+  googledrive::drive_upload(media = normalize_path(glue::glue("{directorio}/{df_fuentes$path_clean}")),
                             path = googledrive::as_id(fuentes_clean_dir()$id),
                             name = df_fuentes$path_clean,
                             overwrite = T)

@@ -22,7 +22,7 @@
 #' @param unidades list o null Lista nombrada con las unidades en que estan expresadas las columnas. Los nombres de la lista deben coincidir con nombres de columnas de 'data'. Ejemplo: list('gini' = 'indice', 'pbipcppp' = 'parity purchase power', 'population' = 'millones de personas'). Si es NULL (default), la funcion busca la columna 'unidad' en 'data' y genera una lista tomando las combinaciones unicas de 'unidad' e 'indicador' en 'data'.
 #' @param classes list o null Si es null (default) la funcion genera una lista con las clases y nombres de columnas en data. Si es una lista los nombres de la lista deben coincidir con valores en la columna 'indicador' en 'data' y los valores deben ser: 'logical', 'character', 'double', 'interger' o 'date'.
 #' @param directorio string Ruta al directorio desde el cual cargar el archivo. Si es NULL toma tempdir()
-#' 
+#'
 #' @returns Escribe localmente un json con la data y metadata definida usando '{output_name}.json' como path. Opcionalmente tambien escribe un csv '{output_name}.csv'
 #' @export
 #'
@@ -47,13 +47,13 @@ write_output <- function(
     etiquetas_indicadores = NULL,
     unidades = NULL,
     classes = NULL) {
-  
+
   if (is.null(directorio)) {
     directorio <- tempdir()
   } else {
     stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
   }
-  
+
 
 
   # chequeos
@@ -79,8 +79,8 @@ write_output <- function(
 
   stopifnot("'output_name' debe ser character de largo 1" = is.character(output_name) & length(output_name) == 1)
 
-  output_name <- gsub("\\.csv$","",output_name)  
-  
+  output_name <- gsub("\\.csv$","",output_name)
+
   ## formato
 
   stopifnot("'extension' debe ser 'csv'" = extension %in% c("csv") & length(extension) == 1)
@@ -95,7 +95,7 @@ write_output <- function(
   stopifnot("'fuentes' debe ser un vector tipo character" = class(fuentes) == "character")
 
   fuentes_df <- fuentes()
-  
+
   if (is.character(fuentes)) {
     stopifnot("Alguna/s de las fuentes no estan cargadas. Ver codigos en `fuentes()`" = all(fuentes %in% fuentes_df[["codigo_raw"]] | fuentes %in% fuentes_df[["codigo_clean"]]))
   } else {
@@ -144,7 +144,7 @@ write_output <- function(
     }
   } else if (is.character(nullables)) {
     stopifnot("valores en 'nullables' no hallados entre los nombres de columas de 'data'" == all(nullables %in% colnames(data)))
-    
+
   }
 
   ## etiquetas_indicadores
@@ -229,18 +229,18 @@ write_output <- function(
 
 
   # exportar
-  
+
 
   if (exportar) {
-    data  %>% 
-      dplyr::mutate(dplyr::across(dplyr::everything(), as.character))  %>% 
-      readr::write_csv(file = normalizePath(glue::glue("{directorio}/{output_name}.{extension}")),
+    data  %>%
+      dplyr::mutate(dplyr::across(dplyr::everything(), as.character))  %>%
+      readr::write_csv(file = normalize_path(glue::glue("{directorio}/{output_name}.{extension}")),
                        eol = "\n",
                        quote = "all",
                        escape = "none",
                        na = "")
   }
 
-  jsonlite::write_json(x = inputs, path = normalizePath(glue::glue("{directorio}/{output_name}.json")))
-  
+  jsonlite::write_json(x = inputs, path = normalize_path(glue::glue("{directorio}/{output_name}.json")))
+
 }

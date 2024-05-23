@@ -105,12 +105,12 @@ actualizar_fuente_raw <- function(id_fuente,
 
   }
 
-  stopifnot("No existe el archivo fuente en la ruta especificada" = file.exists(normalizePath(glue::glue("{directorio}/{df_fuentes$path_raw}"))))
+  stopifnot("No existe el archivo fuente en la ruta especificada" = file.exists(normalize_path(glue::glue("{directorio}/{df_fuentes$path_raw}"))))
 
 
   print( df_fuentes[df_fuentes$id_fuente == inputs$id_fuente ,])
 
-  googledrive::drive_upload(media = normalizePath(glue::glue("{directorio}/{df_fuentes$path_raw}")),
+  googledrive::drive_upload(media = normalize_path(glue::glue("{directorio}/{df_fuentes$path_raw}")),
                             path = googledrive::as_id(fuentes_raw_dir()$id),
                             name = df_fuentes$path_raw, overwrite = T)
 

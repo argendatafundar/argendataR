@@ -28,7 +28,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
                                prompt = TRUE) {
 
   limpiar_temps()
-  
+
   if (is.null(directorio)) {
     directorio <- tempdir()
   } else {
@@ -74,7 +74,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
     stop("Ya existe esa combinacion nombre y id_fuente_raw. Verificar si es una posible duplicacion o cambiar de nombre")
   }
 
-  if (!file.exists(normalizePath(glue::glue("{directorio}/{inputs$path_clean}")))) {
+  if (!file.exists(normalize_path(glue::glue("{directorio}/{inputs$path_clean}")))) {
     stop("No se encontro el archivo clean, guardarlo en la ubicacion antes de continuar")
   }
 
@@ -125,7 +125,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
 
   }
 
-  googledrive::drive_upload(media = normalizePath(glue::glue("{directorio}/{inputs$path_clean}")),
+  googledrive::drive_upload(media = normalize_path(glue::glue("{directorio}/{inputs$path_clean}")),
                             path = googledrive::as_id(fuentes_clean_dir$id),
                             name = path_clean)
 

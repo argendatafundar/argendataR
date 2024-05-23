@@ -8,5 +8,5 @@
 
 armar_ruta <-
   function(x) {
-    suppressWarnings(normalizePath(glue::glue(x)))
+    suppressWarnings(normalize_path(glue::glue(x)))
   }

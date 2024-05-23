@@ -113,7 +113,7 @@ agregar_fuente_raw <- function(
     stop("Ya existe esa combinacion nombre, institucion y url. Verificar si es una posible duplicacion o cambiar de nombre, institucion o url")
   }
 
-  if (!file.exists(normalizePath(glue::glue("{directorio}/{inputs$path_raw}")))) {
+  if (!file.exists(normalize_path(glue::glue("{directorio}/{inputs$path_raw}")))) {
     stop("No se encontro el archivo raw en el directorio. Guardarlo en la ubicacion antes de continuar")
   }
 
@@ -163,7 +163,7 @@ agregar_fuente_raw <- function(
 
   }
 
-  googledrive::drive_upload(media = normalizePath(glue::glue("{directorio}/{inputs$path_raw}")),
+  googledrive::drive_upload(media = normalize_path(glue::glue("{directorio}/{inputs$path_raw}")),
                             path = googledrive::as_id(fuentes_raw_dir$id),
                             name = path_raw)
 

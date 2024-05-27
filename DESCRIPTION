@@ -23,6 +23,7 @@ Imports:
     rlang,
     rstudioapi,
     rvest,
+    stats,
     stringi,
     stringr,
     tibble,

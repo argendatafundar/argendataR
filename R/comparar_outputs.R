@@ -17,7 +17,9 @@
 #' @export
 #'
 
-comparar_outputs <- function(df, nombre, subtopico, entrega_subtopico = "primera_entrega", pk = NULL, drop_output_drive = T) {
+comparar_outputs <- function(df, nombre, subtopico,
+                             entrega_subtopico = "primera_entrega", pk = NULL,
+                             drop_output_drive = F) {
 
   if (missing(subtopico)) {
 
@@ -51,8 +53,29 @@ comparar_outputs <- function(df, nombre, subtopico, entrega_subtopico = "primera
   joined_df <- dplyr::left_join(output_drive, df, by = pk)
 
   checkeo_cols_values <-  purrr::map(cols_comparacion,
-                                     .f = function(x) {comparar_valores(x, pk = pk,
-                                                                        df = joined_df)})
+                                     .f = function(x,
+                                                   data = joined_df,
+                                                   pk = pk) {
+                                       
+
+                                       class_x <- class(data[[paste0(x, ".x")]])
+                                       
+                                       if (class_x %in% c("numeric", "complex")) {
+                                         
+                                         control_valores_num(x = x, pk = pk, df = data)
+                                         
+                                       } else if (class_x %in% c("character", "logical", "factor")) {
+                                         
+                                         control_valores_nonnum(x = x, pk = pk, df = data)
+                                         
+                                       } else {
+                                         
+                                         print("Controles no implementados para la clase")
+                                         "Controles no implementados para la clase"
+                                         
+                                       }
+                                       
+                                       })
 
   names(checkeo_cols_values) <- cols_comparacion
 
@@ -70,40 +93,104 @@ comparar_outputs <- function(df, nombre, subtopico, entrega_subtopico = "primera
 }
 
 
+#' Title
+#'
+#' @param x vector
+#' @param y vector
+#'
+#' @return cantidad de nas nuevos  
+#' @export
+#'
+nuevos_na <- function(x,y) {
+  
+  n_nuevos_na <- sum(!is.na(x) & is.na(y))
+  n_nuevos_na
+  
+}
+
+
+#' Controles para variables numericas
+#'
+#' @param x raiz del nombre de la columna. Ej. para comparar "valores.x" y "valores.y" se usa "valores"
+#' @param pk primary keys de del dataframe
+#' @param df dataframe
+#'
+#' @return lista con los resultados de los controles
+#' @export
+#'
+#' @description
+#' Compara dos columnas de un dataframe, en general que es producto de un join.
+#' Las columnas a comparar deben estar nombradas al estilo "colA.x" y "colA.y"
+#' 
+#' @details
+#' Los valores devueltos son: 
+#' - nuevos_na: cantidad de nuevos na en la col.y respecto a la col.x
+#' - mean_variaciones_rel: promedio de las variaciones relativas (col.y/col.x)-1
+#' - ks_test: p valor del Kolmogorov-Smirnov Tests entre col.x y col.y 
+#' - mw_test: p valor del Mann-Whitney test entre col.x y col.y 
+#' qqplot_var  = qqplot(col.x, col.y)
+#' - metricas_filas =  dataframe con pk, col.x, col.y, col_var
+#' 
+#' 
+
 control_valores_num <- function(x, pk, df) {
   
   
   col_x <- paste0(x,".x")
   col_y <- paste0(x,".y")
   
-  nuevos_na <- sum(!is.na(df[[col_x]]) & is.na(df[[col_y]]))
   
   class_x <- class(df[[paste0(x, ".x")]])
   
   stopifnot("la variable no es numeric" = class_x %in% c("numeric", "complex"))
-    
-  diferencias_abs <- abs(df[[col_y]] - df[[col_x]])
   
-  variaciones_rel <- round(diferencias_abs/abs(df[[col_x]]), 6)
+  variaciones_rel <- round((df[[col_y]] - df[[col_x]])/df[[col_x]], 6)
   
   
-  df_col <- dplyr::bind_cols(df[,pk],
-                             tidyr::tibble(diferencias_abs,
-                                           variaciones_rel))
+  df_col <- dplyr::bind_cols(df[,c(pk, col_x, col_y)],
+                             tidyr::tibble(variaciones_rel))
+
   
+  df_test <- df[!is.na(df[col_x]) & !is.na(df[col_x]),]
+
+  ks_test <- ks.test(df_test[[col_x]], df_test[[col_y]],
+                     simulate.p.value	= T, B = 1000)
   
-  list("nuevos_na" = nuevos_na,
+  mw_test <- wilcox.test(df_test[[col_x]], df_test[[col_y]], paired = F)
+  
+  qqplot_var <- qqplot(df_test[[col_x]], df_test[[col_y]], plot.it = F)
+  
+  list("nuevos_na" = nuevos_na(df_col[[col_x]], df_col[[col_y]]),
        "mean_variaciones_rel" = mean(variaciones_rel, na.rm = T),
+       "ks_test" = ks_test$p.value,
+       "mw_test" = mw_test$p.value,
+       "qqplot_var" = qqplot_var,
        "metricas_filas" = df_col
   )
     
 
-  
-  
 }
 
 
-comparar_valores <- function(x, pk, df) {
+#' Controles para variables no numericas
+#'
+#' @param x raiz del nombre de la columna. Ej. para comparar "valores.x" y "valores.y" se usa "valores"
+#' @param pk primary keys de del dataframe
+#' @param df dataframe
+#'
+#' @return lista con los resultados de los controles
+#' @export
+#'
+#' @description
+#' Compara dos columnas de un dataframe, en general que es producto de un join.
+#' Las columnas a comparar deben estar nombradas al estilo "colA.x" y "colA.y"
+#' @details
+#' Los valores devueltos son: 
+#' - nuevos_na: cantidad de nuevos na en la col.y respecto a la col.x
+#' - tasa_mismatches: proporcion de mismathces (filas que no coinciden entre col.x y col.y) sobre el total de filas
+#' - metricas_filas =  dataframe con pk, col.x, col.y, coinciden_valores
+
+control_valores_nonnum <- function(x, pk, df) {
 
   col_x <- paste0(x,".x")
   col_y <- paste0(x,".y")
@@ -112,25 +199,7 @@ comparar_valores <- function(x, pk, df) {
 
   class_x <- class(df[[paste0(x, ".x")]])
 
-  if (class_x %in% c("numeric", "complex")) {
-
-    diferencias_abs <- abs(df[[col_y]] - df[[col_x]])
-
-    variaciones_rel <- round(diferencias_abs/abs(df[[col_x]]), 6)
-
-
-    df_col <- dplyr::bind_cols(df[,pk],
-                               tidyr::tibble(diferencias_abs,
-                                variaciones_rel))
-
-
-    list("nuevos_na" = nuevos_na,
-         "mean_variaciones_rel" = mean(variaciones_rel, na.rm = T),
-         "metricas_filas" = df_col
-                  )
-
-
-  } else if (class_x %in% c("character", "logical")) {
+ stopifnot("la variable debe ser logical o character" = class_x %in% c("character", "logical", "factor"))
 
     coinciden_valores <- tidyr::replace_na(df[[col_y]] == df[[col_x]], F) | (is.na(df[[col_y]]) & is.na(df[[col_x]]))
 
@@ -138,20 +207,22 @@ comparar_valores <- function(x, pk, df) {
                                tidyr::tibble(
                                coinciden_valores))
 
-    list("nuevos_na" = nuevos_na,
-         "suma_mismatches" = sum(!coinciden_valores),
+    list("nuevos_na" = nuevos_na(df_col[[col_x]], df_col[[col_y]]),
+         "tasa_mismatches" = sum(!coinciden_valores)/length(coinciden_valores),
          "metricas_filas" = df_col)
-
-  } else {
-
-    "Comparacion no definida para la clase"
-
-  }
-
 
 
 }
 
+
+#' Control de nombres de outputs de argendata
+#'
+#' @param df dataframe nuevo de output
+#' @param output_drive dataframe anterior para la comparacion
+#'
+#' @return lista de resultados
+#' @export
+#'
 
 check_cols <- function(df, output_drive){
   # check columns names
@@ -186,6 +257,15 @@ check_cols <- function(df, output_drive){
   
   columns_check
 }
+
+#' Control de clases de outputs de argendata
+#'
+#' @param df dataframe output nuevo
+#' @param output_drive dataframe output previo
+#'
+#' @return dataframe de control de clases
+#' @export
+#'
 
 check_datatypes <- function(df, output_drive) {
   
@@ -226,3 +306,5 @@ check_datatypes <- function(df, output_drive) {
   df_clases
   
 }
+
+

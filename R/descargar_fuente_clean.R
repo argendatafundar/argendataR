@@ -2,19 +2,20 @@
 #'
 #' @param id_fuente id numerico de la fuente tal cual aparece en la sheet de fuentes. Ver `fuentes_clean()`
 #' @param dir directorio donde se descarga la fuente
+#' @param limpiar_cache  Logical Si es TRUE borra el cache de consultas al drive de argendata. Si es FALSE reutiliza el cache existente.
 #'
 #' @return file la fuente seleccionada de Fuentes/clean descargada en el directorio especificado
 #' @export
 #'
 
-descargar_fuente_clean <- function(id_fuente, dir) {
+descargar_fuente_clean <- function(id_fuente, dir, limpiar_cache = F) {
 
   dir <- gsub("/$", "", dir)
 
   stopifnot("dir debe ser string de un directorio existente" = dir.exists(dir))
 
 
-  df_fuentes <- fuentes_clean()
+  df_fuentes <- fuentes_clean(limpiar_cache = F)
 
   stopifnot("'id_fuente' debe ser numeric con id_fuente o character con codigo de fuente" = is.character(id_fuente) | is.numeric(id_fuente))
 

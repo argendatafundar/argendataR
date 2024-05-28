@@ -10,7 +10,7 @@ comparar_outputs(
   subtopico,
   entrega_subtopico = "primera_entrega",
   pk = NULL,
-  drop_output_drive = T
+  drop_output_drive = F
 )
 }
 \arguments{

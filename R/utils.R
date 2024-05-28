@@ -178,6 +178,13 @@ fuentes_clean_dir <- function() {
 
 }
 
+
+
+#' normalize path con supress warning
+#'
+#' @return normalized path
+#' @keywords internal
+#'
 normalize_path <- function(path) {
   suppressWarnings(normalizePath(path))
 }

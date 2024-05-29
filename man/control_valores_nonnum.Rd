@@ -4,10 +4,10 @@
 \alias{control_valores_nonnum}
 \title{Controles para variables no numericas}
 \usage{
-control_valores_nonnum(x, pk, df)
+control_valores_nonnum(root_name, pk, df)
 }
 \arguments{
-\item{x}{raiz del nombre de la columna. Ej. para comparar "valores.x" y "valores.y" se usa "valores"}
+\item{root_name}{raiz del nombre de la columna. Ej. para comparar "valores.x" y "valores.y" se usa "valores"}
 
 \item{pk}{primary keys de del dataframe}
 

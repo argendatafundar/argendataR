@@ -4,12 +4,14 @@
 \alias{descargar_fuente_clean}
 \title{Descarga fuente version clean}
 \usage{
-descargar_fuente_clean(id_fuente, dir)
+descargar_fuente_clean(id_fuente, dir, limpiar_cache = F)
 }
 \arguments{
 \item{id_fuente}{id numerico de la fuente tal cual aparece en la sheet de fuentes. Ver \code{fuentes_clean()}}
 
 \item{dir}{directorio donde se descarga la fuente}
+
+\item{limpiar_cache}{Logical Si es TRUE borra el cache de consultas al drive de argendata. Si es FALSE reutiliza el cache existente.}
 }
 \value{
 file la fuente seleccionada de Fuentes/clean descargada en el directorio especificado

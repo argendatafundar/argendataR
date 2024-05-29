@@ -11,7 +11,7 @@ comparar_outputs(
   entrega_subtopico = "primera_entrega",
   pk = NULL,
   k_control_num = 3,
-  drop_output_drive = F
+  drop_joined_df = F
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ comparar_outputs(
 
 \item{k_control_num}{numeric cantidad de desvios estandar a partir del cual se seleccionan posibles outliers}
 
-\item{drop_output_drive}{logical Si es FALSE (default) el resultado incluye el left_join de el output cargado en el drive con el df. Si es TRUE no lo incluye.}
+\item{drop_joined_df}{logical Si es FALSE (default) el resultado incluye joined_df: el left_join de el output cargado en el drive con el df. Si es TRUE no lo incluye.}
 }
 \value{
 Devuelve una lista con los resultados de los chequeos realizados

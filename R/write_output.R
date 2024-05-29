@@ -208,7 +208,7 @@ write_output <- function(
   
   ## control 
   
-  if (!is.list(control)) {
+  if (is.list(control)) {
     
     control <- control[names(control) != "output_drive"]
     

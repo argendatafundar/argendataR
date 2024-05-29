@@ -14,6 +14,7 @@ write_output(
   analista = NULL,
   aclaraciones = NULL,
   exportar = TRUE,
+  control = NULL,
   pk = NULL,
   es_serie_tiempo = TRUE,
   columna_indice_tiempo = NULL,
@@ -43,6 +44,8 @@ write_output(
 \item{aclaraciones}{string o null Cadena de texto para asentar aclaraciones pertinentes sobre el output. Default = NULL}
 
 \item{exportar}{logical Si es TRUE escribe un archivo con el path '{output_name}.{extension}' dentro de 'data/\{subtopico\}'. Default = TRUE}
+
+\item{control}{list Lista que resulta de la comparacion entre output anterior y output nuevo. Ver \code{comparar_outputs()}}
 
 \item{pk}{string o null Nombres de columnas que son primary key del output. Si es NULL toma todas las columnas como ok. Default NULL.}
 

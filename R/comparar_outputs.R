@@ -5,6 +5,7 @@
 #' @param subtopico string subtopico al que pertenece el output. Si no esta definido el parametro busca en el ambiente global de la sesion un objeto llamado "subtopico"
 #' @param entrega_subtopico string nombre de la carpeta de entrega donde buscar el output
 #' @param pk string Vector con los nombres de columnas que son primary key del dataframe
+#' @param k_control_num numeric cantidad de desvios estandar a partir del cual se seleccionan posibles outliers
 #' @param drop_output_drive logical Si es FALSE (default) el resultado incluye el left_join de el output cargado en el drive con el df. Si es TRUE no lo incluye.
 #' @description
 #' El resultado es una lista que contiene cuales son las columnas faltantes (cols_faltantes), cuales son las columnas nuevas (cols_nuevas),
@@ -18,7 +19,7 @@
 #'
 
 comparar_outputs <- function(df, nombre, subtopico,
-                             entrega_subtopico = "primera_entrega", pk = NULL,
+                             entrega_subtopico = "primera_entrega", pk = NULL, k_control_num = 3,
                              drop_output_drive = F) {
 
   if (missing(subtopico)) {
@@ -79,7 +80,7 @@ comparar_outputs <- function(df, nombre, subtopico,
 
   names(checkeo_cols_values) <- cols_comparacion
 
-  resultado <- list(unlist(columns_check),
+  resultado <- list("check_columnas" = columns_check,
                     "comparacion_clases" = df_clases,
                     "diferencia_nfilas" =  nrow(df) - nrow(output_drive),
                     "comparacion_cols" = checkeo_cols_values)
@@ -113,6 +114,7 @@ nuevos_na <- function(x,y) {
 #'
 #' @param root_name raiz del nombre de la columna. Ej. para comparar "valores.x" y "valores.y" se usa "valores"
 #' @param pk primary keys de del dataframe
+#' @param k numeric cantidad de desvios estandar a partir del cual se seleccionan posibles outliers
 #' @param df dataframe
 #'
 #' @return lista con los resultados de los controles
@@ -133,17 +135,24 @@ nuevos_na <- function(x,y) {
 #'
 #'
 
-control_valores_num <- function(root_name, pk, df) {
-
+control_valores_num <- function(root_name, pk, k, df) {
+  
 
   col_x <- paste0(root_name,".x")
   col_y <- paste0(root_name,".y")
 
 
   class_x <- class(df[[col_x]])
+  class_y <- class(df[[col_y]])
+  
 
   stopifnot("la variable no es numeric" = class_x %in% c("numeric", "complex"))
-
+  stopifnot("la variable no es numeric" = class_y %in% c("numeric", "complex"))
+  
+  
+  
+  na_count <- nuevos_na(df[[col_x]], df[[col_y]])
+  
   variaciones_rel <- round((df[[col_y]] - df[[col_x]])/df[[col_x]], 6)
 
 
@@ -159,15 +168,29 @@ control_valores_num <- function(root_name, pk, df) {
                      simulate.p.value	= T, B = 1000)
 
   mw_test <- wilcox.test(df_test[[col_x]], df_test[[col_y]], paired = F)
+  
+  
+  df_test <- dplyr::select(df_test, dplyr::all_of(c(pk, col_x, col_y)),
+                      "variaciones_rel", "z_variaciones_rel")
+  
+  df_test <- df_test[abs(df_test[["z_variaciones_rel"]]) > k,]
 
-  qqplot_var <- qqplot(df_test[[col_x]], df_test[[col_y]], plot.it = F)
+  vars_plot <- ggplot2::ggplot() +
+      ggplot2::geom_point(ggplot2::aes(x = df[[col_x]], y = df[[col_y]])) +
+      ggplot2::geom_smooth(ggplot2::aes(x = df[[col_x]], y = df[[col_y]])) +
+      ggplot2::xlab(col_x) + ggplot2::ylab(col_y) +
+      ggplot2::theme_minimal()
+    
+  
 
-  list("nuevos_na" = nuevos_na(df[[col_x]], df[[col_y]]),
+  list("nuevos_na" = na_count,
        "mean_variaciones_rel" = mean_variaciones_rel,
        "ks_test" = ks_test$p.value,
        "mw_test" = mw_test$p.value,
-       "qqplot_var" = qqplot_var,
-       "metricas_filas" = dplyr::select(df, dplyr::all_of(c(pk, col_x, col_y)), "variaciones_rel", "z_variaciones_rel")
+       "plot" = vars_plot,
+       "filas_nuevos_na" = df[!is.na(df[[col_x]]) & is.na(df[[col_y]]),],
+       "filas_posibles_outliers" = df_test
+
   )
 
 
@@ -193,23 +216,29 @@ control_valores_num <- function(root_name, pk, df) {
 #' - metricas_filas =  dataframe con pk, col.x, col.y, coinciden_valores
 
 control_valores_nonnum <- function(root_name, pk, df) {
+  
   col_x <- paste0(root_name, ".x")
   col_y <- paste0(root_name, ".y")
   
-  nuevos_na <- sum(!is.na(df[[col_x]]) & is.na(df[[col_y]]))
   
   class_x <- class(df[[col_x]])
   
   stopifnot("la variable debe ser logical o character" = class_x %in% c("character", "logical", "factor"))
   
+  na_count <- nuevos_na(df[[col_x]], df[[col_y]])
+  
   coinciden_valores <- tidyr::replace_na(df[[col_y]] == df[[col_x]], F) | (is.na(df[[col_y]]) & is.na(df[[col_x]]))
   
   df$coinciden_valores <- coinciden_valores
   
+  df <- df[isFALSE(df[["coinciden_valores"]]),]
+  
+  df <-  dplyr::select(df, dplyr::all_of(c(pk, col_x, col_y)), "coinciden_valores")
+  
   list(
-    "nuevos_na" = nuevos_na(df[[col_x]], df[[col_y]]),
+    "nuevos_na" = na_count,
     "tasa_mismatches" = sum(!coinciden_valores) / length(coinciden_valores),
-    "metricas_filas" = dplyr::select(df, dplyr::all_of(c(pk, col_x, col_y)), "coinciden_valores")
+    "filas_mismatches" = df
   )
   
   
@@ -253,7 +282,7 @@ check_cols <- function(df, output_drive){
     warning(msg_cols_nuevas)
   }
 
-  columns_check <- list("cols_previas" = cols_previas,
+  columns_check <- list("cols_nuevas" = cols_nuevas,
                         "cols_faltantes" = cols_faltantes)
 
   columns_check

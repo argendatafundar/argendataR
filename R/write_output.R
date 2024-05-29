@@ -22,7 +22,7 @@
 #' @param unidades list o null Lista nombrada con las unidades en que estan expresadas las columnas. Los nombres de la lista deben coincidir con nombres de columnas de 'data'. Ejemplo: list('gini' = 'indice', 'pbipcppp' = 'parity purchase power', 'population' = 'millones de personas'). Si es NULL (default), la funcion busca la columna 'unidad' en 'data' y genera una lista tomando las combinaciones unicas de 'unidad' e 'indicador' en 'data'.
 #' @param classes list o null Si es null (default) la funcion genera una lista con las clases y nombres de columnas en data. Si es una lista los nombres de la lista deben coincidir con valores en la columna 'indicador' en 'data' y los valores deben ser: 'logical', 'character', 'double', 'interger' o 'date'.
 #' @param directorio string Ruta al directorio desde el cual cargar el archivo. Si es NULL toma tempdir()
-#'
+#' @param control list Lista que resulta de la comparacion entre output anterior y output nuevo. Ver `comparar_outputs()`
 #' @returns Escribe localmente un json con la data y metadata definida usando '{output_name}.json' como path. Opcionalmente tambien escribe un csv '{output_name}.csv'
 #' @export
 #'
@@ -38,6 +38,7 @@ write_output <- function(
     analista = NULL,
     aclaraciones = NULL,
     exportar = TRUE,
+    control = NULL, 
     pk = NULL,
     es_serie_tiempo = TRUE,
     columna_indice_tiempo = NULL,
@@ -130,14 +131,17 @@ write_output <- function(
 
   ## columna_geo_referencia
   if (!is.null(columna_geo_referencia)) {
-    stopifnot("'columna_geo_referencia' no hallada en 'data'. Debe ser uno de   'iso3', 'cod_fundar', 'cod_pcia', 'cod_depto', 'eph_codagl', 'cod_aglo', 'cod_agl'" = columna_geo_referencia %in% columnas & length(columna_geo_referencia) == 1 & columna_geo_referencia %in% c("iso3", "cod_fundar", "cod_pcia", "cod_depto", "eph_codagl", "cod_aglo", "cod_agl"))
+    
+    stopifnot("'columna_geo_referencia' no hallada en 'data'" = is.character(columna_geo_referencia) & columna_geo_referencia %in% columnas & length(columna_geo_referencia) == 1)
+    
+    stopifnot("'columna_geo_referencia' no hallada en 'data'. Debe ser uno de   'iso3', 'cod_fundar', 'prov_cod', 'cod_pcia', 'cod_depto', 'eph_codagl', 'cod_aglo', 'cod_agl'" = columna_geo_referencia %in% c("iso3", "prov_cod", "cod_fundar", "cod_pcia", "cod_depto", "eph_codagl", "cod_aglo", "cod_agl"))
   }
 
   ## nullables
   stopifnot("'nullables' debe ser un vector logico de largo 1 o vector character con nombres de columnas en 'data'." = (is.logical(nullables) & length(nullables) == 1 ) | (is.character(nullables) & length(nullables) <= length(columnas) & all(nullables %in% columnas) ) )
 
   if (is.logical(nullables)) {
-    if(nullables) {
+    if (nullables) {
       nullables <- colnames(data)
     } else {
       nullables <- ""
@@ -149,7 +153,7 @@ write_output <- function(
 
   ## etiquetas_indicadores
 
-  if(is.list(etiquetas_indicadores)) {
+  if (is.list(etiquetas_indicadores)) {
     stopifnot("uno o mas nombres de 'etiquetas_indicadores' no coinciden con columnas en 'data.'" = all(names(etiquetas_indicadores) %in% columnas))
     stopifnot("hay etiquetas invalidas. Deben ser character no vacios." = all(sapply(etiquetas_indicadores, function(x) {is.character(x) & x != ""})))
   }  else if (is.null(etiquetas_indicadores)) {
@@ -163,7 +167,7 @@ write_output <- function(
 
 
   ## unidades
-  if(is.list(unidades)) {
+  if (is.list(unidades)) {
     stopifnot("uno o mas nombres de 'unidades' no coinciden con columnas en data." = all(names(unidades) %in% columnas))
     stopifnot("hay 'unidades' invalidas. Deben ser character no vacios." = all(sapply(unidades, function(x) {is.character(x) & x != ""})))
   } else if (is.null(unidades)) {
@@ -176,7 +180,7 @@ write_output <- function(
   }
 
   ## classes
-  if(is.list(classes)) {
+  if (is.list(classes)) {
 
     stopifnot("uno o mas nombres de 'classes' no coinciden con valores en `data['indicador']`" = all(names(classes) %in% unique(data$indicador)))
     stopifnot("hay 'classes' invalidas. Deben ser uno de: 'logical', 'character', 'double', 'interger', 'date'" = all(sapply(classes, function(x) {is.character(x) & x %in% c("double","integer", "character", "logical", "date")})))
@@ -194,13 +198,26 @@ write_output <- function(
 
   ## pk
 
-  if(is.character(pk)) {
+  if (is.character(pk)) {
     stopifnot("Valores de 'pk' deben coincidir con nombres de columna en 'data'. Hay uno o mas valores que no coinciden" = all(pk %in% colnames(data)))
   } else if (is.null(pk)) {
     pk <- colnames(data)
   } else {
     stop("'pk' deber ser string con los nombres de columnas correspondientes o null")
   }
+  
+  ## control 
+  
+  if (!is.list(control)) {
+    
+    control <- control[names(control) != "output_drive"]
+    
+  } else {
+    
+    control <- ""
+    
+  }
+  
 
 
 
@@ -213,6 +230,7 @@ write_output <- function(
     analista = analista,
     fuentes = fuentes,
     aclaraciones = aclaraciones,
+    control = control,
     exportar = exportar,
     pk = pk,
     es_serie_tiempo = es_serie_tiempo,

@@ -55,18 +55,18 @@ comparar_outputs <- function(df, nombre, subtopico,
   checkeo_cols_values <-  purrr::map(cols_comparacion,
                                      .f = function(x,
                                                    data = joined_df,
-                                                   pk = pk) {
+                                                   pks = pk) {
 
 
                                        class_x <- class(data[[paste0(x, ".x")]])
 
                                        if (class_x %in% c("numeric", "complex")) {
 
-                                         control_valores_num(root_name = x, primarykeys = pk, df = data)
+                                         control_valores_num(root_name = x, pk = pks, df = data)
 
                                        } else if (class_x %in% c("character", "logical", "factor")) {
-
-                                         control_valores_nonnum(root_name = x, primarykeys = pk, df = data)
+                                         
+                                         control_valores_nonnum(root_name = x, pk = pks, df = data)
 
                                        } else {
 
@@ -112,7 +112,7 @@ nuevos_na <- function(x,y) {
 #' Controles para variables numericas
 #'
 #' @param root_name raiz del nombre de la columna. Ej. para comparar "valores.x" y "valores.y" se usa "valores"
-#' @param primarykeys primary keys de del dataframe
+#' @param pk primary keys de del dataframe
 #' @param df dataframe
 #'
 #' @return lista con los resultados de los controles
@@ -129,11 +129,11 @@ nuevos_na <- function(x,y) {
 #' - ks_test: p valor del Kolmogorov-Smirnov Tests entre col.x y col.y
 #' - mw_test: p valor del Mann-Whitney test entre col.x y col.y
 #' qqplot_var  = qqplot(col.x, col.y)
-#' - metricas_filas =  dataframe con pk, col.x, col.y, col_var
+#' - metricas_filas =  dataframe con pk, col.x, col.y, col_var, variaciones_rel (col.y/col.x -1 ) y varntile (percentil de variaciones_rel)
 #'
 #'
 
-control_valores_num <- function(root_name, primarykeys, df) {
+control_valores_num <- function(root_name, pk, df) {
 
 
   col_x <- paste0(root_name,".x")
@@ -149,10 +149,9 @@ control_valores_num <- function(root_name, primarykeys, df) {
 
   df$variaciones_rel <- variaciones_rel
 
-#
-#   df_col <- dplyr::bind_cols(df[,c(pk, col_x, col_y)],
-#                              tidyr::tibble(variaciones_rel))
-
+  mean_variaciones_rel <- mean(variaciones_rel, na.rm = T)
+  
+  df$z_variaciones_rel <- (variaciones_rel - mean_variaciones_rel) / sd(variaciones_rel, na.rm = T)
 
   df_test <- df[!is.na(df[col_x]) & !is.na(df[col_x]),]
 
@@ -164,11 +163,11 @@ control_valores_num <- function(root_name, primarykeys, df) {
   qqplot_var <- qqplot(df_test[[col_x]], df_test[[col_y]], plot.it = F)
 
   list("nuevos_na" = nuevos_na(df[[col_x]], df[[col_y]]),
-       "mean_variaciones_rel" = mean(variaciones_rel, na.rm = T),
+       "mean_variaciones_rel" = mean_variaciones_rel,
        "ks_test" = ks_test$p.value,
        "mw_test" = mw_test$p.value,
-       "qqplot_var" = qqplot_var#,
-       # "metricas_filas" = dplyr::select(df, dplyr::all_of(c(primarykeys, col_x, col_y)), "variaciones_rel")
+       "qqplot_var" = qqplot_var,
+       "metricas_filas" = dplyr::select(df, dplyr::all_of(c(pk, col_x, col_y)), "variaciones_rel", "z_variaciones_rel")
   )
 
 
@@ -178,7 +177,7 @@ control_valores_num <- function(root_name, primarykeys, df) {
 #' Controles para variables no numericas
 #'
 #' @param root_name raiz del nombre de la columna. Ej. para comparar "valores.x" y "valores.y" se usa "valores"
-#' @param primarykeys primary keys de del dataframe
+#' @param pk primary keys de del dataframe
 #' @param df dataframe
 #'
 #' @return lista con los resultados de los controles
@@ -193,27 +192,27 @@ control_valores_num <- function(root_name, primarykeys, df) {
 #' - tasa_mismatches: proporcion de mismathces (filas que no coinciden entre col.x y col.y) sobre el total de filas
 #' - metricas_filas =  dataframe con pk, col.x, col.y, coinciden_valores
 
-control_valores_nonnum <- function(root_name, primarykeys, df) {
-
-  col_x <- paste0(root_name,".x")
-  col_y <- paste0(root_name,".y")
-
+control_valores_nonnum <- function(root_name, pk, df) {
+  col_x <- paste0(root_name, ".x")
+  col_y <- paste0(root_name, ".y")
+  
   nuevos_na <- sum(!is.na(df[[col_x]]) & is.na(df[[col_y]]))
-
+  
   class_x <- class(df[[col_x]])
-
- stopifnot("la variable debe ser logical o character" = class_x %in% c("character", "logical", "factor"))
-
-    coinciden_valores <- tidyr::replace_na(df[[col_y]] == df[[col_x]], F) | (is.na(df[[col_y]]) & is.na(df[[col_x]]))
-
-    df$coinciden_valores <- coinciden_valores
-
-    list("nuevos_na" = nuevos_na(df[[col_x]], df[[col_y]]),
-         "tasa_mismatches" = sum(!coinciden_valores)/length(coinciden_valores)#,
-         # "metricas_filas" = dplyr::select(df, dplyr::all_of(c(primarykeys, col_x, col_y)), "coinciden_valores")
-         )
-
-
+  
+  stopifnot("la variable debe ser logical o character" = class_x %in% c("character", "logical", "factor"))
+  
+  coinciden_valores <- tidyr::replace_na(df[[col_y]] == df[[col_x]], F) | (is.na(df[[col_y]]) & is.na(df[[col_x]]))
+  
+  df$coinciden_valores <- coinciden_valores
+  
+  list(
+    "nuevos_na" = nuevos_na(df[[col_x]], df[[col_y]]),
+    "tasa_mismatches" = sum(!coinciden_valores) / length(coinciden_valores),
+    "metricas_filas" = dplyr::select(df, dplyr::all_of(c(pk, col_x, col_y)), "coinciden_valores")
+  )
+  
+  
 }
 
 

@@ -160,26 +160,26 @@ control_valores_num <- function(root_name, pk, k, df) {
 
   df$variaciones_rel <- variaciones_rel
 
-  mean_variaciones_rel <- mean(variaciones_rel, na.rm = T)
+  mean_variaciones_rel <- mean(abs(variaciones_rel), na.rm = T)
   
-  df$z_variaciones_rel <- (variaciones_rel - mean_variaciones_rel) / sd(variaciones_rel, na.rm = T)
+  df$zscaled_variaciones_rel <- as.vector(scale(df$variaciones_rel))
+  
 
-  df_test <- df[!is.na(df[col_x]) & !is.na(df[col_x]),]
+  df_test <- df[!is.na(df[col_x]) & !is.na(df[col_y]),]
 
-  ks_test <- ks.test(df_test[[col_x]], df_test[[col_y]],
-                     simulate.p.value	= T, B = 1000)
+  ks_test <- ks.test(df_test[[col_x]], df_test[[col_y]])
 
   mw_test <- wilcox.test(df_test[[col_x]], df_test[[col_y]], paired = F)
   
   
   df_test <- dplyr::select(df_test, dplyr::all_of(c(pk, col_x, col_y)),
-                      "variaciones_rel", "z_variaciones_rel")
+                      "variaciones_rel", "zscaled_variaciones_rel")
   
-  df_test <- df_test[abs(df_test[["z_variaciones_rel"]]) > k & !is.na(df_test[["z_variaciones_rel"]]),]
+  df_test <- df_test[abs(df_test[["zscaled_variaciones_rel"]]) > k & !is.na(df_test[["zscaled_variaciones_rel"]]),]
 
   vars_plot <- ggplot2::ggplot() +
-      ggplot2::geom_point(ggplot2::aes(x = df[[col_x]], y = df[[col_y]])) +
-      ggplot2::geom_smooth(ggplot2::aes(x = df[[col_x]], y = df[[col_y]])) +
+      ggplot2::geom_point(ggplot2::aes(x = df[[col_x]], y = df[[col_y]]), shape = 1) +
+      ggplot2::geom_abline(slope = 1, color = "red", alpha = .7) +
       ggplot2::xlab(col_x) + ggplot2::ylab(col_y) +
       ggplot2::theme_minimal()
     
@@ -189,6 +189,7 @@ control_valores_num <- function(root_name, pk, k, df) {
        "mean_variaciones_rel" = mean_variaciones_rel,
        "ks_test" = ks_test$p.value,
        "mw_test" = mw_test$p.value,
+       "tasa_posibles_outliers" = nrow(df_test)/nrow(df),
        "plot" = vars_plot,
        "filas_nuevos_na" = df[!is.na(df[[col_x]]) & is.na(df[[col_y]]),],
        "filas_posibles_outliers" = df_test

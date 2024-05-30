@@ -167,9 +167,9 @@ control_valores_num <- function(root_name, pk, k, df) {
 
   df_test <- df[!is.na(df[col_x]) & !is.na(df[col_y]),]
 
-  ks_test <- ks.test(df_test[[col_x]], df_test[[col_y]])
+  ks_test <- stats::ks.test(df_test[[col_x]], df_test[[col_y]])
 
-  mw_test <- wilcox.test(df_test[[col_x]], df_test[[col_y]], paired = F)
+  mw_test <- stats::wilcox.test(df_test[[col_x]], df_test[[col_y]], paired = F)
   
   
   df_test <- dplyr::select(df_test, dplyr::all_of(c(pk, col_x, col_y)),

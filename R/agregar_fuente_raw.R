@@ -117,7 +117,8 @@ agregar_fuente_raw <- function(
     stop("No se encontro el archivo raw en el directorio. Guardarlo en la ubicacion antes de continuar")
   }
 
-  if (!file.exists(paste0("scripts/descarga_fuentes/", inputs$script))) {
+  if (!file.exists(paste0("scripts/descarga_fuentes/", inputs$script)) |
+      !file.exists(inputs$script)) {
     stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
   }
 

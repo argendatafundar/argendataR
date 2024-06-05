@@ -1,7 +1,7 @@
 Type: Package
 Package: argendataR
 Title: Caja de herramientas para Argendata
-Version: 0.0.9036
+Version: 0.0.9039
 Author: Fundar
 Maintainer: Juan Gabriel Juara <jgjuara@fund.ar>
 Description: Paquete de herramientas para el flujo de outputs Argendata.
@@ -9,6 +9,7 @@ License: CC BY 4.0
 Imports: 
     dplyr,
     fs,
+    ggplot2,
     glue,
     googledrive,
     googlesheets4,
@@ -23,7 +24,6 @@ Imports:
     rlang,
     rstudioapi,
     rvest,
-    stats,
     stringi,
     stringr,
     tibble,

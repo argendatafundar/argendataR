@@ -4,12 +4,14 @@
 \alias{control_valores_num}
 \title{Controles para variables numericas}
 \usage{
-control_valores_num(x, pk, df)
+control_valores_num(root_name, pk, k, df)
 }
 \arguments{
-\item{x}{raiz del nombre de la columna. Ej. para comparar "valores.x" y "valores.y" se usa "valores"}
+\item{root_name}{raiz del nombre de la columna. Ej. para comparar "valores.x" y "valores.y" se usa "valores"}
 
 \item{pk}{primary keys de del dataframe}
+
+\item{k}{numeric cantidad de desvios estandar a partir del cual se seleccionan posibles outliers}
 
 \item{df}{dataframe}
 }
@@ -28,6 +30,6 @@ Los valores devueltos son:
 \item ks_test: p valor del Kolmogorov-Smirnov Tests entre col.x y col.y
 \item mw_test: p valor del Mann-Whitney test entre col.x y col.y
 qqplot_var  = qqplot(col.x, col.y)
-\item metricas_filas =  dataframe con pk, col.x, col.y, col_var
+\item metricas_filas =  dataframe con pk, col.x, col.y, col_var, variaciones_rel (col.y/col.x -1 ) y varntile (percentil de variaciones_rel)
 }
 }

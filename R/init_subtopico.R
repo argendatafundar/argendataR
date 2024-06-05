@@ -189,8 +189,9 @@ subtopico_init <- init_subtopico <- function(subtopico, scripts = T, md = T, fue
                       )
 
                     })
+                    
                     cat(
-                      "  **Fuentes:**",
+                      "\n  **Fuentes:**",
                       file = path_md,
                       sep = "\n",
                       append = T

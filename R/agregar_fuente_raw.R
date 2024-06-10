@@ -65,11 +65,7 @@ agregar_fuente_raw <- function(
     fecha_descarga <- as.Date(fecha_descarga)
     stopifnot("param 'fecha_descarga' debe ser date o string parseable como fecha o null" = !is.na(fecha_descarga) & length(fecha_descarga) != 0)
 
-  } else if (is.null(fecha_descarga)) {
-
-    fecha_descarga <- Sys.time()
-
-  } else {
+  } else if (!is.null(fecha_descarga)) {
 
     stop("param 'fecha_descarga' debe ser fecha o null")
 

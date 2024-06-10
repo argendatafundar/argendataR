@@ -70,11 +70,7 @@ actualizar_fuente_raw <- function(id_fuente,
     fecha_actualizar <- as.Date(fecha_actualizar)
     stopifnot("param 'fecha_actualizar' debe ser date o string parseable como fecha o null" = !is.na(fecha_actualizar))
 
-  } else if (is.null(fecha_actualizar)) {
-    
-    fecha_actualizar <- Sys.Date() + months(1, abbreviate = F)
-    
-  } else {
+  } else if (!is.null(fecha_actualizar)) {
 
     stop("param 'fecha_actualizar' debe ser fecha o null")
 

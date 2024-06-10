@@ -75,6 +75,23 @@ actualizar_fuente_clean <- function(id_fuente_clean,
 
 
   inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
+  
+  
+  df_fuentes <- df_fuentes[df_fuentes$id_fuente_clean  == id_fuente_clean,]
+  
+  
+  
+  for (i in names(inputs)) {
+    
+    inputs[[i]] <- coerce_to(inputs[[i]], df_fuentes[[which(df_fuentes$id_fuente_clean == id_fuente_clean), i]])
+    
+    df_fuentes[[which(df_fuentes$id_fuente_clean  == id_fuente_clean), i]] <-  inputs[[i]]
+    
+  }
+  
+  print(df_fuentes)
+  
+  
 
   if (!isFALSE(prompt) & length(inputs) > 1) {
 
@@ -86,17 +103,6 @@ actualizar_fuente_clean <- function(id_fuente_clean,
   }
 
 
-  df_fuentes <- df_fuentes[df_fuentes$id_fuente_clean  == id_fuente_clean,]
-  
-  
-
-  for (i in names(inputs)) {
-    
-    inputs[[i]] <- coerce_to(inputs[[i]], df_fuentes[[which(df_fuentes$id_fuente_clean == id_fuente_clean), i]])
-
-    df_fuentes[[which(df_fuentes$id_fuente_clean  == id_fuente_clean), i]] <-  inputs[[i]]
-
-  }
 
 
   if (!file.exists(normalize_path(paste(directorio, df_fuentes$path_clean, sep = "/")))) {
@@ -107,7 +113,6 @@ actualizar_fuente_clean <- function(id_fuente_clean,
   }
 
 
-  print(df_fuentes)
 
   googledrive::drive_upload(media = normalize_path(glue::glue("{directorio}/{df_fuentes$path_clean}")),
                             path = googledrive::as_id(fuentes_clean_dir()$id),

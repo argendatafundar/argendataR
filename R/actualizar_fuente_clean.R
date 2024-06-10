@@ -89,10 +89,11 @@ actualizar_fuente_clean <- function(id_fuente_clean,
   }
 
 
-
-
   if (!file.exists(normalize_path(paste(directorio, df_fuentes$path_clean, sep = "/")))) {
-    stop("No se encontro el archivo clean, guardarlo en la ubicacion antes de continuar")
+    warning("No existe el archivo fuente en la ruta especificada")
+    warning(normalize_path(paste(directorio, df_fuentes$path_clean, sep = "/")))
+    stop()
+    
   }
 
 

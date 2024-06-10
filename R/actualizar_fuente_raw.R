@@ -84,7 +84,7 @@ actualizar_fuente_raw <- function(id_fuente,
 
 
   inputs <- list(
-    "id_fuente" = id_fuente,
+    # "id_fuente" = id_fuente,
     "url" = url ,
     "nombre" = nombre ,
     "institucion" = institucion,
@@ -115,7 +115,7 @@ actualizar_fuente_raw <- function(id_fuente,
 
   for (i in names(inputs)) {
     
-    df_fuentes[df_fuentes$id_fuente == inputs$id_fuente , i] <-  as.character(inputs[[i]])
+    df_fuentes[df_fuentes$id_fuente == id_fuente , i] <-  as.character(inputs[[i]])
 
   }
 

@@ -116,7 +116,7 @@ actualizar_fuente_raw <- function(id_fuente,
     
     inputs[[i]] <- coerce_to(inputs[[i]], df_fuentes[[which(df_fuentes$id_fuente == id_fuente), i]])
     
-    df_fuentes[[df_fuentes$id_fuente == id_fuente , i]] <- inputs[[i]]
+    df_fuentes[[which(df_fuentes$id_fuente == id_fuente), i]] <- inputs[[i]]
 
   }
   

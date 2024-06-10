@@ -84,7 +84,7 @@ actualizar_fuente_clean <- function(id_fuente_clean,
     
     inputs[[i]] <- coerce_to(inputs[[i]], df_fuentes[[which(df_fuentes$id_fuente_clean == id_fuente_clean), i]])
 
-    df_fuentes[df_fuentes$id_fuente_clean  == id_fuente_clean, i] <-  inputs[[i]]
+    df_fuentes[[which(df_fuentes$id_fuente_clean  == id_fuente_clean), i]] <-  inputs[[i]]
 
   }
 

@@ -209,12 +209,16 @@ write_output <- function(
   ## control
 
   if (is.list(control)) {
+    
+    control$comparacion_cols <- lapply(control$comparacion_cols,
+                                           function(x) {x[names(x) != "plot"]})
+    
 
-    control <- control[names(control) != "output_drive"]
+    control <- control[names(control) %in% c("output_drive", "")]
 
   } else {
 
-    control <- ""
+    control <- "no se incluyeron controles"
 
   }
 

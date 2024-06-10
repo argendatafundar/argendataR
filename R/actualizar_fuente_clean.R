@@ -80,7 +80,7 @@ actualizar_fuente_clean <- function(id_fuente_clean,
 
   for (i in names(inputs)) {
 
-    df_fuentes[df_fuentes$id_fuente_clean  == inputs$id_fuente_clean, i] <-  inputs[[i]]
+    df_fuentes[df_fuentes$id_fuente_clean  == inputs$id_fuente_clean, i] <-  as.character(inputs[[i]])
 
   }
 

@@ -48,11 +48,12 @@ agregar_fuente_raw <- function(
 
     stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o null" = !is.na(fecha_actualizar) & length(fecha_actualizar) != 0)
 
-  } else if (is.null(fecha_actualizar)) {
-
-    fecha_actualizar <- "s/d"
-
-  } else {
+  } else if (is.null(fecha_actualizar)) { 
+    
+    fecha_actualizar <- Sys.Date() + months(1, abbreviate = F)
+    
+    
+  } else { 
 
     stop("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o null")
   }
@@ -64,11 +65,7 @@ agregar_fuente_raw <- function(
     fecha_descarga <- as.Date(fecha_descarga)
     stopifnot("param 'fecha_descarga' debe ser date o string parseable como fecha o null" = !is.na(fecha_descarga) & length(fecha_descarga) != 0)
 
-  } else if (is.null(fecha_descarga)) {
-
-    fecha_descarga <- Sys.time()
-
-  } else {
+  } else if (!is.null(fecha_descarga)) {
 
     stop("param 'fecha_descarga' debe ser fecha o null")
 
@@ -117,7 +114,8 @@ agregar_fuente_raw <- function(
     stop("No se encontro el archivo raw en el directorio. Guardarlo en la ubicacion antes de continuar")
   }
 
-  if (!file.exists(paste0("scripts/descarga_fuentes/", inputs$script))) {
+  if (!file.exists(paste0("scripts/descarga_fuentes/", inputs$script)) &
+      !file.exists(inputs$script)) {
     stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
   }
 
@@ -158,6 +156,7 @@ agregar_fuente_raw <- function(
 
 
   if (path_raw %in% fuentes_raw_dir$tree$name) {
+    
     print(df_fuentes[df_fuentes$path_raw == path_raw, ])
     stop("El archivo ya existe en el drive. Cambiar el nombre del archivo o borrar el archivo existente")
 

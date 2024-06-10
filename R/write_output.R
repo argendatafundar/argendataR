@@ -38,7 +38,7 @@ write_output <- function(
     analista = NULL,
     aclaraciones = NULL,
     exportar = TRUE,
-    control = NULL, 
+    control = NULL,
     pk = NULL,
     es_serie_tiempo = TRUE,
     columna_indice_tiempo = NULL,
@@ -131,9 +131,9 @@ write_output <- function(
 
   ## columna_geo_referencia
   if (!is.null(columna_geo_referencia)) {
-    
+
     stopifnot("'columna_geo_referencia' no hallada en 'data'" = is.character(columna_geo_referencia) & columna_geo_referencia %in% columnas & length(columna_geo_referencia) == 1)
-    
+
     stopifnot("'columna_geo_referencia' no hallada en 'data'. Debe ser uno de   'iso3', 'cod_fundar', 'prov_cod', 'cod_pcia', 'cod_depto', 'eph_codagl', 'cod_aglo', 'cod_agl'" = columna_geo_referencia %in% c("iso3", "prov_cod", "cod_fundar", "cod_pcia", "cod_depto", "eph_codagl", "cod_aglo", "cod_agl"))
   }
 
@@ -205,19 +205,23 @@ write_output <- function(
   } else {
     stop("'pk' deber ser string con los nombres de columnas correspondientes o null")
   }
-  
-  ## control 
-  
+
+  ## control
+
   if (is.list(control)) {
     
-    control <- control[names(control) != "output_drive"]
+    control$comparacion_cols <- lapply(control$comparacion_cols,
+                                           function(x) {x[names(x) != "plot"]})
     
+
+    control <- control[names(control) %in% c("output_drive", "")]
+
   } else {
-    
-    control <- ""
-    
+
+    control <- "no se incluyeron controles"
+
   }
-  
+
 
 
 
@@ -257,8 +261,12 @@ write_output <- function(
                        quote = "all",
                        escape = "none",
                        na = "")
+
+    message(glue::glue("Se escribio el archivo: {directorio}/{output_name}.{extension}"))
   }
 
   jsonlite::write_json(x = inputs, path = normalize_path(glue::glue("{directorio}/{output_name}.json")))
+
+  message(glue::glue("Se escribio el archivo: {directorio}/{output_name}.json"))
 
 }

@@ -16,7 +16,8 @@
 #' @param path_raw string Nombre del archivo de la fuente tal cual fue guardado.
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl
 #' @param api logical TRUE o FALSE indicando si la fuente es una api o no.
-#' @param directorio string Ruta al directorio desde el cual cargar el archivp
+#' @param directorio string Ruta al directorio desde el cual cargar el archivo
+#' @param prompt logical Si es TRUE (default) pide confirmacion de los cambios.
 #'
 #' @export
 #'
@@ -32,7 +33,8 @@ actualizar_fuente_raw <- function(id_fuente,
                                   path_raw = NULL,
                                   script = NULL,
                                   api = NULL,
-                                  directorio = NULL) {
+                                  directorio = NULL,
+                                  prompt = TRUE) {
 
   limpiar_temps()
 
@@ -45,7 +47,7 @@ actualizar_fuente_raw <- function(id_fuente,
 
   stopifnot("'id_fuente' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente) | is.character(id_fuente))
 
-  df_fuentes <- fuentes_raw()
+  df_fuentes <- fuentes_raw(limpiar_cache  = T)
 
   if (is.numeric(id_fuente)) {
 
@@ -68,11 +70,7 @@ actualizar_fuente_raw <- function(id_fuente,
     fecha_actualizar <- as.Date(fecha_actualizar)
     stopifnot("param 'fecha_actualizar' debe ser date o string parseable como fecha o null" = !is.na(fecha_actualizar))
 
-  } else if (is.null(fecha_actualizar)) {
-
-    fecha_actualizar <- "s/d"
-
-  } else {
+  } else if (!is.null(fecha_actualizar)) {
 
     stop("param 'fecha_actualizar' debe ser fecha o null")
 
@@ -80,9 +78,15 @@ actualizar_fuente_raw <- function(id_fuente,
 
 
 
-
+ if (!is.null(script)) {
+    if (!file.exists(paste0("scripts/descarga_fuentes/", script)) &
+        !file.exists(script)) {
+      stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
+    }
+ }
+  
   inputs <- list(
-    "id_fuente" = id_fuente,
+    # "id_fuente" = id_fuente,
     "url" = url ,
     "nombre" = nombre ,
     "institucion" = institucion,
@@ -95,20 +99,46 @@ actualizar_fuente_raw <- function(id_fuente,
   )
 
   inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
-
-
+  
   df_fuentes <- df_fuentes[df_fuentes$id_fuente == id_fuente,]
-
+  
+  
+  
   for (i in names(inputs)) {
+    
+    
+    inputs[[i]] <- coerce_to(inputs[[i]],
+                             df_fuentes[[which(df_fuentes$id_fuente == id_fuente), i]])
+    
+    df_fuentes[[which(df_fuentes$id_fuente == id_fuente), i]] <- inputs[[i]]
+    
+  }
+  
+  
+    print(df_fuentes)
 
-    df_fuentes[df_fuentes$id_fuente == inputs$id_fuente , i] <-  inputs[i]
+
+  if (!isFALSE(prompt) & length(inputs) > 1) {
+
+    message("Va a sobreescribir datos de registro de la fuente.")
+    ok <- readline(prompt = "Continuar con la actualizacion de la fuente raw? Y/N")
+
+    stopifnot("Actualizacion cancelada." = tolower(ok) == "y")
 
   }
 
-  stopifnot("No existe el archivo fuente en la ruta especificada" = file.exists(normalize_path(glue::glue("{directorio}/{df_fuentes$path_raw}"))))
+  
+
+  # control path raw
+  
+  if (!file.exists(normalize_path(glue::glue("{directorio}/{df_fuentes$path_raw}")))) {
+    warning("No existe el archivo fuente en la ruta especificada")
+    warning(normalize_path(glue::glue("{directorio}/{df_fuentes$path_raw}")))
+    stop()
+    
+  }
 
 
-  print( df_fuentes[df_fuentes$id_fuente == inputs$id_fuente ,])
 
   googledrive::drive_upload(media = normalize_path(glue::glue("{directorio}/{df_fuentes$path_raw}")),
                             path = googledrive::as_id(fuentes_raw_dir()$id),
@@ -118,7 +148,10 @@ actualizar_fuente_raw <- function(id_fuente,
   df_fuentes %>%
     googlesheets4::range_write(col_names = F,
                                ss = fuentes_raw_sheet_id(),
-                               range = sprintf("A%d:K%d", id_fuente+1,id_fuente+1))
+                               range = sprintf("A%d:L%d", id_fuente + 1, id_fuente + 1))
 
 
-  }
+}
+
+
+

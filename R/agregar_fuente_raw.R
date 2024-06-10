@@ -48,11 +48,7 @@ agregar_fuente_raw <- function(
 
     stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o null" = !is.na(fecha_actualizar) & length(fecha_actualizar) != 0)
 
-  } else if (is.null(fecha_actualizar)) {
-
-    fecha_actualizar <- "s/d"
-
-  } else {
+  } else if (!is.null(fecha_actualizar)) {
 
     stop("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o null")
   }

@@ -50,11 +50,11 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
 
   stopifnot("No se admiten parametros con string vacios. Eg: ''" = !any(sapply(inputs, function(x) {as.character(x) == ''})))
 
-  df_fuentes_raw <- fuentes_raw()
+  df_fuentes_raw <- fuentes_raw(limpiar_cache  = T)
 
   stopifnot("El id_fuente_raw no existe en la sheet de fuentes raw. Verificar si es un id valido en  `fuentes_raw()`" = id_fuente_raw %in% df_fuentes_raw$id_fuente)
 
-  df_fuentes <- fuentes_clean()
+  df_fuentes <- fuentes_clean(limpiar_cache  = T)
 
   control <- df_fuentes[df_fuentes$id_fuente_raw == id_fuente_raw,]
 

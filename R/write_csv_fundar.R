@@ -18,4 +18,6 @@ write_csv_fundar <- function(x, file) {
                      file = file,
                      quote = "all",
                      na = "", eol = "\n")
+
+    message(glue::glue("Se escribio el archivo: {file}"))
 }

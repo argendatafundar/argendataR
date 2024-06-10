@@ -16,7 +16,8 @@
 #' @param path_raw string Nombre del archivo de la fuente tal cual fue guardado.
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl
 #' @param api logical TRUE o FALSE indicando si la fuente es una api o no.
-#' @param directorio string Ruta al directorio desde el cual cargar el archivp
+#' @param directorio string Ruta al directorio desde el cual cargar el archivo
+#' @param prompt logical Si es TRUE (default) pide confirmacion de los cambios.
 #'
 #' @export
 #'
@@ -32,7 +33,8 @@ actualizar_fuente_raw <- function(id_fuente,
                                   path_raw = NULL,
                                   script = NULL,
                                   api = NULL,
-                                  directorio = NULL) {
+                                  directorio = NULL,
+                                  prompt = TRUE) {
 
   limpiar_temps()
 
@@ -45,7 +47,7 @@ actualizar_fuente_raw <- function(id_fuente,
 
   stopifnot("'id_fuente' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente) | is.character(id_fuente))
 
-  df_fuentes <- fuentes_raw()
+  df_fuentes <- fuentes_raw(limpiar_cache  = T)
 
   if (is.numeric(id_fuente)) {
 
@@ -95,6 +97,15 @@ actualizar_fuente_raw <- function(id_fuente,
   )
 
   inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
+
+  if (!isFALSE(prompt) & length(inputs) > 3) {
+
+    message("Va a sobreescribir datos de registro de la fuente.")
+    ok <- readline(prompt = "Continuar con la actualizacion de la fuente raw? Y/N")
+
+    stopifnot("Actualizacion cancelado." = tolower(ok) == "y")
+
+  }
 
 
   df_fuentes <- df_fuentes[df_fuentes$id_fuente == id_fuente,]

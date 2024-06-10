@@ -7,12 +7,23 @@
 #' La fecha será actualizada usando `Sys.time()` al momento de su ejecución.
 #'
 #' @param id_fuente_clean integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  `fuentes_clean()`
+#' @param nombre string Nombre único que identifica a la fuente en su versión 'clean'.
+#' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl
+#' @param path_clean string Nombre del archivo de la fuente tal cual fue guardado.
+#' @param descripcion string Descripcion del dataset
 #' @param directorio string Ruta al directorio desde el cual cargar el archivo. Si es NULL toma tempdir()
+#' @param prompt logical Si es TRUE (default) pide confirmacion de los cambios.
 #' @export
 #'
 #'
 
-actualizar_fuente_clean <- function(id_fuente_clean, directorio = NULL) {
+actualizar_fuente_clean <- function(id_fuente_clean,
+                                    nombre = NULL,
+                                    script = NULL,
+                                    path_clean = NULL,
+                                    descripcion = NULL,
+                                    directorio = NULL,
+                                    prompt = T) {
 
   limpiar_temps()
 
@@ -24,7 +35,7 @@ actualizar_fuente_clean <- function(id_fuente_clean, directorio = NULL) {
 
   stopifnot("'id_fuente_clean' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente_clean) | is.character(id_fuente_clean))
 
-  df_fuentes <- fuentes_clean()
+  df_fuentes <- fuentes_clean(limpiar_cache  = T)
 
   if (is.numeric(id_fuente_clean)) {
 
@@ -44,10 +55,36 @@ actualizar_fuente_clean <- function(id_fuente_clean, directorio = NULL) {
 
 
 
-  fecha <- Sys.time()
+  inputs <- list(
+    id_fuente_clean = id_fuente_clean,
+    path_clean = path_clean,
+    nombre = nombre,
+    script = script,
+    fecha = Sys.time()
+  )
 
 
-  df_fuentes$fecha <-  fecha
+  inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
+
+  if (!isFALSE(prompt) & length(inputs) > 3) {
+
+    message("Va a sobreescribir datos de registro de la fuente.")
+    ok <- readline(prompt = "Continuar con la actualizacion de la fuente raw? Y/N")
+
+    stopifnot("Actualizacion cancelado." = tolower(ok) == "y")
+
+  }
+
+
+  df_fuentes <- df_fuentes[df_fuentes$id_fuente_clean  == id_fuente_clean,]
+
+  for (i in names(inputs)) {
+
+    df_fuentes[df_fuentes$id_fuente_clean  == inputs$id_fuente_clean, i] <-  inputs[i]
+
+  }
+
+
 
 
   if (!file.exists(normalize_path(paste(directorio, df_fuentes$path_clean, sep = "/")))) {
@@ -55,7 +92,7 @@ actualizar_fuente_clean <- function(id_fuente_clean, directorio = NULL) {
   }
 
 
-  print( df_fuentes)
+  print(df_fuentes)
 
   googledrive::drive_upload(media = normalize_path(glue::glue("{directorio}/{df_fuentes$path_clean}")),
                             path = googledrive::as_id(fuentes_clean_dir()$id),

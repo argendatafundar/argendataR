@@ -78,7 +78,13 @@ actualizar_fuente_raw <- function(id_fuente,
 
 
 
-
+ if (!is.null(script)) {
+    if (!file.exists(paste0("scripts/descarga_fuentes/", script)) &
+        !file.exists(script)) {
+      stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
+    }
+ }
+  
   inputs <- list(
     # "id_fuente" = id_fuente,
     "url" = url ,
@@ -94,21 +100,16 @@ actualizar_fuente_raw <- function(id_fuente,
 
   inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
   
-  if (!is.null(script)) {
-    if (!file.exists(paste0("scripts/descarga_fuentes/", inputs$script)) &
-        !file.exists(inputs$script)) {
-      stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
-    }
-  }
+ 
   
   
 
-  if (!isFALSE(prompt) & length(inputs) > 2) {
+  if (!isFALSE(prompt) & length(inputs) > 1) {
 
     message("Va a sobreescribir datos de registro de la fuente.")
     ok <- readline(prompt = "Continuar con la actualizacion de la fuente raw? Y/N")
 
-    stopifnot("Actualizacion cancelado." = tolower(ok) == "y")
+    stopifnot("Actualizacion cancelada." = tolower(ok) == "y")
 
   }
 

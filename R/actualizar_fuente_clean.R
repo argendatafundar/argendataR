@@ -51,6 +51,16 @@ actualizar_fuente_clean <- function(id_fuente_clean,
     df_fuentes <- df_fuentes[df_fuentes$codigo == id_fuente_clean,]
 
   }
+  
+  if (!is.null(script)) {
+    
+    if (!file.exists(paste0("scripts/limpieza_fuentes/", script)) &
+        !file.exists(script)) {
+      stop("No se encontro el archivo script en scripts/limpieza_fuentes/. Guardarlo en la ubicacion antes de continuar")
+    }
+    
+  }
+  
 
 
 
@@ -66,12 +76,12 @@ actualizar_fuente_clean <- function(id_fuente_clean,
 
   inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
 
-  if (!isFALSE(prompt) & length(inputs) > 3) {
+  if (!isFALSE(prompt) & length(inputs) > 1) {
 
     message("Va a sobreescribir datos de registro de la fuente.")
     ok <- readline(prompt = "Continuar con la actualizacion de la fuente raw? Y/N")
 
-    stopifnot("Actualizacion cancelado." = tolower(ok) == "y")
+    stopifnot("Actualizacion cancelada." = tolower(ok) == "y")
 
   }
 

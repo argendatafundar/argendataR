@@ -130,7 +130,7 @@ actualizar_fuente_raw <- function(id_fuente,
   }
 
 
-  print( df_fuentes[df_fuentes$id_fuente == inputs$id_fuente ,])
+  print(df_fuentes)
 
   googledrive::drive_upload(media = normalize_path(glue::glue("{directorio}/{df_fuentes$path_raw}")),
                             path = googledrive::as_id(fuentes_raw_dir()$id),
@@ -140,7 +140,7 @@ actualizar_fuente_raw <- function(id_fuente,
   df_fuentes %>%
     googlesheets4::range_write(col_names = F,
                                ss = fuentes_raw_sheet_id(),
-                               range = sprintf("A%d:K%d", id_fuente+1,id_fuente+1))
+                               range = sprintf("A%d:K%d", id_fuente + 1, id_fuente + 1))
 
 
   }

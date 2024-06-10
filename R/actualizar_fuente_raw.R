@@ -70,7 +70,11 @@ actualizar_fuente_raw <- function(id_fuente,
     fecha_actualizar <- as.Date(fecha_actualizar)
     stopifnot("param 'fecha_actualizar' debe ser date o string parseable como fecha o null" = !is.na(fecha_actualizar))
 
-  } else if (!is.null(fecha_actualizar)) {
+  } else if (is.null(fecha_actualizar)) {
+    
+    fecha_actualizar <- Sys.Date() + months(1, abbreviate = F)
+    
+  } else {
 
     stop("param 'fecha_actualizar' debe ser fecha o null")
 
@@ -93,8 +97,17 @@ actualizar_fuente_raw <- function(id_fuente,
   )
 
   inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
+  
+  if (!is.null(script)) {
+    if (!file.exists(paste0("scripts/descarga_fuentes/", inputs$script)) &
+        !file.exists(inputs$script)) {
+      stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
+    }
+  }
+  
+  
 
-  if (!isFALSE(prompt) & length(inputs) > 3) {
+  if (!isFALSE(prompt) & length(inputs) > 2) {
 
     message("Va a sobreescribir datos de registro de la fuente.")
     ok <- readline(prompt = "Continuar con la actualizacion de la fuente raw? Y/N")
@@ -109,8 +122,7 @@ actualizar_fuente_raw <- function(id_fuente,
 
 
   for (i in names(inputs)) {
-    print(i)
-    print( df_fuentes[[which(df_fuentes$id_fuente == id_fuente), i]])
+
     
     inputs[[i]] <- coerce_to(inputs[[i]],
                              df_fuentes[[which(df_fuentes$id_fuente == id_fuente), i]])

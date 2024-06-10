@@ -110,13 +110,13 @@ actualizar_fuente_raw <- function(id_fuente,
 
   df_fuentes <- df_fuentes[df_fuentes$id_fuente == id_fuente,]
   
-  for (i in names(df_fuentes)) {
-    df_fuentes[i] <- as.character(df_fuentes[[i]])
-  }
+
 
   for (i in names(inputs)) {
     
-    df_fuentes[df_fuentes$id_fuente == id_fuente , i] <-  as.character(inputs[[i]])
+    inputs[[i]] <- coerce_to(inputs[[i]], df_fuentes[[df_fuentes$id_fuente == id_fuente , i]])
+    
+    df_fuentes[[df_fuentes$id_fuente == id_fuente , i]] <- inputs[[i]]
 
   }
   
@@ -143,4 +143,7 @@ actualizar_fuente_raw <- function(id_fuente,
                                range = sprintf("A%d:L%d", id_fuente + 1, id_fuente + 1))
 
 
-  }
+}
+
+
+

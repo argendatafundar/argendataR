@@ -78,7 +78,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
     stop("No se encontro el archivo clean, guardarlo en la ubicacion antes de continuar")
   }
 
-  if (!file.exists(paste0("scripts/limpieza_fuentes/", inputs$script))|
+  if (!file.exists(paste0("scripts/limpieza_fuentes/", inputs$script)) &
       !file.exists(inputs$script)) {
     stop("No se encontro el archivo script en scripts/limpieza_fuentes/. Guardarlo en la ubicacion antes de continuar")
   }

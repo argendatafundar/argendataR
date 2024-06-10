@@ -109,6 +109,9 @@ actualizar_fuente_raw <- function(id_fuente,
 
 
   df_fuentes <- df_fuentes[df_fuentes$id_fuente == id_fuente,]
+  
+  df_fuentes <- df_fuentes %>% 
+    dplyr::mutate(dplyr::across(dplyr::everything(), as_character))
 
   for (i in names(inputs)) {
     

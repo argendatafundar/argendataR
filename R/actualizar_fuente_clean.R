@@ -77,6 +77,9 @@ actualizar_fuente_clean <- function(id_fuente_clean,
 
 
   df_fuentes <- df_fuentes[df_fuentes$id_fuente_clean  == id_fuente_clean,]
+  
+  df_fuentes <- df_fuentes %>% 
+    dplyr::mutate(dplyr::across(dplyr::everything(), as_character))
 
   for (i in names(inputs)) {
 

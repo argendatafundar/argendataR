@@ -115,7 +115,8 @@ actualizar_fuente_raw <- function(id_fuente,
   }
   
   
-  
+    print(df_fuentes)
+
 
   if (!isFALSE(prompt) & length(inputs) > 1) {
 
@@ -126,7 +127,6 @@ actualizar_fuente_raw <- function(id_fuente,
 
   }
 
-  print(df_fuentes)
   
 
   # control path raw

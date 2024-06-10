@@ -190,6 +190,47 @@ normalize_path <- function(path) {
 }
 
 
-if(getRversion() >= "2.15.1")
+#' Coercion de un objeto a la clase de otro objeto
+#'
+#' @param x objeto a coercionar
+#' @param y objeto de clase objetivo
+#'
+#' @return objeto x coercionado a clase y
+#' @export
+#'
+
+coerce_to <- function(x, y) {
+  
+  stopifnot("x no es atomic" = is.atomic(x))
+  stopifnot("y no es atomic" = is.atomic(y))
+  
+  class_y <- class(y)
+  
+  if ("numeric" %in% class_y) {
+    return(as.numeric(x))
+  } else if ("character" %in% class_y) {
+    return(as.character(x))
+  } else if ("logical" %in% class_y) {
+    return(as.logical(x))
+  } else if ("factor" %in% class_y) {
+    return(as.factor(x))
+  } else if ("integer" %in% class_y) {
+    return(as.integer(x))
+  } else if ("Date" %in% class_y) {
+    return(as.Date(x))
+  } else if ("POSIXct" %in% class_y) {
+    return(as.POSIXct(x))
+  }  else if ("POSIXlt" %in% class_y) {
+    return(as.POSIXlt(x))
+  } else {
+    stop(paste("Clase", class_y, "no aceptada"))
+  }
+}
+
+
+
+
+
+if (getRversion() >= "2.15.1")
   utils::globalVariables(c(".", "fuente_nombre", "url_path"))
 

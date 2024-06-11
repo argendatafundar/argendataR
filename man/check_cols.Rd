@@ -4,12 +4,12 @@
 \alias{check_cols}
 \title{Control de nombres de outputs de argendata}
 \usage{
-check_cols(df, output_drive)
+check_cols(df, df_anterior)
 }
 \arguments{
 \item{df}{dataframe nuevo de output}
 
-\item{output_drive}{dataframe anterior para la comparacion}
+\item{df_anterior}{dataframe anterior para la comparacion}
 }
 \value{
 lista de resultados

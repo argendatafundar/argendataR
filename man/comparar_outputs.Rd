@@ -6,9 +6,7 @@
 \usage{
 comparar_outputs(
   df,
-  nombre,
-  subtopico,
-  entrega_subtopico = "primera_entrega",
+  df_anterior,
   pk = NULL,
   k_control_num = 3,
   drop_joined_df = F
@@ -17,11 +15,7 @@ comparar_outputs(
 \arguments{
 \item{df}{data.frame dataframe a comparar con el output cargado en el drive}
 
-\item{nombre}{string nombre del output en el drive}
-
-\item{subtopico}{string subtopico al que pertenece el output. Si no esta definido el parametro busca en el ambiente global de la sesion un objeto llamado "subtopico"}
-
-\item{entrega_subtopico}{string nombre de la carpeta de entrega donde buscar el output}
+\item{df_anterior}{data.frame dataframe anterior que se usa como referencia de comparacion. Ver \code{argendataR::descargar_output()}}
 
 \item{pk}{string Vector con los nombres de columnas que son primary key del dataframe}
 

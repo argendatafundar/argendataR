@@ -1,9 +1,7 @@
 #' Comparar un data.frame con un output cargado en el drive de Argendata como csv
 #'
 #' @param df data.frame dataframe a comparar con el output cargado en el drive
-#' @param nombre  string nombre del output en el drive
-#' @param subtopico string subtopico al que pertenece el output. Si no esta definido el parametro busca en el ambiente global de la sesion un objeto llamado "subtopico"
-#' @param entrega_subtopico string nombre de la carpeta de entrega donde buscar el output
+#' @param df_anterior data.frame dataframe anterior que se usa como referencia de comparacion. Ver `argendataR::descargar_output()`
 #' @param pk string Vector con los nombres de columnas que son primary key del dataframe
 #' @param k_control_num numeric cantidad de desvios estandar a partir del cual se seleccionan posibles outliers
 #' @param drop_joined_df logical Si es FALSE (default) el resultado incluye joined_df: el left_join de el output cargado en el drive con el df. Si es TRUE no lo incluye.
@@ -18,39 +16,29 @@
 #' @export
 #'
 
-comparar_outputs <- function(df, nombre, subtopico,
-                             entrega_subtopico = "primera_entrega", pk = NULL, k_control_num = 3,
+comparar_outputs <- function(df, df_anterior, pk = NULL, k_control_num = 3,
                              drop_joined_df = F) {
 
-  if (missing(subtopico)) {
 
-    subtopico <- get("subtopico", envir = globalenv())
-  }
-
-  output_drive <- descargar_output(nombre = nombre,
-                                   subtopico = subtopico,
-                                   entrega_subtopico = entrega_subtopico)
-
-
-  columns_check <- check_cols(df = df, output_drive = output_drive)
+  columns_check <- check_cols(df = df, df_anterior = df_anterior)
   
 
-  stopifnot("las columnas 'pk' deben estar presenten en el output previo y el output nuevo" = all(pk %in% colnames(output_drive)) & all(pk %in% colnames(df)))
+  stopifnot("las columnas 'pk' deben estar presenten en el output previo y el output nuevo" = all(pk %in% colnames(df_anterior)) & all(pk %in% colnames(df)))
 
 
-  df_clases <- check_datatypes(df = df, output_drive = output_drive)
+  df_clases <- check_datatypes(df = df, df_anterior = df_anterior)
 
   # check nrows
 
-  sprintf("Filas en output previo: %d\nFilas en output nuevo: %d", nrow(output_drive), nrow(df))
+  sprintf("Filas en output previo: %d\nFilas en output nuevo: %d", nrow(df_anterior), nrow(df))
 
 
   # checkeo por pares de cols
 
-  cols_comparacion <- colnames(output_drive)[!colnames(output_drive) %in% pk & colnames(output_drive) %in% colnames(df)]
+  cols_comparacion <- colnames(df_anterior)[!colnames(df_anterior) %in% pk & colnames(df_anterior) %in% colnames(df)]
 
 
-  joined_df <- dplyr::left_join(output_drive, df, by = pk)
+  joined_df <- dplyr::left_join(df_anterior, df, by = pk)
 
   checkeo_cols_values <-  purrr::map(cols_comparacion,
                                      .f = function(x,
@@ -82,7 +70,7 @@ comparar_outputs <- function(df, nombre, subtopico,
 
   resultado <- list("check_columnas" = columns_check,
                     "comparacion_clases" = df_clases,
-                    "diferencia_nfilas" =  nrow(df) - nrow(output_drive),
+                    "diferencia_nfilas" =  nrow(df) - nrow(df_anterior),
                     "comparacion_cols" = checkeo_cols_values)
 
   if (!drop_joined_df) {
@@ -251,16 +239,16 @@ control_valores_nonnum <- function(root_name, pk, df) {
 #' Control de nombres de outputs de argendata
 #'
 #' @param df dataframe nuevo de output
-#' @param output_drive dataframe anterior para la comparacion
+#' @param df_anterior dataframe anterior para la comparacion
 #'
 #' @return lista de resultados
 #' @export
 #'
 
-check_cols <- function(df, output_drive){
+check_cols <- function(df, df_anterior){
   # check columns names
 
-  cols_previas <-  colnames(output_drive)
+  cols_previas <-  colnames(df_anterior)
 
   cols_faltantes <- cols_previas[!cols_previas %in% colnames(df)]
 
@@ -294,17 +282,17 @@ check_cols <- function(df, output_drive){
 #' Control de clases de outputs de argendata
 #'
 #' @param df dataframe output nuevo
-#' @param output_drive dataframe output previo
+#' @param df_anterior dataframe output previo
 #'
 #' @return dataframe de control de clases
 #' @export
 #'
 
-check_datatypes <- function(df, output_drive) {
+check_datatypes <- function(df, df_anterior) {
 
   # check datatypes
 
-  clases_previas <- lapply(output_drive, class)
+  clases_previas <- lapply(df_anterior, class)
 
   clases_previas <- tidyr::as_tibble(clases_previas)
 

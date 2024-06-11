@@ -4,12 +4,12 @@
 \alias{check_datatypes}
 \title{Control de clases de outputs de argendata}
 \usage{
-check_datatypes(df, output_drive)
+check_datatypes(df, df_anterior)
 }
 \arguments{
 \item{df}{dataframe output nuevo}
 
-\item{output_drive}{dataframe output previo}
+\item{df_anterior}{dataframe output previo}
 }
 \value{
 dataframe de control de clases

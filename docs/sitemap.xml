@@ -4,16 +4,16 @@
     <loc>/404.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
     <loc>/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>/authors.html</loc>
+  </url>
+  <url>
+    <loc>/index.html</loc>
   </url>
   <url>
     <loc>/news/index.html</loc>
@@ -46,7 +46,22 @@
     <loc>/reference/cargar_fuente_raw.html</loc>
   </url>
   <url>
+    <loc>/reference/check_cols.html</loc>
+  </url>
+  <url>
+    <loc>/reference/check_datatypes.html</loc>
+  </url>
+  <url>
+    <loc>/reference/coerce_to.html</loc>
+  </url>
+  <url>
     <loc>/reference/comparar_outputs.html</loc>
+  </url>
+  <url>
+    <loc>/reference/control_valores_nonnum.html</loc>
+  </url>
+  <url>
+    <loc>/reference/control_valores_num.html</loc>
   </url>
   <url>
     <loc>/reference/descargar_fuente.html</loc>
@@ -56,6 +71,9 @@
   </url>
   <url>
     <loc>/reference/descargar_fuente_raw.html</loc>
+  </url>
+  <url>
+    <loc>/reference/descargar_output.html</loc>
   </url>
   <url>
     <loc>/reference/expansor_xvar.html</loc>
@@ -106,7 +124,16 @@
     <loc>/reference/metadata.html</loc>
   </url>
   <url>
+    <loc>/reference/normalize_path.html</loc>
+  </url>
+  <url>
+    <loc>/reference/nuevos_na.html</loc>
+  </url>
+  <url>
     <loc>/reference/outputs_subtopico.html</loc>
+  </url>
+  <url>
+    <loc>/reference/owid_scraper.html</loc>
   </url>
   <url>
     <loc>/reference/pipe.html</loc>
@@ -115,25 +142,28 @@
     <loc>/reference/replace_non_ascii.html</loc>
   </url>
   <url>
-    <loc>/reference/script_fuentes.html</loc>
-  </url>
-  <url>
     <loc>/reference/script_fuente_clean.html</loc>
   </url>
   <url>
     <loc>/reference/script_fuente_raw.html</loc>
   </url>
   <url>
+    <loc>/reference/script_fuentes.html</loc>
+  </url>
+  <url>
     <loc>/reference/script_subtopico.html</loc>
+  </url>
+  <url>
+    <loc>/reference/subtopico_init.html</loc>
+  </url>
+  <url>
+    <loc>/reference/subtopico_outputs.html</loc>
   </url>
   <url>
     <loc>/reference/subtopicos.html</loc>
   </url>
   <url>
     <loc>/reference/subtopicos_dir.html</loc>
-  </url>
-  <url>
-    <loc>/reference/subtopico_outputs.html</loc>
   </url>
   <url>
     <loc>/reference/write_csv_fundar.html</loc>

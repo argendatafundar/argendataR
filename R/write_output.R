@@ -119,22 +119,22 @@ write_output <- function(
   ## columna_indice_tiempo
 
   if (es_serie_tiempo) {
-    stopifnot("'columna_indice_tiempo' no hallada en 'data'. Debe ser uno de: 'anio', 'fecha'." = columna_indice_tiempo %in% columnas & length(columna_indice_tiempo) == 1 & columna_indice_tiempo %in% c("anio", "fecha"))
-    if (columna_indice_tiempo == 'anio') {
-      stopifnot("columna 'anio' en data debe ser 'numeric'" = class(data[['anio']]) == "numeric")
-    }
-    if (columna_indice_tiempo == 'fecha') {
-      stopifnot("columna 'fecha' en data debe ser 'Date'" = class(data[['fecha']]) == "Date")
-    }
+    stopifnot("'columna_indice_tiempo' no hallada en 'data'. Debe ser uno de: 'anio', 'fecha'." = all(columna_indice_tiempo %in% columnas))
+    # if (columna_indice_tiempo == 'anio') {
+    #   stopifnot("columna 'anio' en data debe ser 'numeric'" = class(data[['anio']]) == "numeric")
+    # }
+    # if (columna_indice_tiempo == 'fecha') {
+    #   stopifnot("columna 'fecha' en data debe ser 'Date'" = class(data[['fecha']]) == "Date")
+    # }
   }
 
 
   ## columna_geo_referencia
   if (!is.null(columna_geo_referencia)) {
 
-    stopifnot("'columna_geo_referencia' no hallada en 'data'" = is.character(columna_geo_referencia) & columna_geo_referencia %in% columnas & length(columna_geo_referencia) == 1)
+    stopifnot("'columna_geo_referencia' no hallada en 'data'" = is.character(columna_geo_referencia) & all(columna_geo_referencia %in% columnas))
 
-    stopifnot("'columna_geo_referencia' no hallada en 'data'. Debe ser uno de   'iso3', 'cod_fundar', 'prov_cod', 'cod_pcia', 'cod_depto', 'eph_codagl', 'cod_aglo', 'cod_agl'" = columna_geo_referencia %in% c("iso3", "prov_cod", "cod_fundar", "cod_pcia", "cod_depto", "eph_codagl", "cod_aglo", "cod_agl"))
+    # stopifnot("'columna_geo_referencia' no hallada en 'data'. Debe ser uno de   'iso3', 'cod_fundar', 'prov_cod', 'cod_pcia', 'cod_depto', 'eph_codagl', 'cod_aglo', 'cod_agl'" = columna_geo_referencia %in% c("iso3", "prov_cod", "cod_fundar", "cod_pcia", "cod_depto", "eph_codagl", "cod_aglo", "cod_agl"))
   }
 
   ## nullables

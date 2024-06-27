@@ -119,7 +119,7 @@ write_output <- function(
   ## columna_indice_tiempo
 
   if (es_serie_tiempo) {
-    stopifnot("'columna_indice_tiempo' no hallada en 'data'. Debe ser uno de: 'anio', 'fecha'." = all(columna_indice_tiempo %in% columnas))
+    stopifnot("'columna_indice_tiempo' no hallada en 'data'" = all(columna_indice_tiempo %in% columnas))
     # if (columna_indice_tiempo == 'anio') {
     #   stopifnot("columna 'anio' en data debe ser 'numeric'" = class(data[['anio']]) == "numeric")
     # }

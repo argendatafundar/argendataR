@@ -214,7 +214,7 @@ write_output <- function(
                                            function(x) {x[names(x) != "plot"]})
     
 
-    control <- control[names(control) %in% c("output_drive", "")]
+    control <- control[names(control) != "joined_df"]
 
   } else {
 

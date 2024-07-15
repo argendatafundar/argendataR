@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# argendataR <a><img src="inst/hex_sticker_transparent_border.png" width="200" align="right" /></a>
+# argendataR <a><img src="inst/hex_sticker_transparent_border.png" width="400" align="right" /></a>
 
 <!-- badges: start -->
 <!-- badges: end -->

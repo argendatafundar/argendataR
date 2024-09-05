@@ -5,30 +5,12 @@
 #' @export
 #'
 
-fuentes_raw <- function(limpiar_cache = T) {
+fuentes_raw <- function() {
 
-  if(isTRUE(limpiar_cache)){
-    limpiar_temps()
-  }
-
-  filetemp <- list.files(tempdir(), full.names = T)[grepl("fuentes_raw_argdt", list.files(tempdir()))]
-
-  if (length(filetemp) == 1) {
-
-    readr::read_csv(filetemp) %>%
-      suppressMessages()
-
-  } else {
-    df <- googlesheets4::read_sheet(ss = fuentes_raw_sheet_id())
-
+    df <- readr::read_csv(glue::glue("{IP_FUENTES()}/fuentes_raw.csv"), show_col_types = F, progress = F)
+    
     df <- df %>%
-      dplyr::filter(df$borrada != T | is.na(df$borrada)) %>%
-      readr::write_csv(file = tempfile("fuentes_raw_argdt",
-                                fileext = ".csv")) %>%
-      suppressMessages()
+      dplyr::filter(df$borrada != T | is.na(df$borrada))
 
     df
-  }
-
-
 }

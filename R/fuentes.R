@@ -5,17 +5,14 @@
 #' @export
 #'
 
-fuentes <- function(limpiar_cache = F) {
+fuentes <- function() {
 
-  if(isTRUE(limpiar_cache)){
-    limpiar_temps()
-  }
-
-  df_r <- fuentes_raw(limpiar_cache = F)
+  df_r <- fuentes_raw()
+  
   df_r <- df_r %>%
     dplyr::rename_with(.fn = function(x) {paste0(x,"_raw")})
 
-  df_c <- fuentes_clean(limpiar_cache = F)
+  df_c <- fuentes_clean()
 
   df_c <- df_c %>%
     dplyr::rename_with(.cols = -c("id_fuente_raw", "id_fuente_clean", "path_clean"),

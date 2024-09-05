@@ -4,7 +4,7 @@
 \alias{fuentes_raw}
 \title{Fuentes raw}
 \usage{
-fuentes_raw(limpiar_cache = T)
+fuentes_raw()
 }
 \arguments{
 \item{limpiar_cache}{Logical Si es TRUE borra el cache de consultas al drive de argendata. Si es FALSE reutiliza el cache existente.}

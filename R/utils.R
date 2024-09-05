@@ -1,4 +1,18 @@
 
+
+#' @keywords internal
+RUTA_FUENTES <- function() {
+  Sys.getenv("RUTA_FUENTES")
+}
+
+
+#' @keywords internal
+IP_FUENTES <- function() {
+  Sys.getenv("IP_FUENTES")
+}
+
+
+
 #' Directorio raiz de argendata
 #'
 #' @keywords internal

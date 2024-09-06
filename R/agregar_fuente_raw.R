@@ -31,13 +31,8 @@ agregar_fuente_raw <- function(
                            api = FALSE,
                            directorio = NULL) {
 
-  limpiar_temps()
 
-  if (is.null(directorio)) {
-    directorio <- tempdir()
-  } else {
-    stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
-  }
+ 
 
   if (is.character(fecha_actualizar)) {
 
@@ -102,29 +97,50 @@ agregar_fuente_raw <- function(
 
   # stopifnot("param 'url' debe ser una url valida" =  grepl("^(https|http)://",inputs$url))
 
- stopifnot("param 'api' debe ser T o F" = is.logical(api) & !is.na(api))
+  stopifnot("param 'api' debe ser T o F" = is.logical(api) & !is.na(api))
 
-  df_fuentes <- fuentes_raw()
+  df_fuentes_raw <- fuentes_raw()
+  
+  df_fuentes_raw_md5 <- tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"))
+  
 
-  if (nrow(df_fuentes[df_fuentes$nombre == inputs$nombre & df_fuentes$url == inputs$url & df_fuentes$institucion == inputs$institucion,]) != 0) {
+  if (nrow(df_fuentes_raw[df_fuentes_raw$nombre == inputs$nombre & df_fuentes_raw$url == inputs$url & df_fuentes_raw$institucion == inputs$institucion,]) != 0) {
     stop("Ya existe esa combinacion nombre, institucion y url. Verificar si es una posible duplicacion o cambiar de nombre, institucion o url")
-  }
-
-  if (!file.exists(normalize_path(glue::glue("{directorio}/{inputs$path_raw}")))) {
-    stop("No se encontro el archivo raw en el directorio. Guardarlo en la ubicacion antes de continuar")
   }
 
   if (!file.exists(paste0("scripts/descarga_fuentes/", inputs$script)) &
       !file.exists(inputs$script)) {
     stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
   }
+  
+  if (is.data.frame(df)) {
+    
+    message("El df sera guardado como parquet")
+    
+    
+  } else if (!is.data.frame(df)) {
+    
+    if (is.null(directorio)) {
+      directorio <- tempdir()
+    } else {
+      stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
+    }
+    
+    stopifnot("Directorio y path_clean no son ruta valida" = file.exists(normalize_path(glue::glue("{directorio}/{inputs$path_raw}"))))
+    
+    
+  } else {
+    stop("Debe ingresar un dataframe valido o un path_raw valido")
+  }
+  
 
-  last_id <- dplyr::last(df_fuentes$id_fuente)
+  last_id <- dplyr::last(df_fuentes_raw$id_fuente)
 
   if (is.na(last_id)) {
     next_id <- 1
   } else {
-    next_id <- last_id+1
+    
+    next_id <- last_id + 1
 
   }
 
@@ -152,19 +168,38 @@ agregar_fuente_raw <- function(
 
 
 
-  fuentes_raw_dir <- fuentes_raw_dir()
 
 
-  if (path_raw %in% fuentes_raw_dir$tree$name) {
+  if (path_raw  %in% list.files(glue::glue("{RUTA_FUENTES()}/raw"))) {
     
-    print(df_fuentes[df_fuentes$path_raw == path_raw, ])
+    print(df_fuentes_raw[df_fuentes_raw$path_raw == path_raw, ])
     stop("El archivo ya existe en el drive. Cambiar el nombre del archivo o borrar el archivo existente")
 
   }
+  
+  stopifnot("El registro de fuentes cambio antes de finalizar la actualizacion. Vuelva a intentarlo" = df_fuentes_raw_md5 == tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv")))
+  
 
-  googledrive::drive_upload(media = normalize_path(glue::glue("{directorio}/{inputs$path_raw}")),
-                            path = googledrive::as_id(fuentes_raw_dir$id),
-                            name = path_raw)
+  if (is.data.frame(df)) {
+    
+    df %>% 
+      arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), compression = "gzip")
+    
+    message("Parquet creado")
+    
+  } else if (!is.data.frame(df) & file.exists(normalize_path(paste(directorio, df_fuentes_raw$path_clean, sep = "/")))) {
+    
+    
+  
+    file.copy(from = glue::glue("{directorio}/{inputs$path_raw}"),
+              to = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), overwrite = T, copy.mode = T)
+    
+    message("Fuente copiada a carpeta raw")
+    
+    
+  } else {
+    stop("Error inesperado al guardar el archivo")
+  }
 
 
 
@@ -180,9 +215,10 @@ agregar_fuente_raw <- function(
                     "script",
                     "api",
                     "codigo")  %>%
-    googlesheets4::sheet_append(
-      ss = fuentes_raw_sheet_id())
-
+    readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"), eol = "\n", append = T)
+  
+  message("Tabla de fuentes raw actualizada")
+  
 
 
 

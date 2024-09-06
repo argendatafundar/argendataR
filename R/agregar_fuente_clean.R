@@ -137,10 +137,8 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
 
 
 
-  fuentes_clean_dir <- fuentes_clean_dir()
 
-
-  if (path_clean %in% list.files(glue::glue("{RUTA_FUENTES}/clean"))) {
+  if (path_clean %in% list.files(glue::glue("{RUTA_FUENTES()}/clean"))) {
     print(df_fuentes_clean[df_fuentes_clean$path_clean == path_clean, ])
     stop("Ya existe un archivo con ese nombre. Cambiar el nombre del archivo o borrar el archivo existente")
 
@@ -158,15 +156,15 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
     
     message("Parquet creado")
     
-  } else if (!is.data.frame(df) & file.exists(normalize_path(paste(directorio, df_fuentes_clean$path_clean, sep = "/")))) {
+  } else if (!is.data.frame(df) & file.exists(normalize_path(paste(directorio, inputs$path_clean, sep = "/")))) {
     
     
     if (file.size(glue::glue("{directorio}/{df_fuentes_clean$path_clean}")) > 1E8) {
       warning("El peso del archivo supera el limite de github ")
     }
     
-    file.copy(from = glue::glue("{directorio}/{df_fuentes_clean$path_clean}"),
-              to = glue::glue("{RUTA_FUENTES()}/clean/{df_fuentes_clean$path_clean}"), overwrite = T, copy.mode = T)
+    file.copy(from = glue::glue("{directorio}/{inputs$path_clean}"),
+              to = glue::glue("{RUTA_FUENTES()}/clean/{inputs$path_clean}"), overwrite = T, copy.mode = T)
     
     message("Parquet creado")
     

@@ -132,9 +132,9 @@ actualizar_fuente_raw <- function(id_fuente,
 
   # control path raw
 
-  if (!file.exists(normalize_path(glue::glue("{directorio}/{df_fuentes$path_raw}")))) {
+  if (!file.exists(normalize_path(glue::glue("{directorio}/{df_fuentes_raw$path_raw}")))) {
     warning("No existe el archivo fuente en la ruta especificada")
-    warning(normalize_path(glue::glue("{directorio}/{df_fuentes$path_raw}")))
+    warning(normalize_path(glue::glue("{directorio}/{df_fuentes_raw$path_raw}")))
     stop()
 
   }

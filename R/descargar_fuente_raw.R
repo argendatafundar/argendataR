@@ -8,7 +8,12 @@
 #' @export
 #'
 
-descargar_fuente_raw <- function(id_fuente, dir, limpiar_cache = F) {
+descargar_fuente_raw <- function(id_fuente, dir = NULL, limpiar_cache = F) {
+
+
+  if (is.null(dir)) {
+    dir <- tempdir()
+  }
 
   dir <- gsub("/$", "", dir)
 
@@ -40,14 +45,10 @@ descargar_fuente_raw <- function(id_fuente, dir, limpiar_cache = F) {
   ext <- regmatches(path_raw, m = regexpr("\\.[^\\.]*$", text = path_raw, perl = T))
 
 
-  fuentes_raw_dir <- fuentes_raw_dir()$tree
-
-  fuente_gd_id <- fuentes_raw_dir[fuentes_raw_dir$name == path_raw,][["id"]]
-
   ext <- gsub("^.*\\.","",path_raw)
 
-  googledrive::drive_download(file = googledrive::as_id(fuente_gd_id),
-                              path = glue::glue("{dir}/{path_raw_body}_{codigo}.{ext}"),
-                              overwrite = T)
+  download.file(url = glue::glue("{IP_FUENTES()}/raw/{path_clean}"),
+                destfile = glue::glue("{dir}/{path_clean_body}_{codigo}{ext}"),
+                mode = "wb")
 
   }

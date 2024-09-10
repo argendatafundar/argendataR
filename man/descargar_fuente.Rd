@@ -2,7 +2,7 @@
 % Please edit documentation in R/descargar_fuente.R
 \name{descargar_fuente}
 \alias{descargar_fuente}
-\title{Descarga de fuentes de Argendata desde el drive}
+\title{Descarga de fuentes de Argendata}
 \usage{
 descargar_fuente(codigo, dir = NULL)
 }
@@ -15,5 +15,5 @@ descargar_fuente(codigo, dir = NULL)
 Descarga el archivo correspondiente al codigo de fuente desde el drive de Argendata
 }
 \description{
-Descarga de fuentes de Argendata desde el drive
+Descarga de fuentes de Argendata
 }

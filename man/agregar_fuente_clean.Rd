@@ -28,6 +28,8 @@ agregar_fuente_clean(
 \item{directorio}{string Ruta al directorio desde el cual cargar el archivo. Si es NULL toma tempdir()}
 
 \item{prompt}{logical Si es TRUE (default) evalua si ya fuentes clean referidas al id_fuente_raw y pide confirmacion antes de continuar.}
+
+\item{df}{data.frame Datafrane de la fuente clean a registrar.}
 }
 \description{
 Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace \code{drive_upload()} con overwrite = F de la fuente.

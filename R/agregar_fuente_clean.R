@@ -3,7 +3,7 @@
 #' @description
 #' Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace `drive_upload()` con overwrite = F de la fuente.
 #'
-#'
+#' @param df data.frame Datafrane de la fuente clean a registrar.
 #' @param id_fuente_raw integer id numerico que permite seleccionar la fuente raw segun aparece en el sheet. Para consultar ids usar  `fuentes_raw()`
 #' @param nombre string Nombre único que identifica a la fuente en su versión 'clean'.
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl
@@ -47,7 +47,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
   stopifnot("El id_fuente_raw no existe en la sheet de fuentes raw. Verificar si es un id valido en  `fuentes_raw()`" = id_fuente_raw %in% df_fuentes_raw$id_fuente)
 
   df_fuentes_clean <- fuentes_clean()
-  
+
   df_fuentes_clean_md5 <- tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_clean.csv"))
 
   control <- df_fuentes_clean[df_fuentes_clean$id_fuente_raw == id_fuente_raw,]
@@ -74,33 +74,33 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
       !file.exists(inputs$script)) {
     stop("No se encontro el archivo script en scripts/limpieza_fuentes/. Guardarlo en la ubicacion antes de continuar")
   }
-  
+
   if (is.data.frame(df)) {
-    
+
     message("El df sera guardado como parquet")
-    
-    
+
+
   } else if (!is.data.frame(df)) {
-    
+
     if (is.null(directorio)) {
       directorio <- tempdir()
     } else {
       stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
     }
-    
+
     stopifnot("La extensión de la fuente clean debe ser parquet" = grepl("\\.parquet$", inputs$path_clean))
-    
+
     stopifnot("Directorio y path_clean no son ruta valida" = file.exists(normalize_path(glue::glue("{directorio}/{inputs$path_clean}"))))
-    
-    
+
+
     if (file.size(normalize_path(glue::glue("{directorio}/{inputs$path_clean}"))) > 1E8) {
       warning("El peso del archivo supera el limite de github ")
     }
-    
+
   } else {
     stop("Debe ingresar un dataframe valido o un path_clean valido")
   }
-  
+
 
 
   last_id <- dplyr::last(df_fuentes_clean$id_fuente_clean)
@@ -143,32 +143,32 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
     stop("Ya existe un archivo con ese nombre. Cambiar el nombre del archivo o borrar el archivo existente")
 
   }
-  
+
   stopifnot("En la tabla clean ya existe el path indicado" = nrow(df_fuentes_clean[df_fuentes_clean$path_clean == path_clean, ]) == 0)
-   
+
   stopifnot("El registro de fuentes cambio antes de finalizar la actualizacion. Vuelva a intentarlo" = df_fuentes_clean_md5 == tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_clean.csv")))
-  
+
 
   if (is.data.frame(df)) {
-    
-    df %>% 
+
+    df %>%
       arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/clean/{path_clean}"), compression = "gzip")
-    
+
     message("Parquet creado")
-    
+
   } else if (!is.data.frame(df) & file.exists(normalize_path(paste(directorio, inputs$path_clean, sep = "/")))) {
-    
-    
+
+
     if (file.size(glue::glue("{directorio}/{df_fuentes_clean$path_clean}")) > 1E8) {
       warning("El peso del archivo supera el limite de github ")
     }
-    
+
     file.copy(from = glue::glue("{directorio}/{inputs$path_clean}"),
               to = glue::glue("{RUTA_FUENTES()}/clean/{inputs$path_clean}"), overwrite = T, copy.mode = T)
-    
+
     message("Parquet creado")
-    
-    
+
+
   } else {
     stop("Error inesperado al guardar el parquet")
   }
@@ -185,9 +185,9 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
                     "codigo",
                     "descripcion")  %>%
     readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_clean.csv"), eol = "\n", append = T)
-  
+
   message("Tabla de fuentes clean actualizada")
-  
-   
+
+
 
 }

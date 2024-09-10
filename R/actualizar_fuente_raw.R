@@ -6,6 +6,7 @@
 #' @details
 #' La fecha será actualizada usando `Sys.time()` al momento de su ejecución.
 #'
+#' @param df data.frame Datafrane de la fuente clean a registrar.
 #' @param id_fuente integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  `fuentes_raw()`
 #' @param url string Link directo a la fuente si existiera o link a la página web más inmediata a la  fuente.
 #' @param nombre string Nombre único que identifica a la fuente
@@ -84,7 +85,7 @@ actualizar_fuente_raw <- function(id_fuente,
       stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
     }
  }
-  
+
   inputs <- list(
     # "id_fuente" = id_fuente,
     "url" = url ,
@@ -99,22 +100,22 @@ actualizar_fuente_raw <- function(id_fuente,
   )
 
   inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
-  
+
   df_fuentes <- df_fuentes[df_fuentes$id_fuente == id_fuente,]
-  
-  
-  
+
+
+
   for (i in names(inputs)) {
-    
-    
+
+
     inputs[[i]] <- coerce_to(inputs[[i]],
                              df_fuentes[[which(df_fuentes$id_fuente == id_fuente), i]])
-    
+
     df_fuentes[[which(df_fuentes$id_fuente == id_fuente), i]] <- inputs[[i]]
-    
+
   }
-  
-  
+
+
     print(df_fuentes)
 
 
@@ -127,15 +128,15 @@ actualizar_fuente_raw <- function(id_fuente,
 
   }
 
-  
+
 
   # control path raw
-  
+
   if (!file.exists(normalize_path(glue::glue("{directorio}/{df_fuentes$path_raw}")))) {
     warning("No existe el archivo fuente en la ruta especificada")
     warning(normalize_path(glue::glue("{directorio}/{df_fuentes$path_raw}")))
     stop()
-    
+
   }
 
 

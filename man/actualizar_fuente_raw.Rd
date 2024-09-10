@@ -43,6 +43,8 @@ actualizar_fuente_raw(
 \item{directorio}{string Ruta al directorio desde el cual cargar el archivo}
 
 \item{prompt}{logical Si es TRUE (default) pide confirmacion de los cambios.}
+
+\item{df}{data.frame Datafrane de la fuente clean a registrar.}
 }
 \description{
 Actualiza 'fecha_descarga' y 'fecha_actualizar' de una fuente en la sheet de fuentes en el drive de Argendata. Hace \code{drive_upload()} con overwrite = T pisando la version anterior de la fuente en el drive.

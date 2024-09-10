@@ -3,7 +3,7 @@
 #' @description
 #' Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace `drive_upload()` con overwrite = F de la fuente.
 #'
-#'
+#' @param df data.frame Datafrane de la fuente clean a registrar.
 #' @param url string Link directo a la fuente si existiera o link a la página web más inmediata a la  fuente.
 #' @param nombre string Nombre único que identifica a la fuente
 #' @param institucion string Nombre oficial de la institucion
@@ -32,7 +32,7 @@ agregar_fuente_raw <- function(
                            directorio = NULL) {
 
 
- 
+
 
   if (is.character(fecha_actualizar)) {
 
@@ -43,12 +43,12 @@ agregar_fuente_raw <- function(
 
     stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o null" = !is.na(fecha_actualizar) & length(fecha_actualizar) != 0)
 
-  } else if (is.null(fecha_actualizar)) { 
-    
+  } else if (is.null(fecha_actualizar)) {
+
     fecha_actualizar <- Sys.Date() + months(1, abbreviate = F)
-    
-    
-  } else { 
+
+
+  } else {
 
     stop("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o null")
   }
@@ -100,9 +100,9 @@ agregar_fuente_raw <- function(
   stopifnot("param 'api' debe ser T o F" = is.logical(api) & !is.na(api))
 
   df_fuentes_raw <- fuentes_raw()
-  
+
   df_fuentes_raw_md5 <- tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"))
-  
+
 
   if (nrow(df_fuentes_raw[df_fuentes_raw$nombre == inputs$nombre & df_fuentes_raw$url == inputs$url & df_fuentes_raw$institucion == inputs$institucion,]) != 0) {
     stop("Ya existe esa combinacion nombre, institucion y url. Verificar si es una posible duplicacion o cambiar de nombre, institucion o url")
@@ -112,34 +112,34 @@ agregar_fuente_raw <- function(
       !file.exists(inputs$script)) {
     stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
   }
-  
+
   if (is.data.frame(df)) {
-    
+
     message("El df sera guardado como parquet")
-    
-    
+
+
   } else if (!is.data.frame(df)) {
-    
+
     if (is.null(directorio)) {
       directorio <- tempdir()
     } else {
       stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
     }
-    
+
     stopifnot("Directorio y path_clean no son ruta valida" = file.exists(normalize_path(glue::glue("{directorio}/{inputs$path_raw}"))))
-    
-    
+
+
   } else {
     stop("Debe ingresar un dataframe valido o un path_raw valido")
   }
-  
+
 
   last_id <- dplyr::last(df_fuentes_raw$id_fuente)
 
   if (is.na(last_id)) {
     next_id <- 1
   } else {
-    
+
     next_id <- last_id + 1
 
   }
@@ -171,32 +171,32 @@ agregar_fuente_raw <- function(
 
 
   if (path_raw  %in% list.files(glue::glue("{RUTA_FUENTES()}/raw"))) {
-    
+
     print(df_fuentes_raw[df_fuentes_raw$path_raw == path_raw, ])
     stop("El archivo ya existe en el drive. Cambiar el nombre del archivo o borrar el archivo existente")
 
   }
-  
+
   stopifnot("El registro de fuentes cambio antes de finalizar la actualizacion. Vuelva a intentarlo" = df_fuentes_raw_md5 == tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv")))
-  
+
 
   if (is.data.frame(df)) {
-    
-    df %>% 
+
+    df %>%
       arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), compression = "gzip")
-    
+
     message("Parquet creado")
-    
+
   } else if (!is.data.frame(df) & file.exists(normalize_path(paste(directorio, df_fuentes_raw$path_clean, sep = "/")))) {
-    
-    
-  
+
+
+
     file.copy(from = glue::glue("{directorio}/{inputs$path_raw}"),
               to = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), overwrite = T, copy.mode = T)
-    
+
     message("Fuente copiada a carpeta raw")
-    
-    
+
+
   } else {
     stop("Error inesperado al guardar el archivo")
   }
@@ -216,9 +216,9 @@ agregar_fuente_raw <- function(
                     "api",
                     "codigo")  %>%
     readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"), eol = "\n", append = T)
-  
+
   message("Tabla de fuentes raw actualizada")
-  
+
 
 
 

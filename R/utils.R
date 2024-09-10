@@ -17,23 +17,8 @@ RUTA_FUENTES <- function() {
 IP_FUENTES <- function() {
   
   
-                
-  if (SERVER_USER_CALL()) {
-    
-    data <- system("ifconfig", intern = T)
-    
-    data <- data[2]
-    
-    ip <- regmatches(data, regexpr("(?<=inet )\\d{3}\\.\\d{2}\\.\\d{3}\\.\\d{3}", data, perl = T))
-    
-    ip
-    
-  } else {
-    
     Sys.getenv("IP_FUENTES")
     
-  }
-  
 }
 
 

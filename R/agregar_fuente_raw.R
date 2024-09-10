@@ -8,7 +8,7 @@
 #' @param institucion string Nombre oficial de la institucion
 #' @param actualizable logical TRUE o FALSE  sobre si la fuente será actualizada y debe volver a ser descargada en nueva versión en el futuro.
 #' @param fecha_descarga date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por `as.Date()`. Si es null toma la fecha de `Sys.Date()`
-#' @param fecha_actualizar date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por `as.Date()`. Si es null toma fecha actual más 6 meses
+#' @param fecha_actualizar date o string Fecha en que la fuente sera actualizada por la institucion que la gestiona. Poner "Sin informacion" si no hay detalle
 #' @param path_raw string Nombre del archivo de la fuente tal cual fue descargado en el directorio data/_FUENTES/raw/ de argendata-etl
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl
 #' @param api logical TRUE o FALSE indicando si la fuente es una api o no.
@@ -33,23 +33,19 @@ agregar_fuente_raw <- function(
 
 
 
-  if (is.character(fecha_actualizar)) {
+  if (is.character(fecha_actualizar) & fecha_actualizar != "Sin informacion") {
 
     fecha_actualizar <- as.Date(fecha_actualizar)
-    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o null" = !is.na(fecha_actualizar) & length(fecha_actualizar) != 0)
+    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(fecha_actualizar) & length(fecha_actualizar) == 1)
 
   } else if (class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) {
 
-    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o null" = !is.na(fecha_actualizar) & length(fecha_actualizar) != 0)
-
-  } else if (is.null(fecha_actualizar)) {
-
-    fecha_actualizar <- Sys.Date() + months(1, abbreviate = F)
-
+    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(fecha_actualizar) & length(fecha_actualizar) == 1)
 
   } else {
 
-    stop("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o null")
+    stopifnot("param 'fecha_actualizar' debe ser fecha o character parseable a fecha o 'Sin informacion'" = fecha_actualizar == "Sin informacion" & is.character(fecha_actualizar))
+  
   }
 
 
@@ -57,9 +53,13 @@ agregar_fuente_raw <- function(
   if (is.character(fecha_descarga)  | class(fecha_descarga) %in% c("Date", "POSIXct", "POSIXt")) {
 
     fecha_descarga <- as.Date(fecha_descarga)
-    stopifnot("param 'fecha_descarga' debe ser date o string parseable como fecha o null" = !is.na(fecha_descarga) & length(fecha_descarga) != 0)
+    stopifnot("param 'fecha_descarga' debe ser date o string parseable como fecha o null" = !is.na(fecha_descarga) & length(fecha_descarga) == 1)
 
-  } else if (!is.null(fecha_descarga)) {
+  } else if (is.null(fecha_descarga)) {
+    
+    fecha_descarga <- Sys.time()
+    
+  } else {
 
     stop("param 'fecha_descarga' debe ser fecha o null")
 
@@ -92,7 +92,7 @@ agregar_fuente_raw <- function(
 
   stopifnot("param 'fecha_descarga' debe ser fecha" = !is.na(inputs$fecha_descarga))
 
-  stopifnot("param 'fecha_actualizar' debe ser fecha" = !is.na(inputs$fecha_actualizar))
+  stopifnot("param 'fecha_actualizar' debe ser fecha o character" = !is.na(inputs$fecha_actualizar))
 
   # stopifnot("param 'url' debe ser una url valida" =  grepl("^(https|http)://",inputs$url))
 

@@ -12,7 +12,7 @@
 #' @param institucion string Nombre oficial de la institucion
 #' @param actualizable logical TRUE o FALSE  sobre si la fuente será actualizada y debe volver a ser descargada en nueva versión en el futuro.
 #' @param fecha_descarga date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por `as.Date()`. Si es null toma la fecha de `Sys.Date()`
-#' @param fecha_actualizar date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por `as.Date()`. Si es null toma fecha actual más 6 meses
+#' @param fecha_actualizar date o string Fecha en que la fuente sera actualizada por la institucion que la gestiona. Poner "Sin informacion" si no hay detalle
 #' @param path_raw string Nombre del archivo de la fuente tal cual fue guardado.
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl
 #' @param api logical TRUE o FALSE indicando si la fuente es una api o no.
@@ -76,21 +76,27 @@ actualizar_fuente_raw <- function(id_fuente,
     
   }
 
+  
+  if (is.null(fecha_descarga)) {
+    fecha_descarga <- Sys.time()
+    
+  } 
 
-
-  fecha_descarga <- Sys.time()
-
-  if (is.character(fecha_actualizar) | class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) {
-
+  
+  if (is.character(fecha_actualizar) & fecha_actualizar != "Sin informacion") {
+    
     fecha_actualizar <- as.Date(fecha_actualizar)
-    stopifnot("param 'fecha_actualizar' debe ser date o string parseable como fecha o null" = !is.na(fecha_actualizar))
-
-  } else if (!is.null(fecha_actualizar)) {
-
-    stop("param 'fecha_actualizar' debe ser fecha o null")
-
-    }
-
+    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(fecha_actualizar) & length(fecha_actualizar) == 1)
+    
+  } else if (class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) {
+    
+    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(fecha_actualizar) & length(fecha_actualizar) == 1)
+    
+  } else {
+    
+    stopifnot("param 'fecha_actualizar' debe ser fecha o character parseable a fecha o 'Sin informacion'" = fecha_actualizar == "Sin informacion" & is.character(fecha_actualizar))
+    
+  }
 
 
  if (!is.null(script)) {

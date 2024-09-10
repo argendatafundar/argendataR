@@ -1,4 +1,11 @@
 
+#' @keywords internal
+SERVER_USER_CALL <- function(){
+  
+  info <- Sys.info()
+  
+  info["nodename"] == "vps-3915596-x"
+}
 
 #' @keywords internal
 RUTA_FUENTES <- function() {
@@ -8,7 +15,25 @@ RUTA_FUENTES <- function() {
 
 #' @keywords internal
 IP_FUENTES <- function() {
-  Sys.getenv("IP_FUENTES")
+  
+  
+                
+  if (SERVER_USER_CALL()) {
+    
+    data <- system("ifconfig", intern = T)
+    
+    data <- data[2]
+    
+    ip <- regmatches(data, regexpr("(?<=inet )\\d{3}\\.\\d{2}\\.\\d{3}\\.\\d{3}", data, perl = T))
+    
+    ip
+    
+  } else {
+    
+    Sys.getenv("IP_FUENTES")
+    
+  }
+  
 }
 
 

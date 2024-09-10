@@ -27,7 +27,7 @@ read_parquet_srv <- function(id_fuente) {
 
   path_clean <- df_fuentes[df_fuentes$codigo == codigo,][[ "path_clean"]]
 
-  if (Sys.info()$nodename == "vps-3915596-x") {
+  if (SERVER_USER_CALL()) {
     arrow::read_parquet(glue::glue("{RUTA_FUENTES()}/clean/{path_clean}"))
   } else {
     arrow::read_parquet(glue::glue("{IP_FUENTES()}/clean/{path_clean}"))

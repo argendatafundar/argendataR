@@ -6,7 +6,6 @@
 #' @details
 #' La fecha será actualizada usando `Sys.time()` al momento de su ejecución.
 #'
-#' @param df data.frame Dataframe de la fuente clean a registrar.
 #' @param id_fuente integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  `fuentes_raw()`
 #' @param url string Link directo a la fuente si existiera o link a la página web más inmediata a la  fuente.
 #' @param nombre string Nombre único que identifica a la fuente
@@ -132,9 +131,9 @@ actualizar_fuente_raw <- function(id_fuente,
 
   # control path raw
 
-  if (!file.exists(normalize_path(glue::glue("{directorio}/{df_fuentes_raw$path_raw}")))) {
+  if (!file.exists(normalize_path(glue::glue("{directorio}/{df_fuentes_raw$path_raw[[irow]]}")))) {
     warning("No existe el archivo fuente en la ruta especificada")
-    warning(normalize_path(glue::glue("{directorio}/{df_fuentes_raw$path_raw}")))
+    warning(normalize_path(glue::glue("{directorio}/{df_fuentes_raw$path_raw[[irow]]}")))
     stop()
 
   }
@@ -159,14 +158,7 @@ actualizar_fuente_raw <- function(id_fuente,
   
   message("Registro actualizado en fuentes raw")
   
-  if (is.data.frame(df)) {
-    
-    df %>%
-      arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), compression = "gzip")
-    
-    message("Parquet creado")
-    
-  } else if (!is.data.frame(df) & file.exists(normalize_path(paste(directorio, df_fuentes_raw$path_clean, sep = "/")))) {
+  if (file.exists(normalize_path(paste(directorio, inputs$path_raw, sep = "/")))) {
     
     
     

@@ -3,7 +3,6 @@
 #' @description
 #' Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace `drive_upload()` con overwrite = F de la fuente.
 #'
-#' @param df data.frame Dataframe de la fuente clean a registrar.
 #' @param url string Link directo a la fuente si existiera o link a la página web más inmediata a la  fuente.
 #' @param nombre string Nombre único que identifica a la fuente
 #' @param institucion string Nombre oficial de la institucion
@@ -20,7 +19,6 @@
 
 
 agregar_fuente_raw <- function(
-                           df = NULL,
                            url = NULL,
                            nombre = NULL,
                            institucion = NULL,
@@ -181,14 +179,8 @@ agregar_fuente_raw <- function(
   stopifnot("El registro de fuentes cambio antes de finalizar la actualizacion. Vuelva a intentarlo" = df_fuentes_raw_md5 == tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv")))
 
 
-  if (is.data.frame(df)) {
 
-    df %>%
-      arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), compression = "gzip")
-
-    message("Parquet creado")
-
-  } else if (!is.data.frame(df) & file.exists(normalize_path(paste(directorio, df_fuentes_raw$path_clean, sep = "/")))) {
+  if (file.exists(normalize_path(paste(directorio, inputs$path_raw, sep = "/")))) {
 
 
 

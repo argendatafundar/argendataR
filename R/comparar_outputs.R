@@ -159,8 +159,8 @@ control_valores_num <- function(root_name, pk, k, df) {
   class_y <- class(df[[col_y]])
   
 
-  stopifnot("la variable no es numeric" = class_x %in% c("numeric", "complex"))
-  stopifnot("la variable no es numeric" = class_y %in% c("numeric", "complex"))
+  stopifnot("la variable no es numeric" = class_x %in% c("numeric", "complex", "integer"))
+  stopifnot("la variable no es numeric" = class_y %in% c("numeric", "complex", "integer"))
   
   
   

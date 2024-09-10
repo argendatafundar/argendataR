@@ -112,25 +112,11 @@ agregar_fuente_raw <- function(
     stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
   }
 
-  if (is.data.frame(df)) {
-
-    message("El df sera guardado como parquet")
-
-
-  } else if (!is.data.frame(df)) {
-
-    if (is.null(directorio)) {
+ if (is.null(directorio)) {
       directorio <- tempdir()
     } else {
       stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
-    }
-
-    stopifnot("Directorio y path_clean no son ruta valida" = file.exists(normalize_path(glue::glue("{directorio}/{inputs$path_raw}"))))
-
-
-  } else {
-    stop("Debe ingresar un dataframe valido o un path_raw valido")
-  }
+  } 
 
 
   last_id <- dplyr::last(df_fuentes_raw$id_fuente)

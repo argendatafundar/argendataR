@@ -210,7 +210,7 @@ agregar_fuente_raw <- function(
                     "codigo")  %>%
     readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"), eol = "\n", append = T)
 
-  message("Regristro agregado en fuentes raw")
+  message("Registro agregado en fuentes raw")
 
 
 

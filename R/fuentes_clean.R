@@ -1,6 +1,5 @@
 #' Fuentes clean
 #'
-#' @param limpiar_cache  Logical Si es TRUE borra el cache de consultas al drive de argendata. Si es FALSE reutiliza el cache existente.
 #' @return tibble con la sheet de fuentes clean de googledrive Argendata
 #' @export
 #'

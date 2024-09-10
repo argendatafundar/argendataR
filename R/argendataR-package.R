@@ -3,6 +3,8 @@
 
 ## usethis namespace: start
 #' @import rlang
+#' @importFrom arrow read_parquet
+#' @importFrom arrow write_parquet
 #' @importFrom dplyr bind_rows
 #' @importFrom fs path_package
 #' @importFrom ggplot2 aes
@@ -45,5 +47,6 @@
 #' @importFrom tidyr as_tibble
 #' @importFrom tidyr pivot_wider
 #' @importFrom tidyr unnest_wider
+#' @importFrom utils download.file
 ## usethis namespace: end
 NULL

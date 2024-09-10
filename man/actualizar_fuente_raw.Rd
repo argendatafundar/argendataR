@@ -12,6 +12,7 @@ actualizar_fuente_raw(
   actualizable = NULL,
   fecha_descarga = NULL,
   fecha_actualizar = NULL,
+  df = NULL,
   path_raw = NULL,
   script = NULL,
   api = NULL,
@@ -34,6 +35,8 @@ actualizar_fuente_raw(
 
 \item{fecha_actualizar}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por \code{as.Date()}. Si es null toma fecha actual más 6 meses}
 
+\item{df}{data.frame Dataframe de la fuente clean a registrar.}
+
 \item{path_raw}{string Nombre del archivo de la fuente tal cual fue guardado.}
 
 \item{script}{string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/descarga_fuentes/ de argendata-etl}
@@ -43,8 +46,6 @@ actualizar_fuente_raw(
 \item{directorio}{string Ruta al directorio desde el cual cargar el archivo}
 
 \item{prompt}{logical Si es TRUE (default) pide confirmacion de los cambios.}
-
-\item{df}{data.frame Datafrane de la fuente clean a registrar.}
 }
 \description{
 Actualiza 'fecha_descarga' y 'fecha_actualizar' de una fuente en la sheet de fuentes en el drive de Argendata. Hace \code{drive_upload()} con overwrite = T pisando la version anterior de la fuente en el drive.

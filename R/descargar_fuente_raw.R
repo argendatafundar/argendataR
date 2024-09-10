@@ -19,7 +19,7 @@ descargar_fuente_raw <- function(id_fuente, dir = NULL, limpiar_cache = F) {
 
   stopifnot("dir debe ser string de un directorio existente" = dir.exists(dir))
 
-  df_fuentes <- fuentes_raw(limpiar_cache = F)
+  df_fuentes <- fuentes_raw()
 
   stopifnot("'id_fuente' debe ser numeric con id_fuente o character con codigo de fuente" = is.character(id_fuente) | is.numeric(id_fuente))
 

@@ -45,7 +45,7 @@ descargar_fuente_clean <- function(id_fuente, dir = NULL, limpiar_cache = F) {
   ext <- regmatches(path_clean, m = regexpr("\\.[^\\.]*$", text = path_clean, perl = T))
 
 
-  download.file(url = glue::glue("{IP_FUENTES()}/clean/{path_clean}"),
+  utils::download.file(url = glue::glue("{IP_FUENTES()}/clean/{path_clean}"),
                 destfile = glue::glue("{dir}/{path_clean_body}_{codigo}{ext}"),
                 mode = "wb")
 

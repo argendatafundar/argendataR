@@ -3,7 +3,7 @@
 #' @description
 #' Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace `drive_upload()` con overwrite = F de la fuente.
 #'
-#' @param df data.frame Datafrane de la fuente clean a registrar.
+#' @param df data.frame Dataframe de la fuente clean a registrar.
 #' @param id_fuente_raw integer id numerico que permite seleccionar la fuente raw segun aparece en el sheet. Para consultar ids usar  `fuentes_raw()`
 #' @param nombre string Nombre único que identifica a la fuente en su versión 'clean'.
 #' @param script string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl
@@ -20,6 +20,7 @@
 
 
 agregar_fuente_clean <- function(id_fuente_raw = NULL,
+                                 df = NULL,
                                path_clean = NULL,
                                nombre = NULL,
                                script = NULL,
@@ -88,7 +89,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
       stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
     }
 
-    stopifnot("La extensión de la fuente clean debe ser parquet" = grepl("\\.parquet$", inputs$path_clean))
+    stopifnot("La extension de la fuente clean debe ser parquet" = grepl("\\.parquet$", inputs$path_clean))
 
     stopifnot("Directorio y path_clean no son ruta valida" = file.exists(normalize_path(glue::glue("{directorio}/{inputs$path_clean}"))))
 

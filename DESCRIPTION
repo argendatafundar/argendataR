@@ -7,6 +7,8 @@ Maintainer: Juan Gabriel Juara <jgjuara@fund.ar>
 Description: Paquete de herramientas para el flujo de outputs Argendata.
 License: CC BY 4.0
 Imports: 
+    lifecycle,
+    magrittr,
     dplyr,
     fs,
     ggplot2,
@@ -15,18 +17,15 @@ Imports:
     googlesheets4,
     httr2,
     jsonlite,
-    lifecycle,
-    magrittr,
     mgsub,
     purrr,
-    readr (>= 2.0.0),
+    readr,
     readxl,
     rlang,
     rstudioapi,
     rvest,
     stringi,
     stringr,
-    tibble,
     tidyr,
     arrow
 Encoding: UTF-8

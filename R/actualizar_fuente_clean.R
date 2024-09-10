@@ -40,6 +40,8 @@ actualizar_fuente_clean <- function(id_fuente_clean,
     stopifnot("'id_fuente_clean' no encontrado en sheet de fuentes. Ver `fuentes_clean()`." = id_fuente_clean %in% df_fuentes_clean$id_fuente_clean )
 
     irow <- which(df_fuentes_clean$id_fuente_clean == id_fuente_clean)
+    
+    stopifnot("Mas de una coincidencia de id_fuente hallada" = length(irow) == 1)
 
 
   } else if (is.character(id_fuente_clean)) {
@@ -48,7 +50,8 @@ actualizar_fuente_clean <- function(id_fuente_clean,
 
     irow <- which(df_fuentes_clean$codigo == id_fuente_clean)
     
-
+    stopifnot("Mas de una coincidencia de id_fuente hallada" = length(irow) == 1)
+    
   }
   
   if (!is.null(script)) {
@@ -73,7 +76,7 @@ actualizar_fuente_clean <- function(id_fuente_clean,
       stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
     }
     
-    stopifnot("La extensión de la fuente clean debe ser parquet" = grepl("\\.parquet$", path_clean))
+    stopifnot("La extension de la fuente clean debe ser parquet" = grepl("\\.parquet$", path_clean))
     
     stopifnot("Directorio y path_clean no son ruta valida" = file.exists(normalize_path(paste(directorio, path_clean, sep = "/"))))
     
@@ -99,7 +102,7 @@ actualizar_fuente_clean <- function(id_fuente_clean,
   inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
   
   
-  df_fuentes_clean <- df_fuentes_clean[df_fuentes_clean$id_fuente_clean  == id_fuente_clean,]
+  df_fuentes_clean <- df_fuentes_clean[irow,]
   
   
   
@@ -112,7 +115,6 @@ actualizar_fuente_clean <- function(id_fuente_clean,
     
   }
   
-  stopifnot("El registro de fuentes cambio antes de finalizar la actualizacion. Vuelva a intentarlo" = df_fuentes_clean_md5 == tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_clean.csv")))
   
   
   for (i in names(inputs)) {
@@ -124,6 +126,8 @@ actualizar_fuente_clean <- function(id_fuente_clean,
   }
   
   print(df_fuentes_clean[irow,])
+  
+  stopifnot("El registro de fuentes cambio antes de finalizar la actualizacion. Vuelva a intentarlo" = df_fuentes_clean_md5 == tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_clean.csv")))
   
   
   df_fuentes_clean %>%

@@ -3,7 +3,7 @@
 #' @description
 #' Agrega una fuente no registrada previamente: genera una nueva entrada en la sheet de fuentes y hace `drive_upload()` con overwrite = F de la fuente.
 #'
-#' @param df data.frame Datafrane de la fuente clean a registrar.
+#' @param df data.frame Dataframe de la fuente clean a registrar.
 #' @param url string Link directo a la fuente si existiera o link a la página web más inmediata a la  fuente.
 #' @param nombre string Nombre único que identifica a la fuente
 #' @param institucion string Nombre oficial de la institucion
@@ -20,6 +20,7 @@
 
 
 agregar_fuente_raw <- function(
+                           df = NULL,
                            url = NULL,
                            nombre = NULL,
                            institucion = NULL,
@@ -217,7 +218,7 @@ agregar_fuente_raw <- function(
                     "codigo")  %>%
     readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"), eol = "\n", append = T)
 
-  message("Tabla de fuentes raw actualizada")
+  message("Regristro agregado en fuentes raw")
 
 
 

@@ -95,6 +95,7 @@ actualizar_fuente_clean <- function(id_fuente_clean,
     path_clean = path_clean,
     nombre = nombre,
     script = script,
+    descripcion = descripcion,
     fecha = Sys.time()
   )
 

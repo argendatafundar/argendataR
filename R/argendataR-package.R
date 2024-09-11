@@ -44,6 +44,7 @@
 #' @importFrom stats wilcox.test
 #' @importFrom stringi stri_write_lines
 #' @importFrom stringr str_extract_all
+#' @importFrom tibble as_tibble
 #' @importFrom tidyr as_tibble
 #' @importFrom tidyr pivot_wider
 #' @importFrom tidyr unnest_wider

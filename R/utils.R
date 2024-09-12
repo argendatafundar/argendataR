@@ -9,7 +9,12 @@ SERVER_USER_CALL <- function(){
 
 #' @keywords internal
 RUTA_FUENTES <- function() {
-  Sys.getenv("RUTA_FUENTES")
+  
+  x <- Sys.getenv("RUTA_FUENTES")
+   
+  stopifnot("Variable de entorno 'RUTA_FUENTES' no encontrada. Definirla en .Renviron" = x != "")
+  
+  x
 }
 
 
@@ -17,8 +22,11 @@ RUTA_FUENTES <- function() {
 IP_FUENTES <- function() {
   
   
-    Sys.getenv("IP_FUENTES")
-    
+   x <-  Sys.getenv("IP_FUENTES")
+  
+   stopifnot("Variable de entorno 'RUTA_FUENTES' no encontrada. Definirla en .Renviron" = x != "")
+   
+   x
 }
 
 

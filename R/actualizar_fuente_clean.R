@@ -32,7 +32,7 @@ actualizar_fuente_clean <- function(id_fuente_clean,
   stopifnot("'id_fuente_clean' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente_clean) | is.character(id_fuente_clean))
 
   df_fuentes_clean <- fuentes_clean()
-  
+
   df_fuentes_clean_md5 <- tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_clean.csv"))
 
   if (is.numeric(id_fuente_clean)) {
@@ -40,7 +40,7 @@ actualizar_fuente_clean <- function(id_fuente_clean,
     stopifnot("'id_fuente_clean' no encontrado en sheet de fuentes. Ver `fuentes_clean()`." = id_fuente_clean %in% df_fuentes_clean$id_fuente_clean )
 
     irow <- which(df_fuentes_clean$id_fuente_clean == id_fuente_clean)
-    
+
     stopifnot("Mas de una coincidencia de id_fuente hallada" = length(irow) == 1)
 
 
@@ -49,112 +49,109 @@ actualizar_fuente_clean <- function(id_fuente_clean,
     stopifnot("'id_fuente_clean' no coincide con ningun codigo en sheet de fuentes. Ver `fuentes_clean()`." = id_fuente_clean %in% df_fuentes_clean$codigo )
 
     irow <- which(df_fuentes_clean$codigo == id_fuente_clean)
-    
+
     stopifnot("Mas de una coincidencia de id_fuente hallada" = length(irow) == 1)
-    
+
   }
-  
+
   if (!is.null(script)) {
-    
+
     if (!file.exists(paste0("scripts/limpieza_fuentes/", script)) &
         !file.exists(script)) {
       stop("No se encontro el archivo script en scripts/limpieza_fuentes/. Guardarlo en la ubicacion antes de continuar")
     }
-    
+
   }
-  
+
   if (is.data.frame(df)) {
-    
+
     message("El df sera guardado como parquet")
-    
-    
+
+
   } else if (!is.data.frame(df)) {
-    
+
     if (is.null(directorio)) {
       directorio <- tempdir()
     } else {
       stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
     }
-    
+
     stopifnot("La extension de la fuente clean debe ser parquet" = grepl("\\.parquet$", path_clean))
-    
+
     stopifnot("Directorio y path_clean no son ruta valida" = file.exists(normalize_path(paste(directorio, path_clean, sep = "/"))))
-    
-    
+
+
     if (file.size(glue::glue("{directorio}/{path_clean}")) > 1E8) {
       warning("El peso del archivo supera el limite de github ")
     }
-    
+
   } else {
     stop("Debe ingresar un dataframe valido o un path_clean valido")
   }
-  
+
 
   inputs <- list(
     # id_fuente_clean = id_fuente_clean,
     path_clean = path_clean,
     nombre = nombre,
     script = script,
+    descripcion = descripcion,
     fecha = Sys.time()
   )
 
 
   inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
-  
-  
-  df_fuentes_clean <- df_fuentes_clean[irow,]
-  
-  
-  
+
+
   if (!isFALSE(prompt) & length(inputs) > 1) {
-    
+
     message("Va a sobreescribir datos de registro de la fuente.")
     ok <- readline(prompt = "Continuar con la actualizacion de la fuente raw? Y/N")
-    
+
     stopifnot("Actualizacion cancelada." = tolower(ok) == "y")
-    
+
   }
-  
-  
-  
+
+
+
   for (i in names(inputs)) {
-    
+
     inputs[[i]] <- coerce_to(inputs[[i]], df_fuentes_clean[[irow, i]])
-    
+
     df_fuentes_clean[[irow, i]] <-  inputs[[i]]
-    
+
   }
-  
+
   print(df_fuentes_clean[irow,])
-  
+
   stopifnot("El registro de fuentes cambio antes de finalizar la actualizacion. Vuelva a intentarlo" = df_fuentes_clean_md5 == tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_clean.csv")))
-  
-  
+
+
   df_fuentes_clean %>%
     readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_clean.csv"), eol = "\n", progress = F)
 
   message("Registro actualizado en fuentes clean")
 
   if (is.data.frame(df)) {
-    
-    df %>% 
-      arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/clean/{path_clean}"), compression = "gzip")
-    
+
+    df %>%
+      arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/clean/{path_clean}"), compression = "snappy")
+
     message("Parquet creado")
 
-  } else if (!is.data.frame(df) & file.exists(normalize_path(paste(directorio, df_fuentes_clean$path_clean, sep = "/")))) {
-    
+  } else if (!is.data.frame(df) & file.exists(normalize_path(paste(directorio, path_clean, sep = "/")))) {
+
 
     if (file.size(glue::glue("{directorio}/{path_clean}")) > 1E8) {
       warning("El peso del archivo supera el limite de github ")
     }
-    
+
     file.copy(from = glue::glue("{directorio}/{path_clean}"),
               to = glue::glue("{RUTA_FUENTES()}/clean/{path_clean}"), overwrite = T, copy.mode = T)
-    
+
     message("Parquet creado")
-    
-    
+
+
   } else {
     stop("Error inesperado al guardar el parquet")
   }

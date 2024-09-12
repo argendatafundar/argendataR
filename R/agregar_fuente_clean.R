@@ -153,14 +153,14 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
   if (is.data.frame(df)) {
 
     df %>%
-      arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/clean/{path_clean}"), compression = "gzip")
+      arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/clean/{path_clean}"), compression = "snappy")
 
     message("Parquet creado")
 
   } else if (!is.data.frame(df) & file.exists(normalize_path(paste(directorio, inputs$path_clean, sep = "/")))) {
 
 
-    if (file.size(glue::glue("{directorio}/{df_fuentes_clean$path_clean}")) > 1E8) {
+    if (file.size(glue::glue("{directorio}/{path_clean}")) > 1E8) {
       warning("El peso del archivo supera el limite de github ")
     }
 

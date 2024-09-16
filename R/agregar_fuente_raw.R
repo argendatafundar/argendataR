@@ -31,12 +31,12 @@ agregar_fuente_raw <- function(
                            directorio = NULL) {
 
 
-
+  stopifnot("fecha_actualizar no puede ser NULL" = !is.null(fecha_actualizar))
 
   if (is.character(fecha_actualizar) & fecha_actualizar != "Sin informacion") {
 
+    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(as.Date(fecha_actualizar)) & length(as.Date(fecha_actualizar)) == 1)
     fecha_actualizar <- as.Date(fecha_actualizar)
-    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(fecha_actualizar) & length(fecha_actualizar) == 1)
 
   } else if (class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) {
 
@@ -44,21 +44,22 @@ agregar_fuente_raw <- function(
 
   } else {
 
-    stopifnot("param 'fecha_actualizar' debe ser fecha o character parseable a fecha o 'Sin informacion'" = fecha_actualizar == "Sin informacion" & is.character(fecha_actualizar))
-  
+    stopifnot("param 'fecha_actualizar' debe ser fecha o character parseable a fecha o 'Sin informacion'" = fecha_actualizar == "Sin informacion" & length(fecha_actualizar) == 1)
+
   }
 
 
 
-  if (is.character(fecha_descarga)  | class(fecha_descarga) %in% c("Date", "POSIXct", "POSIXt")) {
+ if (is.null(fecha_descarga)) {
+
+    fecha_descarga <- Sys.time()
+
+  } else if (is.character(fecha_descarga)  | class(fecha_descarga) %in% c("Date", "POSIXct", "POSIXt")) {
 
     fecha_descarga <- as.Date(fecha_descarga)
     stopifnot("param 'fecha_descarga' debe ser date o string parseable como fecha o null" = !is.na(fecha_descarga) & length(fecha_descarga) == 1)
 
-  } else if (is.null(fecha_descarga)) {
-    
-    fecha_descarga <- Sys.time()
-    
+
   } else {
 
     stop("param 'fecha_descarga' debe ser fecha o null")
@@ -116,7 +117,7 @@ agregar_fuente_raw <- function(
       directorio <- tempdir()
     } else {
       stopifnot("'directorio' debe ser string a una ruta valida" = dir.exists(directorio))
-  } 
+  }
 
 
   last_id <- dplyr::last(df_fuentes_raw$id_fuente)

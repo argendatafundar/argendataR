@@ -1,3 +1,5 @@
+#' @keywords internal
+GH_DATA_RAWURL <- function() {"https://raw.githubusercontent.com/argendatafundar/data/main/"}
 
 #' @keywords internal
 SERVER_USER_CALL <- function(){

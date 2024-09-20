@@ -24,27 +24,28 @@ comparar_outputs <- function(df, df_anterior,
                              entrega_subtopico = "primera_entrega",
                              pk = NULL, k_control_num = 3,
                              drop_joined_df = F) {
-  
+
   if (missing(df_anterior)) {
-    
+
     message("No se recibio un dataframe de referencia. Se procede a descarga desde el drive")
-    
+
     if (missing(subtopico)) {
-      
+
       subtopico <- get("subtopico", envir = globalenv())
     }
-    
+
     stopifnot("'entrega_subtopico' debe ser uno de: primera_entrega, segunda_entrega, datasets_update" = entrega_subtopico %in% c("primera_entrega", "segunda_entrega", "datasets_update"))
-    
+
     df_anterior <- descargar_output(nombre = nombre,
                                     subtopico = subtopico,
                                     entrega_subtopico = entrega_subtopico)
-    
+
   }
 
 
   columns_check <- check_cols(df = df, df_anterior = df_anterior)
-  
+
+  stopifnot("parametro 'pk' debe ser character" = !is.null(pk))
 
   stopifnot("las columnas 'pk' deben estar presenten en el output previo y el output nuevo" = all(pk %in% colnames(df_anterior)) & all(pk %in% colnames(df)))
 
@@ -72,12 +73,12 @@ comparar_outputs <- function(df, df_anterior,
 
                                        class_x <- class(data[[paste0(x, ".x")]])
 
-                                       if (class_x %in% c("numeric", "complex")) {
+                                       if (class_x %in% c("numeric", "complex", "integer")) {
 
                                          control_valores_num(root_name = x, pk = pks, df = data, k = k_valor)
 
                                        } else if (class_x %in% c("character", "logical", "factor")) {
-                                         
+
                                          control_valores_nonnum(root_name = x, pk = pks, df = data)
 
                                        } else {
@@ -114,7 +115,7 @@ comparar_outputs <- function(df, df_anterior,
 #' @export
 #'
 nuevos_na <- function(x,y) {
-  
+
   stopifnot("los vectores deben tener igual largo" = length(x) == length(y) )
 
   n_nuevos_na <- sum(!is.na(x) & is.na(y))
@@ -149,7 +150,7 @@ nuevos_na <- function(x,y) {
 #'
 
 control_valores_num <- function(root_name, pk, k, df) {
-  
+
 
   col_x <- paste0(root_name,".x")
   col_y <- paste0(root_name,".y")
@@ -157,35 +158,35 @@ control_valores_num <- function(root_name, pk, k, df) {
 
   class_x <- class(df[[col_x]])
   class_y <- class(df[[col_y]])
-  
+
 
   stopifnot("la variable no es numeric" = class_x %in% c("numeric", "complex", "integer"))
   stopifnot("la variable no es numeric" = class_y %in% c("numeric", "complex", "integer"))
-  
-  
-  
+
+
+
   na_count <- nuevos_na(df[[col_x]], df[[col_y]])
-  
+
   variaciones_rel <- round((df[[col_y]] - df[[col_x]])/df[[col_x]], 6)
 
 
   df$variaciones_rel <- variaciones_rel
 
   mean_variaciones_rel <- mean(abs(variaciones_rel), na.rm = T)
-  
+
   df$zscaled_variaciones_rel <- as.vector(scale(df$variaciones_rel))
-  
+
 
   df_test <- df[!is.na(df[col_x]) & !is.na(df[col_y]),]
 
   ks_test <- stats::ks.test(df_test[[col_x]], df_test[[col_y]])
 
   mw_test <- stats::wilcox.test(df_test[[col_x]], df_test[[col_y]], paired = F)
-  
-  
+
+
   df_test <- dplyr::select(df_test, dplyr::all_of(c(pk, col_x, col_y)),
                       "variaciones_rel", "zscaled_variaciones_rel")
-  
+
   df_test <- df_test[abs(df_test[["zscaled_variaciones_rel"]]) > k & !is.na(df_test[["zscaled_variaciones_rel"]]),]
 
   vars_plot <- ggplot2::ggplot() +
@@ -193,8 +194,8 @@ control_valores_num <- function(root_name, pk, k, df) {
       ggplot2::geom_abline(slope = 1, color = "red", alpha = .7) +
       ggplot2::xlab(col_x) + ggplot2::ylab(col_y) +
       ggplot2::theme_minimal()
-    
-  
+
+
 
   list("nuevos_na" = na_count,
        "mean_variaciones_rel" = mean_variaciones_rel,
@@ -230,32 +231,32 @@ control_valores_num <- function(root_name, pk, k, df) {
 #' - metricas_filas =  dataframe con pk, col.x, col.y, coinciden_valores
 
 control_valores_nonnum <- function(root_name, pk, df) {
-  
+
   col_x <- paste0(root_name, ".x")
   col_y <- paste0(root_name, ".y")
-  
-  
+
+
   class_x <- class(df[[col_x]])
-  
+
   stopifnot("la variable debe ser logical o character" = class_x %in% c("character", "logical", "factor"))
-  
+
   na_count <- nuevos_na(df[[col_x]], df[[col_y]])
-  
+
   coinciden_valores <- tidyr::replace_na(df[[col_y]] == df[[col_x]], F) | (is.na(df[[col_y]]) & is.na(df[[col_x]]))
-  
+
   df$coinciden_valores <- coinciden_valores
-  
+
   df <- df[!df[["coinciden_valores"]] & !is.na(df[["coinciden_valores"]]),]
-  
+
   df <-  dplyr::select(df, dplyr::all_of(c(pk, col_x, col_y)), "coinciden_valores")
-  
+
   list(
     "nuevos_na" = na_count,
     "tasa_mismatches" = sum(!coinciden_valores) / length(coinciden_valores),
     "filas_mismatches" = df
   )
-  
-  
+
+
 }
 
 

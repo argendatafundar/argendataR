@@ -8,14 +8,19 @@
 #' @export
 #'
 
-descargar_fuente_clean <- function(id_fuente, dir, limpiar_cache = F) {
+descargar_fuente_clean <- function(id_fuente, dir = NULL, limpiar_cache = F) {
+
+
+  if (is.null(dir)) {
+    dir <- tempdir()
+  }
 
   dir <- gsub("/$", "", dir)
 
   stopifnot("dir debe ser string de un directorio existente" = dir.exists(dir))
 
 
-  df_fuentes <- fuentes_clean(limpiar_cache = F)
+  df_fuentes <- fuentes_clean()
 
   stopifnot("'id_fuente' debe ser numeric con id_fuente o character con codigo de fuente" = is.character(id_fuente) | is.numeric(id_fuente))
 
@@ -40,14 +45,10 @@ descargar_fuente_clean <- function(id_fuente, dir, limpiar_cache = F) {
   ext <- regmatches(path_clean, m = regexpr("\\.[^\\.]*$", text = path_clean, perl = T))
 
 
-  fuentes_clean_dir <- fuentes_clean_dir()$tree
+  utils::download.file(url = glue::glue("{IP_FUENTES()}/clean/{path_clean}"),
+                destfile = glue::glue("{dir}/{path_clean_body}_{codigo}{ext}"),
+                mode = "wb")
 
-  fuente_gd_id <- fuentes_clean_dir[fuentes_clean_dir$name == path_clean,][["id"]]
 
-
-
-  googledrive::drive_download(file = googledrive::as_id(fuente_gd_id),
-                              path = glue::glue("{dir}/{path_clean_body}_{codigo}{ext}"),
-                              overwrite = T)
 
 }

@@ -1,3 +1,37 @@
+#' @keywords internal
+GH_DATA_RAWURL <- function() {"https://raw.githubusercontent.com/argendatafundar/data/main/"}
+
+#' @keywords internal
+SERVER_USER_CALL <- function(){
+  
+  info <- Sys.info()
+  
+  info["nodename"] == "vps-3915596-x"
+}
+
+#' @keywords internal
+RUTA_FUENTES <- function() {
+  
+  x <- Sys.getenv("RUTA_FUENTES")
+   
+  stopifnot("Variable de entorno 'RUTA_FUENTES' no encontrada. Definirla en .Renviron" = x != "")
+  
+  x
+}
+
+
+#' @keywords internal
+IP_FUENTES <- function() {
+  
+  
+   x <-  Sys.getenv("IP_FUENTES")
+  
+   stopifnot("Variable de entorno 'RUTA_FUENTES' no encontrada. Definirla en .Renviron" = x != "")
+   
+   x
+}
+
+
 
 #' Directorio raiz de argendata
 #'

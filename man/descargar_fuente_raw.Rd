@@ -4,7 +4,7 @@
 \alias{descargar_fuente_raw}
 \title{Descarga fuente version raw}
 \usage{
-descargar_fuente_raw(id_fuente, dir, limpiar_cache = F)
+descargar_fuente_raw(id_fuente, dir = NULL, limpiar_cache = F)
 }
 \arguments{
 \item{id_fuente}{numeric id numerico de la fuente tal cual aparece en la sheet de fuentes. Ver \code{fuentes_raw()}}

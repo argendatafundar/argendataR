@@ -215,6 +215,26 @@ write_output <- function(
     
 
     control <- control[names(control) != "joined_df"]
+    
+    
+    colscontrol <- names(control[["comparacion_cols"]])
+    
+    for (i  in colscontrol) {
+      
+      if ( "ks_test" %in% names(control[["comparacion_cols"]][[i]]) ) {
+        
+        stopifnot("El dataset tiene una variable numerica que no cumple los test de control" = control[["comparacion_cols"]][[i]]$ks_test > .2 &  control[["comparacion_cols"]][[i]]$mw_test > .2)
+        
+      } else {
+        
+        stopifnot("El dataset tiene una variable no numerica que no cumple los test de control" = control[["comparacion_cols"]][[i]]$tasa_mismatches < .05 )
+        
+        
+      }
+      
+        
+    }
+    
 
   } else {
 

@@ -1,34 +1,18 @@
 #' Fuentes clean
 #'
-#' @param limpiar_cache  Logical Si es TRUE borra el cache de consultas al drive de argendata. Si es FALSE reutiliza el cache existente.
 #' @return tibble con la sheet de fuentes clean de googledrive Argendata
 #' @export
 #'
 
-fuentes_clean <- function(limpiar_cache = T) {
+fuentes_clean <- function() {
 
-  if(isTRUE(limpiar_cache)){
-    limpiar_temps()
-  }
+    df <- readr::read_csv(glue::glue("{IP_FUENTES()}/fuentes_clean.csv"), show_col_types = F, progress = F)
 
-  filetemp <- list.files(tempdir(), full.names = T)[grepl("fuentes_clean_argdt", list.files(tempdir()))]
-
-  if (length(filetemp) == 1) {
-
-    readr::read_csv(filetemp) %>%
-      suppressMessages()
-
-  } else {
-    df <- googlesheets4::read_sheet(ss = fuentes_clean_sheet_id())
-
-    df %>%
-      dplyr::filter(df$borrada != T | is.na(df$borrada)) %>%
-      readr::write_csv(file = tempfile("fuentes_clean_argdt", fileext = ".csv")) %>%
-      suppressMessages()
+    df <- df %>%
+      dplyr::filter(df$borrada != T | is.na(df$borrada)) 
 
     df
-  }
-
-
 
 }
+
+

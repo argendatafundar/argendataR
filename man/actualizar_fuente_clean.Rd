@@ -6,6 +6,7 @@
 \usage{
 actualizar_fuente_clean(
   id_fuente_clean,
+  df = NULL,
   nombre = NULL,
   script = NULL,
   path_clean = NULL,
@@ -15,13 +16,15 @@ actualizar_fuente_clean(
 )
 }
 \arguments{
-\item{id_fuente_clean}{integer id numerico que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  \code{fuentes_clean()}}
+\item{id_fuente_clean}{integer id numerico  o codigo string que permite seleccionar la fuente segun aparece en el sheet. Para consultar ids usar  \code{fuentes_clean()}}
+
+\item{df}{data.frame Datafrane de la fuente clean a registrar.}
 
 \item{nombre}{string Nombre único que identifica a la fuente en su versión 'clean'.}
 
 \item{script}{string  Nombre del archivo del script de descarga de la fuente tal cual se guardó en scripts/limpieza_fuentes/ de argendata-etl}
 
-\item{path_clean}{string Nombre del archivo de la fuente tal cual fue guardado.}
+\item{path_clean}{string Nombre del archivo de la fuente. Debe ser extension .parquet.}
 
 \item{descripcion}{string Descripcion del dataset}
 
@@ -30,7 +33,7 @@ actualizar_fuente_clean(
 \item{prompt}{logical Si es TRUE (default) pide confirmacion de los cambios.}
 }
 \description{
-Hace \code{drive_upload()} con overwrite = T pisando la version anterior de la fuente en el drive y actualiza 'timestamp' de una fuente en la sheet de fuentes clean en el drive de Argendata.
+Actualiza el registro en la tabla de fuentes clean y guarda una nueva copia de la fuente clean el directorio del servidor.
 }
 \details{
 La funcion toma el dato de path_clean declarado en \code{fuentes_clean()} para el id seleccionado y espera que exista el archivo correpondiente al path_clean. Ese archivo ser subirá al drive pisando el archivo preexistente.

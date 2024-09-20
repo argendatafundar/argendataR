@@ -32,7 +32,7 @@ actualizar_fuente_raw(
 
 \item{fecha_descarga}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por \code{as.Date()}. Si es null toma la fecha de \code{Sys.Date()}}
 
-\item{fecha_actualizar}{date o string o null Fecha de descarga como valor de clase 'date', o 'string' parseable por \code{as.Date()}. Si es null toma fecha actual más 6 meses}
+\item{fecha_actualizar}{date o string Fecha en que la fuente sera actualizada por la institucion que la gestiona. Poner "Sin informacion" si no hay detalle}
 
 \item{path_raw}{string Nombre del archivo de la fuente tal cual fue guardado.}
 

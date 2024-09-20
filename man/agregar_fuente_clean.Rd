@@ -6,6 +6,7 @@
 \usage{
 agregar_fuente_clean(
   id_fuente_raw = NULL,
+  df = NULL,
   path_clean = NULL,
   nombre = NULL,
   script = NULL,
@@ -16,6 +17,8 @@ agregar_fuente_clean(
 }
 \arguments{
 \item{id_fuente_raw}{integer id numerico que permite seleccionar la fuente raw segun aparece en el sheet. Para consultar ids usar  \code{fuentes_raw()}}
+
+\item{df}{data.frame Dataframe de la fuente clean a registrar.}
 
 \item{path_clean}{string Nombre del archivo de la fuente tal cual fue guardado.}
 

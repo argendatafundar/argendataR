@@ -173,9 +173,11 @@ write_output <- function(
     stopifnot("uno o mas nombres de 'descripcion_columnas' no coinciden con columnas en 'data.'" = all(names(descripcion_columnas) %in% columnas))
     stopifnot("una o mas columnas no descriptas en 'descripcion_columnas'" = all(columnas %in% names(descripcion_columnas)))
     stopifnot("hay etiquetas invalidas. Deben ser character no vacios." = all(sapply(descripcion_columnas, function(x) {is.character(x) & x != ""})))
+    stopifnot("hay columnas repetidas, cada columna solo debe declararse 1 vez" = all(sapply(unique(names(descripcion_columnas)), function(i) sum(names(descripcion_columnas) == i) == 1 )) )
+
   }  else if (is.null(descripcion_columnas)) {
 
-    stop("Es obligatorio pasar descripcion de columnas")
+    stop("Es obligatorio pasar una lista de descripcion de columnas")
     # stopifnot("no se encontro la columna 'indicador' en 'data'. No es posible leer las etiquetas de data[,'indicador']" = "indicador" %in% columnas)
     # descripcion_columnas <- unique(data[['indicador']])
 

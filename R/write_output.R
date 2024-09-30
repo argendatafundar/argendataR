@@ -18,11 +18,14 @@
 #' @param columna_geo_referencia string o null Nombre de la columna con el codigo del area geografica si corresponde. Debe ser uno de   'iso3', 'cod_fundar', 'cod_pcia', 'cod_depto', 'eph_codagl', 'cod_aglo', 'cod_agl'. Default = NULL
 #' @param nivel_agregacion string o null Nivel de agregacion al que se presentan los datos. Default  = NULL
 #' @param nullables string o logical Vector con los nombres de las columnas que admiten nulls o valor logico TRUE o FALSE. Si es FALSE se considera que ninguna columna admite nulls, si es TRUE se considera que todas las columnas adminten nulls. Default = FALSE
-#' @param etiquetas_indicadores list o null Lista nombrada con la etiqueta que le corresponde a las columnas. Los nombres de la lista deben coincidir con nombres de columnas de 'data'. Ejemplo: list('gini' = 'Indice de Gini', 'pbipcppp' = 'PBI per capita en parity purchase power'). Si es NULL(default), la funcion busca la columna 'indicador' en 'data' y toma como etiquetas los valores unicos de alli.
+#' @param cambio_nombre_output list o null Lista nombrada con la definicion del nombre anterior y el nombre nuevo del dataset.Ej. `list('nombre_nuevo' = 'exportaciones_pc_por_pais', 'nombre_anterior' = 'export_pc_por_pais_2022')`
+#' @param cambio_nombre_cols list o null Lista nombrada con los pares de nombre nuevo y nombre anterior de las columnas que cambiaron de nombre.Ej. `list('nombre_nuevo' = 'nombre_anterior', 'pobreza_jovenes' = 'poberz_18_30')`
 #' @param unidades list o null Lista nombrada con las unidades en que estan expresadas las columnas. Los nombres de la lista deben coincidir con nombres de columnas de 'data'. Ejemplo: list('gini' = 'indice', 'pbipcppp' = 'parity purchase power', 'population' = 'millones de personas'). Si es NULL (default), la funcion busca la columna 'unidad' en 'data' y genera una lista tomando las combinaciones unicas de 'unidad' e 'indicador' en 'data'.
 #' @param classes list o null Si es null (default) la funcion genera una lista con las clases y nombres de columnas en data. Si es una lista los nombres de la lista deben coincidir con valores en la columna 'indicador' en 'data' y los valores deben ser: 'logical', 'character', 'double', 'interger' o 'date'.
+#' @param descripcion_columnas list o null Lista nombrada con la descripcion que le corresponde a cada columna. Los nombres de la lista deben coincidir con nombres de columnas de 'data'. Ejemplo: list('gini' = 'Indice de Gini', 'pbipcppp' = 'PBI per capita en parity purchase power'). Si es NULL(default), la funcion busca la columna 'indicador' en 'data' y toma como etiquetas los valores unicos de alli.
 #' @param directorio string Ruta al directorio desde el cual cargar el archivo. Si es NULL toma tempdir()
 #' @param control list Lista que resulta de la comparacion entre output anterior y output nuevo. Ver `comparar_outputs()`
+#' @param ... parametros adicionales para captura de aliases anteriores.
 #' @returns Escribe localmente un json con la data y metadata definida usando '{output_name}.json' como path. Opcionalmente tambien escribe un csv '{output_name}.csv'
 #' @export
 #'
@@ -39,15 +42,28 @@ write_output <- function(
     aclaraciones = NULL,
     exportar = TRUE,
     control = NULL,
+    cambio_nombre_output = NULL,
+    cambio_nombre_cols = NULL,
     pk = NULL,
     es_serie_tiempo = TRUE,
     columna_indice_tiempo = NULL,
     columna_geo_referencia = NULL,
     nivel_agregacion = NULL,
     nullables = FALSE,
-    etiquetas_indicadores = NULL,
+    descripcion_columnas = NULL,
     unidades = NULL,
-    classes = NULL) {
+    classes = NULL,
+    ...) {
+
+  ## dots evaluation
+  dots <- list(...)
+  if ("etiquetas_indicadores" %in% names(dots)) {
+    if (missing(descripcion_columnas)) {
+      descripcion_columnas <- dots[["etiquetas_indicadores"]]
+    } else {
+      warning("'descripcion_columnas' y 'etiquetas_indicadores' recibidos, ignorando 'etiquetas_indicadores'")
+    }
+  }
 
   if (is.null(directorio)) {
     directorio <- tempdir()
@@ -78,7 +94,7 @@ write_output <- function(
 
   ## nombre output
 
-  stopifnot("'output_name' debe ser character de largo 1" = is.character(output_name) & length(output_name) == 1)
+  stopifnot("'output_name' debe ser characters '[a-z_]' de largo 1" = is.character(output_name) & length(output_name) == 1 & !grepl("[^a-z_]", output_name))
 
   output_name <- gsub("\\.csv$","",output_name)
 
@@ -118,14 +134,14 @@ write_output <- function(
 
   ## columna_indice_tiempo
 
-  if (es_serie_tiempo) {
+  if (isTRUE(es_serie_tiempo)) {
     stopifnot("'columna_indice_tiempo' no hallada en 'data'" = all(columna_indice_tiempo %in% columnas))
-    # if (columna_indice_tiempo == 'anio') {
-    #   stopifnot("columna 'anio' en data debe ser 'numeric'" = class(data[['anio']]) == "numeric")
-    # }
-    # if (columna_indice_tiempo == 'fecha') {
-    #   stopifnot("columna 'fecha' en data debe ser 'Date'" = class(data[['fecha']]) == "Date")
-    # }
+
+  } else if (isFALSE(es_serie_tiempo)) {
+    stopifnot("'columna_indice_tiempo' debe ser NULL si el dataset no es serie de tiempo" = is.null(columna_indice_tiempo))
+
+  } else {
+    stop("'es_serie_tiempo' debe ser TRUE o FALSE")
   }
 
 
@@ -151,18 +167,20 @@ write_output <- function(
 
   }
 
-  ## etiquetas_indicadores
+  ## descripcion_columnas
 
-  if (is.list(etiquetas_indicadores)) {
-    stopifnot("uno o mas nombres de 'etiquetas_indicadores' no coinciden con columnas en 'data.'" = all(names(etiquetas_indicadores) %in% columnas))
-    stopifnot("hay etiquetas invalidas. Deben ser character no vacios." = all(sapply(etiquetas_indicadores, function(x) {is.character(x) & x != ""})))
-  }  else if (is.null(etiquetas_indicadores)) {
+  if (is.list(descripcion_columnas)) {
+    stopifnot("uno o mas nombres de 'descripcion_columnas' no coinciden con columnas en 'data.'" = all(names(descripcion_columnas) %in% columnas))
+    stopifnot("una o mas columnas no descriptas en 'descripcion_columnas'" = all(columnas %in% names(descripcion_columnas)))
+    stopifnot("hay etiquetas invalidas. Deben ser character no vacios." = all(sapply(descripcion_columnas, function(x) {is.character(x) & x != ""})))
+  }  else if (is.null(descripcion_columnas)) {
 
-    stopifnot("no se encontro la columna 'indicador' en 'data'. No es posible leer las etiquetas de data[,'indicador']" = "indicador" %in% columnas)
-    etiquetas_indicadores <- unique(data[['indicador']])
+    stop("Es obligatorio pasar descripcion de columnas")
+    # stopifnot("no se encontro la columna 'indicador' en 'data'. No es posible leer las etiquetas de data[,'indicador']" = "indicador" %in% columnas)
+    # descripcion_columnas <- unique(data[['indicador']])
 
-  } else if (!is.null(etiquetas_indicadores)) {
-    stop("'etiquetas_indicadores' debe ser una lista o null.")
+  } else if (!is.null(descripcion_columnas)) {
+    stop("'descripcion_columnas' debe ser una lista con la descripcion de columnas")
   }
 
 
@@ -209,36 +227,80 @@ write_output <- function(
   ## control
 
   if (is.list(control)) {
-    
+
     control$comparacion_cols <- lapply(control$comparacion_cols,
                                            function(x) {x[names(x) != "plot"]})
-    
+
 
     control <- control[names(control) != "joined_df"]
-    
-    
+
+
     colscontrol <- names(control[["comparacion_cols"]])
-    
+
     for (i  in colscontrol) {
-      
+
       if ( "ks_test" %in% names(control[["comparacion_cols"]][[i]]) ) {
-        
+
         stopifnot("El dataset tiene una variable numerica que no cumple los test de control" = control[["comparacion_cols"]][[i]]$ks_test > .2 &  control[["comparacion_cols"]][[i]]$mw_test > .2)
-        
+
       } else {
-        
+
         stopifnot("El dataset tiene una variable no numerica que no cumple los test de control" = control[["comparacion_cols"]][[i]]$tasa_mismatches < .05 )
-        
-        
+
+
       }
-      
-        
+
+
     }
-    
+
 
   } else {
 
     control <- "no se incluyeron controles"
+
+  }
+
+  # diccionario_cambios
+
+  stopifnot("'cambio_nombre_output' debe ser NULL o una lista" = is.null(cambio_nombre_output) | is.list(cambio_nombre_output))
+
+  if (is.list(cambio_nombre_output)) {
+
+    nombres_lista_output <- names(cambio_nombre_output)
+
+    stopifnot("'cambio_nombre_output' debe ser una lista con nombres" = is.list(cambio_nombre_output) & is.character(names(cambio_nombre_output)))
+
+    stopifnot("los nombres en lista 'cambio_nombre_output' solo deben ser 'nombre_anterior' y/o 'nombre_nuevo' " = all(nombres_lista_output %in% c("nombre_anterior", "nombre_nuevo")))
+
+    stopifnot("'nombre_anterior' esta repetido, solo debe haber un elemento 'nombre_anterior'" = sum(names(nombres_lista_output == 'nombre_anterior')) == 1 | sum(names(nombres_lista_output == 'nombre_anterior')) == 0)
+
+    stopifnot("'nombre_nuevo' esta repetido, solo debe haber un elemento 'nombre_nuevo'" = sum(names(nombres_lista_output == 'nombre_nuevo')) == 1 | sum(names(nombres_lista_output == 'nombre_nuevo')) == 0)
+
+  } else {
+
+    stopifnot("'cambio_nombre_output' debe ser list o NULL" = is.null(cambio_nombre_output))
+
+  }
+
+  stopifnot("'cambio_nombre_cols' debe ser NULL o una lista" = is.null(cambio_nombre_cols) | is.list(cambio_nombre_cols))
+
+  if (is.list(cambio_nombre_cols)) {
+
+    nombres_lista_cols <- names(cambio_nombre_cols)
+
+    stopifnot("'cambio_nombre_cols' debe ser una lista con nombres" = is.list(cambio_nombre_cols) & is.character(names(cambio_nombre_cols)))
+
+    stopifnot("los nombres en lista 'cambio_nombre_cols' deben coincidir con las columnas del dataframe 'data'" = all(nombres_lista_cols %in% columnas))
+
+    stopifnot("hay nombres de columna repetidos en 'cambio_nombre_cols'" = all(sapply(unique(nombres_lista_cols), function(i) sum(nombres_lista_cols == i) == 1 )))
+
+    stopifnot("los elementos 'cambio_nombre_cols' deben ser tipo character de largo 1" = all(sapply(cambio_nombre_cols, function(x) {class(x) == "character" & length(x) == 1})))
+
+    stopifnot("los elementos 'cambio_nombre_cols' no pueden ser string vacio ''" = all(sapply(cambio_nombre_cols, function(x) {x != ""})))
+
+  } else {
+
+    stopifnot("'cambio_nombre_cols' debe ser list o NULL" = is.null(cambio_nombre_cols))
 
   }
 
@@ -253,6 +315,8 @@ write_output <- function(
     extension = extension,
     analista = analista,
     fuentes = fuentes,
+    cambio_nombre_output = cambio_nombre_output,
+    cambio_nombre_cols = cambio_nombre_cols,
     aclaraciones = aclaraciones,
     control = control,
     exportar = exportar,
@@ -262,7 +326,7 @@ write_output <- function(
     columna_geo_referencia = columna_geo_referencia,
     nivel_agregacion = nivel_agregacion,
     nullables = nullables ,
-    etiquetas_indicadores = etiquetas_indicadores,
+    descripcion_columnas = descripcion_columnas,
     unidades = unidades,
     classes = classes,
     data = data

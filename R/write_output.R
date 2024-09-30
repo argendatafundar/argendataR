@@ -81,7 +81,7 @@ write_output <- function(
   ## columnas
   columnas <- colnames(data)
 
-  stopifnot("nombres de columnas invalidos en data" = !all(grepl("[^a-z0-9_]+", columnas)))
+  stopifnot("nombres de columnas invalidos en data" = !all(grepl("[^a-z_]+", columnas)))
 
   ## subtopico
 
@@ -94,7 +94,7 @@ write_output <- function(
 
   ## nombre output
 
-  stopifnot("'output_name' debe ser characters '[a-z_]' de largo 1" = is.character(output_name) & length(output_name) == 1 & !grepl("[^a-z_]", output_name))
+  stopifnot("'output_name' debe ser characters '[a-z_]' de largo 1" = is.character(output_name) & length(output_name) == 1 & !grepl("[^a-z_]+", output_name))
 
   output_name <- gsub("\\.csv$","",output_name)
 

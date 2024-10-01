@@ -84,12 +84,15 @@ actualizar_fuente_raw <- function(id_fuente,
 
   stopifnot("fecha_actualizar no puede ser NULL" = !is.null(fecha_actualizar))
 
-  if (is.character(fecha_actualizar) & fecha_actualizar != "Sin informacion") {
-
-    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(as.Date(fecha_actualizar)) & length(as.Date(fecha_actualizar)) == 1)
-    fecha_actualizar <- as.Date(fecha_actualizar)
-
-  } else if (class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) {
+  if (is.character(fecha_actualizar)) {
+    
+    if (fecha_actualizar != "Sin informacion") {
+      stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(as.Date(fecha_actualizar)) & length(as.Date(fecha_actualizar)) == 1)
+      fecha_actualizar <- as.Date(fecha_actualizar)
+      
+    } else {
+      stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = fecha_actualizar == "Sin informacion")
+    } } else if (class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) {
 
     stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(fecha_actualizar) & length(fecha_actualizar) == 1)
 

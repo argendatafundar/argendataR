@@ -32,21 +32,24 @@ agregar_fuente_raw <- function(
 
 
   stopifnot("fecha_actualizar no puede ser NULL" = !is.null(fecha_actualizar))
-
-  if (is.character(fecha_actualizar) & fecha_actualizar != "Sin informacion") {
-
-    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(as.Date(fecha_actualizar)) & length(as.Date(fecha_actualizar)) == 1)
-    fecha_actualizar <- as.Date(fecha_actualizar)
-
-  } else if (class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) {
-
-    stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(fecha_actualizar) & length(fecha_actualizar) == 1)
-
-  } else {
-
-    stopifnot("param 'fecha_actualizar' debe ser fecha o character parseable a fecha o 'Sin informacion'" = fecha_actualizar == "Sin informacion" & length(fecha_actualizar) == 1)
-
-  }
+  
+  if (is.character(fecha_actualizar)) {
+    
+    if (fecha_actualizar != "Sin informacion") {
+      stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(as.Date(fecha_actualizar)) & length(as.Date(fecha_actualizar)) == 1)
+      fecha_actualizar <- as.Date(fecha_actualizar)
+      
+    } else {
+      stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = fecha_actualizar == "Sin informacion")
+    } } else if (class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) {
+      
+      stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(fecha_actualizar) & length(fecha_actualizar) == 1)
+      
+    } else {
+      
+      stopifnot("param 'fecha_actualizar' debe ser fecha o character parseable a fecha o 'Sin informacion'" = fecha_actualizar == "Sin informacion" & length(fecha_actualizar) == 1)
+      
+    }
 
 
 
@@ -91,9 +94,9 @@ agregar_fuente_raw <- function(
 
   stopifnot("param 'actualizable' debe ser logico" = is.logical(inputs$actualizable))
 
-  stopifnot("param 'fecha_descarga' debe ser fecha" = !is.na(inputs$fecha_descarga))
+  # stopifnot("param 'fecha_descarga' debe ser fecha" = !is.na(inputs$fecha_descarga))
 
-  stopifnot("param 'fecha_actualizar' debe ser fecha o character" = !is.na(inputs$fecha_actualizar))
+  # stopifnot("param 'fecha_actualizar' debe ser fecha o character" = !is.na(inputs$fecha_actualizar))
 
   # stopifnot("param 'url' debe ser una url valida" =  grepl("^(https|http)://",inputs$url))
 

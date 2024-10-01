@@ -15,15 +15,18 @@ write_output(
   aclaraciones = NULL,
   exportar = TRUE,
   control = NULL,
+  cambio_nombre_output = NULL,
+  cambio_nombre_cols = NULL,
   pk = NULL,
   es_serie_tiempo = TRUE,
   columna_indice_tiempo = NULL,
   columna_geo_referencia = NULL,
   nivel_agregacion = NULL,
   nullables = FALSE,
-  etiquetas_indicadores = NULL,
+  descripcion_columnas = NULL,
   unidades = NULL,
-  classes = NULL
+  classes = NULL,
+  ...
 )
 }
 \arguments{
@@ -47,6 +50,10 @@ write_output(
 
 \item{control}{list Lista que resulta de la comparacion entre output anterior y output nuevo. Ver \code{comparar_outputs()}}
 
+\item{cambio_nombre_output}{list o null Lista nombrada con la definicion del nombre anterior y el nombre nuevo del dataset.Ej. \code{list('nombre_nuevo' = 'exportaciones_pc_por_pais', 'nombre_anterior' = 'export_pc_por_pais_2022')}}
+
+\item{cambio_nombre_cols}{list o null Lista nombrada con los pares de nombre nuevo y nombre anterior de las columnas que cambiaron de nombre.Ej. \code{list('nombre_nuevo' = 'nombre_anterior', 'pobreza_jovenes' = 'poberz_18_30')}}
+
 \item{pk}{string o null Nombres de columnas que son primary key del output. Si es NULL toma todas las columnas como ok. Default NULL.}
 
 \item{es_serie_tiempo}{logical Valor TRUE o FALSO indicando si el output es una serie de tiempo. Default  = TRUE}
@@ -59,11 +66,13 @@ write_output(
 
 \item{nullables}{string o logical Vector con los nombres de las columnas que admiten nulls o valor logico TRUE o FALSE. Si es FALSE se considera que ninguna columna admite nulls, si es TRUE se considera que todas las columnas adminten nulls. Default = FALSE}
 
-\item{etiquetas_indicadores}{list o null Lista nombrada con la etiqueta que le corresponde a las columnas. Los nombres de la lista deben coincidir con nombres de columnas de 'data'. Ejemplo: list('gini' = 'Indice de Gini', 'pbipcppp' = 'PBI per capita en parity purchase power'). Si es NULL(default), la funcion busca la columna 'indicador' en 'data' y toma como etiquetas los valores unicos de alli.}
+\item{descripcion_columnas}{list o null Lista nombrada con la descripcion que le corresponde a cada columna. Los nombres de la lista deben coincidir con nombres de columnas de 'data'. Ejemplo: list('gini' = 'Indice de Gini', 'pbipcppp' = 'PBI per capita en parity purchase power'). Si es NULL(default), la funcion busca la columna 'indicador' en 'data' y toma como etiquetas los valores unicos de alli.}
 
 \item{unidades}{list o null Lista nombrada con las unidades en que estan expresadas las columnas. Los nombres de la lista deben coincidir con nombres de columnas de 'data'. Ejemplo: list('gini' = 'indice', 'pbipcppp' = 'parity purchase power', 'population' = 'millones de personas'). Si es NULL (default), la funcion busca la columna 'unidad' en 'data' y genera una lista tomando las combinaciones unicas de 'unidad' e 'indicador' en 'data'.}
 
 \item{classes}{list o null Si es null (default) la funcion genera una lista con las clases y nombres de columnas en data. Si es una lista los nombres de la lista deben coincidir con valores en la columna 'indicador' en 'data' y los valores deben ser: 'logical', 'character', 'double', 'interger' o 'date'.}
+
+\item{...}{parametros adicionales para captura de aliases anteriores.}
 }
 \value{
 Escribe localmente un json con la data y metadata definida usando '{output_name}.json' como path. Opcionalmente tambien escribe un csv '{output_name}.csv'

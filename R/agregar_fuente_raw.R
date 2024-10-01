@@ -175,7 +175,7 @@ agregar_fuente_raw <- function(
 
 
     file.copy(from = glue::glue("{directorio}/{inputs$path_raw}"),
-              to = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), overwrite = T, copy.mode = T)
+              to = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), overwrite = T)
 
     message("Fuente copiada a carpeta raw")
 

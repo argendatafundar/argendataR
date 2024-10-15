@@ -165,7 +165,7 @@ agregar_fuente_clean <- function(id_fuente_raw = NULL,
     }
 
     file.copy(from = glue::glue("{directorio}/{inputs$path_clean}"),
-              to = glue::glue("{RUTA_FUENTES()}/clean/{inputs$path_clean}"), overwrite = T, copy.mode = T)
+              to = glue::glue("{RUTA_FUENTES()}/clean/{inputs$path_clean}"), overwrite = T)
 
     message("Parquet creado")
 

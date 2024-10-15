@@ -147,7 +147,7 @@ actualizar_fuente_clean <- function(id_fuente_clean,
     }
 
     file.copy(from = glue::glue("{directorio}/{path_clean}"),
-              to = glue::glue("{RUTA_FUENTES()}/clean/{path_clean}"), overwrite = T, copy.mode = T)
+              to = glue::glue("{RUTA_FUENTES()}/clean/{path_clean}"), overwrite = T)
 
     message("Parquet creado")
 

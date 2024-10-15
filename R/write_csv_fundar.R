@@ -14,10 +14,15 @@ write_csv_fundar <- function(x, file) {
 
     file <- gsub("\\s","_",replace_non_ascii(file))
 
-    readr::write_csv(x = x,
-                     file = file,
-                     quote = "all",
-                     na = "", eol = "\n")
+    
+    with(options(scipen = 999),
+         readr::write_csv(x = x,
+                          file = file,
+                          quote = "all",
+                          na = "", eol = "\n")     
+         )
+    
+    
 
     message(glue::glue("Se escribio el archivo: {file}"))
 }

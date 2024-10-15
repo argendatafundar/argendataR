@@ -340,15 +340,10 @@ write_output <- function(
 
 
   if (exportar) {
-    data  %>%
-      dplyr::mutate(dplyr::across(dplyr::everything(), as.character))  %>%
-      readr::write_csv(file = normalize_path(glue::glue("{directorio}/{output_name}.{extension}")),
-                       eol = "\n",
-                       quote = "all",
-                       escape = "none",
-                       na = "")
+    
+    
+    write_csv_fundar(data, glue::glue("{directorio}/{output_name}.{extension}"))
 
-    message(glue::glue("Se escribio el archivo: {directorio}/{output_name}.{extension}"))
   }
 
   jsonlite::write_json(x = inputs, path = normalize_path(glue::glue("{directorio}/{output_name}.json")))

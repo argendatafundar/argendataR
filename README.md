@@ -22,6 +22,8 @@ directorio de Argendata. Para editar el `.Renviron` se puede usar
 `usethis::edit_r_environ()`. Allí se declara de la siguiente forma:
 
     ARGENDATA_DRIVE='xaskooasdklaslkaldd'
+    RUTA_FUENTES = "/ruta/al/directorio/etl-fuentes/"
+    IP_FUENTES = "ruta-ip/al/etl-fuentes/"
 
 ## Instalacion
 

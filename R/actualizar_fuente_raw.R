@@ -37,6 +37,8 @@ actualizar_fuente_raw <- function(id_fuente,
                                   prompt = TRUE) {
 
 
+  ## cotrol directorio ----
+
   if (is.null(directorio)) {
     directorio <- tempdir()
   } else {
@@ -44,12 +46,13 @@ actualizar_fuente_raw <- function(id_fuente,
   }
 
 
-  stopifnot("'id_fuente' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente) | is.character(id_fuente))
-
   df_fuentes_raw <- fuentes_raw()
 
   df_fuentes_raw_md5 <- tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"))
 
+  ## control id fuente  ----------
+
+  stopifnot("'id_fuente' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente) | is.character(id_fuente))
 
   if (is.numeric(id_fuente)) {
 
@@ -75,21 +78,25 @@ actualizar_fuente_raw <- function(id_fuente,
 
   }
 
+  ## fecha descarga default ----------
+
 
   if (is.null(fecha_descarga)) {
     fecha_descarga <- Sys.time()
 
   }
 
+  ## control fecha actualizar ----------
+
 
   stopifnot("fecha_actualizar no puede ser NULL" = !is.null(fecha_actualizar))
 
   if (is.character(fecha_actualizar)) {
-    
+
     if (fecha_actualizar != "Sin informacion") {
       stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(as.Date(fecha_actualizar)) & length(as.Date(fecha_actualizar)) == 1)
       fecha_actualizar <- as.Date(fecha_actualizar)
-      
+
     } else {
       stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = fecha_actualizar == "Sin informacion")
     } } else if (class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) {
@@ -102,6 +109,9 @@ actualizar_fuente_raw <- function(id_fuente,
 
   }
 
+  ## control script ----------
+
+
 
  if (!is.null(script)) {
     if (!file.exists(paste0("scripts/descarga_fuentes/", script)) &
@@ -109,6 +119,36 @@ actualizar_fuente_raw <- function(id_fuente,
       stop("No se encontro el archivo script en scripts/descarga_fuentes/. Guardarlo en la ubicacion antes de continuar")
     }
  }
+
+
+  ## control url ----------
+
+  if (!is.null(url)) {
+
+    if(! url %in% df_fuentes_raw$url) {
+
+      warning("La URL ingresada ya esta regsitrada en fuentes_raw()")
+
+      print(utils::capture.output(df_fuentes_raw[df_fuentes_raw$url == url,]))
+
+      ok <- readline("Desea continuar con la actualizacion de la URL de la fuente? Y/N \n")
+
+      stopifnot("Actualizacion cancelada por el usuario" = tolower(ok) == "y")
+    }
+  }
+
+  ## control archivos x cambio de path ----------
+
+  if (!is.null(path_raw)) {
+
+    cambio_path_raw <- path_raw != df_fuentes_raw[[irow, "path_raw"]]
+
+    if (isTRUE(cambio_path_raw)) {
+      old_path <- df_fuentes_raw[[irow, "path_raw"]]
+    }
+  }
+
+  ## armado lista input  ---------
 
   inputs <- list(
     # "id_fuente" = id_fuente,
@@ -126,7 +166,27 @@ actualizar_fuente_raw <- function(id_fuente,
   inputs <- inputs[sapply(inputs, function(x) !is.null(x))]
 
 
+  ## actualizacion en tabla ----
 
+  for (i in names(inputs)) {
+
+    inputs[[i]] <- coerce_to(inputs[[i]], df_fuentes_raw[[irow, i]])
+
+    df_fuentes_raw[[irow, i]] <-  inputs[[i]]
+
+  }
+
+
+  ## control path raw ----------
+
+  if (!file.exists(normalize_path(glue::glue("{directorio}/{df_fuentes_raw$path_raw[[irow]]}")))) {
+    warning("No existe el archivo fuente en la ruta especificada")
+    warning(normalize_path(glue::glue("{directorio}/{df_fuentes_raw$path_raw[[irow]]}")))
+    stop()
+
+  }
+
+  ## warning cambios ----------
 
 
   if (!isFALSE(prompt) & length(inputs) > 1) {
@@ -138,27 +198,9 @@ actualizar_fuente_raw <- function(id_fuente,
 
   }
 
-
-  # control path raw
-
-  if (!file.exists(normalize_path(glue::glue("{directorio}/{df_fuentes_raw$path_raw[[irow]]}")))) {
-    warning("No existe el archivo fuente en la ruta especificada")
-    warning(normalize_path(glue::glue("{directorio}/{df_fuentes_raw$path_raw[[irow]]}")))
-    stop()
-
-  }
-
-
-  for (i in names(inputs)) {
-
-    inputs[[i]] <- coerce_to(inputs[[i]], df_fuentes_raw[[irow, i]])
-
-    df_fuentes_raw[[irow, i]] <-  inputs[[i]]
-
-  }
-
   print(df_fuentes_raw[irow,])
 
+  ## control cambio df fuentes ----------
 
   stopifnot("El registro de fuentes cambio antes de finalizar la actualizacion. Vuelva a intentarlo" = df_fuentes_raw_md5 == tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv")))
 
@@ -175,6 +217,12 @@ actualizar_fuente_raw <- function(id_fuente,
     file.copy(from = glue::glue("{directorio}/{inputs$path_raw}"),
               to = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), overwrite = T)
 
+    if (isTRUE(cambio_path_raw)) {
+
+      file.remove(glue::glue("{RUTA_FUENTES()}/raw/{old_path}"))
+      message(glue::glue("Copia con path anterior eliminada: {old_path}"))
+    }
+
     message("Fuente copiada a carpeta raw")
 
 
@@ -184,6 +232,7 @@ actualizar_fuente_raw <- function(id_fuente,
 
 
 }
+
 
 
 

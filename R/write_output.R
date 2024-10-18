@@ -55,7 +55,17 @@ write_output <- function(
     classes = NULL,
     ...) {
 
-  ## dots evaluation
+  ## metadata -----
+
+  meta_dataset <- metadata(subtopico = subtopico)
+
+  meta_dataset <- meta_dataset[gsub("\\.csv$|\\..{3,4}$", "", output_name) == meta_dataset$dataset_archivo,]
+
+  meta_dataset <- meta_dataset %>% distinct(variable_nombre, descripcion)
+
+
+
+  ## dots evaluation ----
   dots <- list(...)
   if ("etiquetas_indicadores" %in% names(dots)) {
     if (missing(descripcion_columnas)) {
@@ -73,41 +83,41 @@ write_output <- function(
 
 
 
-  # chequeos
-  ## data
+  # chequeos ----
+  ## data ----
 
   stopifnot("'data' debe ser un dataframe" = is.data.frame(data))
 
-  ## columnas
+  ## columnas ----
   columnas <- colnames(data)
 
   stopifnot("nombres de columnas invalidos en data" = !all(grepl("[^a-z_]+", columnas)))
 
-  ## subtopico
+  ## subtopico ----
 
   # considerar chequear contra listado de subtopicos
   stopifnot("subtopico invalido" =  is.character(subtopico) & length(subtopico) == 1)
 
-  ## fecha
+  ## fecha ----
 
   fecha <- format(Sys.time(), format = "%Y %m %d %X %Z", tz = "GMT0")
 
-  ## nombre output
+  ## nombre output ----
 
   stopifnot("'output_name' debe ser characters '[a-z_]' de largo 1" = is.character(output_name) & length(output_name) == 1 & !grepl("[^a-z_]+", output_name))
 
   output_name <- gsub("\\.csv$","",output_name)
 
-  ## formato
+  ## formato ----
 
   stopifnot("'extension' debe ser 'csv'" = extension %in% c("csv") & length(extension) == 1)
 
-  ## exportar
+  ## exportar ----
 
   stopifnot("'exportar' debe ser logico TRUE o FALSE " =  is.logical(exportar) & length(exportar) == 1)
 
 
-  ## fuentes
+  ## fuentes ----
 
   stopifnot("'fuentes' debe ser un vector tipo character" = class(fuentes) == "character")
 
@@ -120,19 +130,19 @@ write_output <- function(
   }
 
 
-  ## analistas
+  ## analistas ----
 
   # considerar chequear contra tabla de analistas
   stopifnot("'analista' debe ser character" = is.character(analista))
 
-  # ## nivel de agregacion
+  # ## nivel de agregacion ----
   # stopifnot("'nivel_agregacion' debe ser uno de los siguientes strings: " = formato %in% c("pais", "json", "geojson", "shp") & length(formato) == 1)
 
 
-  ## es_serie_tiempo
+  ## es_serie_tiempo ----
   stopifnot("'es_serie_tiempo' debe ser T o F" = is.logical(es_serie_tiempo) & length(es_serie_tiempo) == 1)
 
-  ## columna_indice_tiempo
+  ## columna_indice_tiempo ----
 
   if (isTRUE(es_serie_tiempo)) {
     stopifnot("'columna_indice_tiempo' no hallada en 'data'" = all(columna_indice_tiempo %in% columnas))
@@ -145,7 +155,7 @@ write_output <- function(
   }
 
 
-  ## columna_geo_referencia
+  ## columna_geo_referencia ----
   if (!is.null(columna_geo_referencia)) {
 
     stopifnot("'columna_geo_referencia' no hallada en 'data'" = is.character(columna_geo_referencia) & all(columna_geo_referencia %in% columnas))
@@ -153,7 +163,7 @@ write_output <- function(
     # stopifnot("'columna_geo_referencia' no hallada en 'data'. Debe ser uno de   'iso3', 'cod_fundar', 'prov_cod', 'cod_pcia', 'cod_depto', 'eph_codagl', 'cod_aglo', 'cod_agl'" = columna_geo_referencia %in% c("iso3", "prov_cod", "cod_fundar", "cod_pcia", "cod_depto", "eph_codagl", "cod_aglo", "cod_agl"))
   }
 
-  ## nullables
+  ## nullables ----
   stopifnot("'nullables' debe ser un vector logico de largo 1 o vector character con nombres de columnas en 'data'." = (is.logical(nullables) & length(nullables) == 1 ) | (is.character(nullables) & length(nullables) <= length(columnas) & all(nullables %in% columnas) ) )
 
   if (is.logical(nullables)) {
@@ -167,17 +177,25 @@ write_output <- function(
 
   }
 
-  ## descripcion_columnas
+  ## descripcion_columnas ----
 
   if (is.list(descripcion_columnas)) {
+
     stopifnot("uno o mas nombres de 'descripcion_columnas' no coinciden con columnas en 'data.'" = all(names(descripcion_columnas) %in% columnas))
     stopifnot("una o mas columnas no descriptas en 'descripcion_columnas'" = all(columnas %in% names(descripcion_columnas)))
     stopifnot("hay etiquetas invalidas. Deben ser character no vacios." = all(sapply(descripcion_columnas, function(x) {is.character(x) & x != ""})))
     stopifnot("hay columnas repetidas, cada columna solo debe declararse 1 vez" = all(sapply(unique(names(descripcion_columnas)), function(i) sum(names(descripcion_columnas) == i) == 1 )) )
 
+    descripcion_columnas <- armador_descripcion(metadatos = meta_dataset,
+                                       etiquetas_nuevas = etiquetas_nuevas,
+                                       output_cols = output_cols)
+
   }  else if (is.null(descripcion_columnas)) {
 
-    stop("Es obligatorio pasar una lista de descripcion de columnas")
+    descripcion_columnas <- armador_descripcion(metadatos = meta_dataset,
+                                       etiquetas_nuevas = etiquetas_nuevas,
+                                       output_cols = output_cols)
+
     # stopifnot("no se encontro la columna 'indicador' en 'data'. No es posible leer las etiquetas de data[,'indicador']" = "indicador" %in% columnas)
     # descripcion_columnas <- unique(data[['indicador']])
 
@@ -186,7 +204,7 @@ write_output <- function(
   }
 
 
-  ## unidades
+  ## unidades ----
   if (is.list(unidades)) {
     stopifnot("uno o mas nombres de 'unidades' no coinciden con columnas en data." = all(names(unidades) %in% columnas))
     stopifnot("hay 'unidades' invalidas. Deben ser character no vacios." = all(sapply(unidades, function(x) {is.character(x) & x != ""})))
@@ -199,7 +217,7 @@ write_output <- function(
     stop("'unidades' debe ser una lista o null.")
   }
 
-  ## classes
+  ## classes ----
   if (is.list(classes)) {
 
     stopifnot("uno o mas nombres de 'classes' no coinciden con valores en `data['indicador']`" = all(names(classes) %in% unique(data$indicador)))
@@ -216,7 +234,7 @@ write_output <- function(
     stop("'classes' debe ser una lista o null.")
   }
 
-  ## pk
+  ## pk ----
 
   if (is.character(pk)) {
     stopifnot("Valores de 'pk' deben coincidir con nombres de columna en 'data'. Hay uno o mas valores que no coinciden" = all(pk %in% colnames(data)))
@@ -226,7 +244,7 @@ write_output <- function(
     stop("'pk' deber ser string con los nombres de columnas correspondientes o null")
   }
 
-  ## control
+  ## control ----
 
   if (is.list(control)) {
 
@@ -262,7 +280,7 @@ write_output <- function(
 
   }
 
-  # diccionario_cambios
+  # diccionario_cambios ----
 
   stopifnot("'cambio_nombre_output' debe ser NULL o una lista" = is.null(cambio_nombre_output) | is.list(cambio_nombre_output))
 
@@ -309,7 +327,7 @@ write_output <- function(
 
 
 
-  ## inputs
+  ## inputs ----
 
   inputs <- list(
     subtopico = subtopico,
@@ -336,12 +354,12 @@ write_output <- function(
 
 
 
-  # exportar
+  # exportar ----
 
 
   if (exportar) {
-    
-    
+
+
     write_csv_fundar(data, glue::glue("{directorio}/{output_name}.{extension}"))
 
   }

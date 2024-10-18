@@ -32,23 +32,23 @@ agregar_fuente_raw <- function(
 
 
   stopifnot("fecha_actualizar no puede ser NULL" = !is.null(fecha_actualizar))
-  
+
   if (is.character(fecha_actualizar)) {
-    
+
     if (fecha_actualizar != "Sin informacion") {
       stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(as.Date(fecha_actualizar)) & length(as.Date(fecha_actualizar)) == 1)
       fecha_actualizar <- as.Date(fecha_actualizar)
-      
+
     } else {
       stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = fecha_actualizar == "Sin informacion")
     } } else if (class(fecha_actualizar) %in% c("Date", "POSIXct", "POSIXt")) {
-      
+
       stopifnot("param 'fecha_actualizar' debe ser fecha valida o string parseable como fecha o 'Sin informacion'" = !is.na(fecha_actualizar) & length(fecha_actualizar) == 1)
-      
+
     } else {
-      
+
       stopifnot("param 'fecha_actualizar' debe ser fecha o character parseable a fecha o 'Sin informacion'" = fecha_actualizar == "Sin informacion" & length(fecha_actualizar) == 1)
-      
+
     }
 
 
@@ -110,6 +110,19 @@ agregar_fuente_raw <- function(
   if (nrow(df_fuentes_raw[df_fuentes_raw$nombre == inputs$nombre & df_fuentes_raw$url == inputs$url & df_fuentes_raw$institucion == inputs$institucion,]) != 0) {
     stop("Ya existe esa combinacion nombre, institucion y url. Verificar si es una posible duplicacion o cambiar de nombre, institucion o url")
   }
+
+
+  if(! url %in% df_fuentes_raw$url) {
+
+    warning("La URL ingresada ya esta regsitrada en fuentes_raw()")
+
+    print(utils::capture.output(df_fuentes_raw[df_fuentes_raw$url == url,]))
+
+    ok <- readline("Desea continuar con la actualizacion de la URL de la fuente? Y/N \n")
+
+    stopifnot("Registro cancelado por el usuario" = tolower(ok) == "y")
+  }
+
 
   if (!file.exists(paste0("scripts/descarga_fuentes/", inputs$script)) &
       !file.exists(inputs$script)) {

@@ -261,8 +261,18 @@ coerce_to <- function(x, y) {
   }
 }
 
-
-
+#' Set names
+#'
+#' @param object object 
+#' @param nm name
+#'
+#' @return object with names
+#' @export
+#'
+setNames <- function(object = nm, nm) {
+  names(object) <- nm
+  object
+}
 
 
 if (getRversion() >= "2.15.1")

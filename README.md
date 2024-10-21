@@ -40,7 +40,7 @@ pasarle la ruta a la carpeta del proyecto de `argendataR`.
 Para instalar directo desde github se puede usar
 
 ``` r
-devtools::install_github("argendata/argendataR")
+devtools::install_github("argendatafundar/argendataR")
 ```
 
 Pero esta función requiere que esté configurada la variable de entorno

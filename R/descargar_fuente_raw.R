@@ -47,7 +47,7 @@ descargar_fuente_raw <- function(id_fuente, dir = NULL, limpiar_cache = F) {
 
   ext <- gsub("^.*\\.","",path_raw)
 
-  download.file(url = glue::glue("{IP_FUENTES()}/raw/{path_clean}"),
+  download.file(url = glue::glue("{IP_FUENTES()}/raw/{path_raw}"),
                 destfile = glue::glue("{dir}/{path_raw_body}_{codigo}{ext}"),
                 mode = "wb")
 

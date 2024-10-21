@@ -112,7 +112,7 @@ agregar_fuente_raw <- function(
   }
 
 
-  if(! url %in% df_fuentes_raw$url) {
+  if(url %in% df_fuentes_raw$url) {
 
     warning("La URL ingresada ya esta regsitrada en fuentes_raw()")
 

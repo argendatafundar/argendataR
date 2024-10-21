@@ -64,6 +64,9 @@ write_output <- function(
   meta_dataset <- meta_dataset %>% dplyr::distinct(dplyr::pick(c("variable_nombre",
                                                                  "descripcion")))
 
+  print("Metadata")
+  print(utils::capture.output(meta_dataset))
+
 
 
   ## dots evaluation ----
@@ -92,6 +95,9 @@ write_output <- function(
   ## columnas ----
   columnas <- colnames(data)
 
+  print("Columnas:")
+  print(columnas)
+
   stopifnot("nombres de columnas invalidos en data" = !all(grepl("[^a-z_]+", columnas)))
 
   ## subtopico ----
@@ -105,9 +111,13 @@ write_output <- function(
 
   ## nombre output ----
 
+  output_name <- gsub("\\.csv$","",output_name)
+
+  print("output_name:")
+  print(output_name)
+
   stopifnot("'output_name' debe ser characters '[a-z_]' de largo 1" = is.character(output_name) & length(output_name) == 1 & !grepl("[^a-z_]+", output_name))
 
-  output_name <- gsub("\\.csv$","",output_name)
 
   ## formato ----
 
@@ -119,6 +129,9 @@ write_output <- function(
 
 
   ## fuentes ----
+
+  print("Fuentes:")
+  print(fuentes)
 
   stopifnot("'fuentes' debe ser un vector tipo character" = class(fuentes) == "character")
 
@@ -145,7 +158,10 @@ write_output <- function(
 
   ## columna_indice_tiempo ----
 
+
   if (isTRUE(es_serie_tiempo)) {
+    print("Columna indice de tiempo:")
+    print(columna_indice_tiempo)
     stopifnot("'columna_indice_tiempo' no hallada en 'data'" = all(columna_indice_tiempo %in% columnas))
 
   } else if (isFALSE(es_serie_tiempo)) {
@@ -165,6 +181,9 @@ write_output <- function(
   }
 
   ## nullables ----
+  print("nullables:")
+  print(nullables)
+
   stopifnot("'nullables' debe ser un vector logico de largo 1 o vector character con nombres de columnas en 'data'." = (is.logical(nullables) & length(nullables) == 1 ) | (is.character(nullables) & length(nullables) <= length(columnas) & all(nullables %in% columnas) ) )
 
   if (is.logical(nullables)) {
@@ -187,6 +206,11 @@ write_output <- function(
                                        etiquetas_nuevas = descripcion_columnas,
                                        output_cols = columnas)
 
+    print("Desc. columnas:")
+
+    print(descripcion_columnas)
+
+
     stopifnot("uno o mas nombres de 'descripcion_columnas' no coinciden con columnas en 'data.'" = all(names(descripcion_columnas) %in% columnas))
     stopifnot("una o mas columnas no descriptas en 'descripcion_columnas'" = all(columnas %in% names(descripcion_columnas)))
     stopifnot("hay etiquetas invalidas. Deben ser character no vacios." = all(sapply(descripcion_columnas, function(x) {is.character(x) & x != ""})))
@@ -198,6 +222,10 @@ write_output <- function(
     descripcion_columnas <- armador_descripcion(metadatos = meta_dataset,
                                        etiquetas_nuevas = descripcion_columnas,
                                        output_cols = columnas)
+
+    print("Desc. columnas:")
+
+    print(descripcion_columnas)
 
     stopifnot("uno o mas nombres de 'descripcion_columnas' no coinciden con columnas en 'data.'" = all(names(descripcion_columnas) %in% columnas))
     stopifnot("una o mas columnas no descriptas en 'descripcion_columnas'" = all(columnas %in% names(descripcion_columnas)))
@@ -212,6 +240,8 @@ write_output <- function(
 
   ## unidades ----
   if (is.list(unidades)) {
+    print("Unidades:")
+    print(unidades)
     stopifnot("uno o mas nombres de 'unidades' no coinciden con columnas en data." = all(names(unidades) %in% columnas))
     stopifnot("hay 'unidades' invalidas. Deben ser character no vacios." = all(sapply(unidades, function(x) {is.character(x) & x != ""})))
   } else if (is.null(unidades)) {
@@ -225,7 +255,8 @@ write_output <- function(
 
   ## classes ----
   if (is.list(classes)) {
-
+    print("Clases:")
+    print(classes)
     stopifnot("uno o mas nombres de 'classes' no coinciden con valores en `data['indicador']`" = all(names(classes) %in% unique(data$indicador)))
     stopifnot("hay 'classes' invalidas. Deben ser uno de: 'logical', 'character', 'double', 'interger', 'date'" = all(sapply(classes, function(x) {is.character(x) & x %in% c("double","integer", "character", "logical", "date")})))
     classes <- append(classes, lapply(dplyr::select(data, -"indicador"), class))
@@ -235,6 +266,9 @@ write_output <- function(
     classes <- lapply(data, class)
     names(classes) <- colnames(data)
 
+    print("Clases:")
+    print(classes)
+
   } else if (!is.null(unidades)) {
 
     stop("'classes' debe ser una lista o null.")
@@ -243,6 +277,8 @@ write_output <- function(
   ## pk ----
 
   if (is.character(pk)) {
+    print("PKs:")
+    print(pk)
     stopifnot("Valores de 'pk' deben coincidir con nombres de columna en 'data'. Hay uno o mas valores que no coinciden" = all(pk %in% colnames(data)))
   } else if (is.null(pk)) {
     pk <- colnames(data)
@@ -265,11 +301,23 @@ write_output <- function(
 
     for (i  in colscontrol) {
 
+
+
       if ( "ks_test" %in% names(control[["comparacion_cols"]][[i]]) ) {
+
+        print(paste("Control", i, ":"))
+        print("ks")
+        print(control[["comparacion_cols"]][[i]]$ks_test)
+        print("mw")
+        control[["comparacion_cols"]][[i]]$mw_test
 
         stopifnot("El dataset tiene una variable numerica que no cumple los test de control" = control[["comparacion_cols"]][[i]]$ks_test > .2 &  control[["comparacion_cols"]][[i]]$mw_test > .2)
 
       } else {
+
+        print(paste("Control", i, ":"))
+        print("tasa mismatch")
+        print(control[["comparacion_cols"]][[i]]$tasa_mismatches)
 
         stopifnot("El dataset tiene una variable no numerica que no cumple los test de control" = control[["comparacion_cols"]][[i]]$tasa_mismatches < .05 )
 
@@ -287,6 +335,9 @@ write_output <- function(
   }
 
   # diccionario_cambios ----
+
+  print("Cambio nombre output:")
+  print(cambio_nombre_output)
 
   stopifnot("'cambio_nombre_output' debe ser NULL o una lista" = is.null(cambio_nombre_output) | is.list(cambio_nombre_output))
 
@@ -307,6 +358,9 @@ write_output <- function(
     stopifnot("'cambio_nombre_output' debe ser list o NULL" = is.null(cambio_nombre_output))
 
   }
+
+  print('cambio_nombre_cols:')
+  print(cambio_nombre_cols)
 
   stopifnot("'cambio_nombre_cols' debe ser NULL o una lista" = is.null(cambio_nombre_cols) | is.list(cambio_nombre_cols))
 

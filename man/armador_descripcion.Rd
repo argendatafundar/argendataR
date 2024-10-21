@@ -13,6 +13,9 @@ armador_descripcion(metadatos, etiquetas_nuevas = NULL, output_cols)
 
 \item{output_cols}{columnas del dataframe a describir}
 }
+\value{
+list Lista de variables con descripcion
+}
 \description{
 Generador de descripcion de columnas
 }

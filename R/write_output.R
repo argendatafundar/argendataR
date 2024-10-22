@@ -220,7 +220,7 @@ write_output <- function(
   }  else if (is.null(descripcion_columnas)) {
 
     descripcion_columnas <- armador_descripcion(metadatos = meta_dataset,
-                                       etiquetas_nuevas = descripcion_columnas,
+                                       etiquetas_nuevas = NULL,
                                        output_cols = columnas)
 
     print("Desc. columnas:")

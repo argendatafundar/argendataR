@@ -453,10 +453,10 @@ armador_descripcion <- function(metadatos, etiquetas_nuevas = NULL, output_cols)
 
   etiquetas <- metadatos %>%
     dplyr::filter(.data$variable_nombre %in% output_cols) %>%
-    dplyr::distinct(.data$variable_nombre)
+    dplyr::distinct(.data$variable_nombre, .data$descripcion)
 
-  print("etiquetas filtradas de metadata")
-  print(etiquetas)
+  # print("etiquetas filtradas de metadata")
+  # print(etiquetas)
 
   if (nrow(etiquetas) == 0) {
 
@@ -470,14 +470,14 @@ armador_descripcion <- function(metadatos, etiquetas_nuevas = NULL, output_cols)
     stopifnot("Dataframe de etiquetas_nuevas debe tener las columnas variable_nombre y descripcion" = all(colnames(etiquetas_nuevas) %in% c("variable_nombre",
                                                                                                         "descripcion")))
 
-    print("etiquetas nuevas")
-    print(etiquetas_nuevas)
+    # print("etiquetas nuevas")
+    # print(etiquetas_nuevas)
 
     etiquetas <- etiquetas %>%
       dplyr::filter(!.data$variable_nombre %in% etiquetas_nuevas$variable_nombre)
 
-    print("etiquetas seleccionadas de metadata que no coinciden con etiq nuevas")
-    print(etiquetas)
+    # print("etiquetas seleccionadas de metadata que no coinciden con etiq nuevas")
+    # print(etiquetas)
 
 
     etiquetas <- etiquetas %>%
@@ -492,14 +492,14 @@ armador_descripcion <- function(metadatos, etiquetas_nuevas = NULL, output_cols)
     etiquetas_nuevas <- tibble::tibble("variable_nombre" = names(etiquetas_nuevas),
                                "descripcion" = unlist(etiquetas_nuevas))
 
-    print("etiquetas nuevas")
-    print(etiquetas_nuevas)
+    # print("etiquetas nuevas")
+    # print(etiquetas_nuevas)
 
     etiquetas <- etiquetas %>%
       dplyr::filter(! .data$variable_nombre %in% etiquetas_nuevas$variable_nombre)
 
-    print("etiquetas seleccionadas de metadata que no coinciden con etiq nuevas")
-    print(etiquetas)
+    # print("etiquetas seleccionadas de metadata que no coinciden con etiq nuevas")
+    # print(etiquetas)
 
     etiquetas <- etiquetas %>%
       dplyr::bind_rows(etiquetas_nuevas)
@@ -513,7 +513,7 @@ armador_descripcion <- function(metadatos, etiquetas_nuevas = NULL, output_cols)
 
   etiquetas <- setNames(as.list(etiquetas$descripcion), etiquetas$variable_nombre)
 
-  print(etiquetas)
+  # print(etiquetas)
 
   etiquetas
 

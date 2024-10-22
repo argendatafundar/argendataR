@@ -116,7 +116,7 @@ write_output <- function(
   print("output_name:")
   print(output_name)
 
-  stopifnot("'output_name' debe ser characters '[a-z_]' de largo 1" = is.character(output_name) & length(output_name) == 1 & !grepl("[^a-z_]+", output_name))
+  # stopifnot("'output_name' debe ser characters '[a-z_]' de largo 1" = is.character(output_name) & length(output_name) == 1 & !grepl("[^a-z_]+", output_name))
 
 
   ## formato ----

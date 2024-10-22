@@ -491,7 +491,7 @@ armador_descripcion <- function(metadatos, etiquetas_nuevas = NULL, output_cols)
 
   } else {
 
-    stopifnot("input etiquetas_nuevas invalido" = !is.null(etiquetas_nuevas))
+    stopifnot("input etiquetas_nuevas invalido" = is.null(etiquetas_nuevas))
   }
 
 

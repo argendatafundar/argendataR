@@ -59,7 +59,7 @@ write_output <- function(
 
   meta_dataset <- metadata(subtopico = subtopico)
 
-  meta_dataset <- meta_dataset[gsub("\\.csv$|\\..{3,4}$", "", output_name) == meta_dataset$dataset_archivo,]
+  meta_dataset <- meta_dataset[gsub("\\.csv$", "", output_name) == gsub("\\.csv$", "", meta_dataset$dataset_archivo),]
 
   meta_dataset <- meta_dataset %>% dplyr::distinct(dplyr::pick(c("variable_nombre",
                                                                  "descripcion")))

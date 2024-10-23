@@ -210,40 +210,37 @@ actualizar_fuente_raw <- function(id_fuente,
 
   message("Registro actualizado en fuentes raw")
 
-  if (file.exists(normalize_path(paste(directorio, inputs$path_raw, sep = "/")))) {
+  stopifnot(file.exists(normalize_path(paste(directorio, inputs$path_raw, sep = "/"))))
 
-    message(glue::glue("FROM: {directorio}/{inputs$path_raw}"))
-    message(glue::glue("TO: {RUTA_FUENTES()}/raw/{inputs$path_raw}"))
+  message(glue::glue("FROM: {directorio}/{inputs$path_raw}"))
+  message(glue::glue("TO: {RUTA_FUENTES()}/raw/{inputs$path_raw}"))
 
-    check_copy <- file.copy(from = glue::glue("{directorio}/{inputs$path_raw}"),
-              to = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), overwrite = T)
+  check_copy <- file.copy(from = glue::glue("{directorio}/{inputs$path_raw}"),
+            to = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), overwrite = T)
 
-    message(glue::glue("Check copy: {check_copy}"))
+  message(glue::glue("Check copy: {check_copy}"))
 
-    if (isFALSE(check_copy)) {
+  if (isFALSE(check_copy)) {
 
-      warning("Error al copiar el archivo a carpeta /raw")
-      message("Restaurando version anterior de df_fuentes_raw")
+    warning("Error al copiar el archivo a carpeta /raw")
+    message("Restaurando version anterior de df_fuentes_raw")
 
-      df_fuentes_raw_copy %>%
-        readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"), eol = "\n", progress = F)
+    df_fuentes_raw_copy %>%
+      readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"), eol = "\n", progress = F)
 
-      stop("Actualizacion cancelada por error al copiar el archivo")
+    stop("Actualizacion cancelada por error al copiar el archivo")
 
-    }
-
-    if (isTRUE(cambio_path_raw)) {
-
-      file.remove(glue::glue("{RUTA_FUENTES()}/raw/{old_path}"))
-      message(glue::glue("Copia con path anterior eliminada: {old_path}"))
-    }
-
-    message("Fuente copiada a carpeta raw")
-
-
-  } else {
-    stop("Error inesperado al guardar el archivo")
   }
+
+  if (isTRUE(cambio_path_raw)) {
+
+    file.remove(glue::glue("{RUTA_FUENTES()}/raw/{old_path}"))
+    message(glue::glue("Copia con path anterior eliminada: {old_path}"))
+  }
+
+  message("Fuente copiada a carpeta raw")
+
+
 
 
 }

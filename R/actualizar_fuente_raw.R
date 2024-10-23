@@ -192,48 +192,13 @@ actualizar_fuente_raw <- function(id_fuente,
   if (!isFALSE(prompt) & length(inputs) > 1) {
 
     message("Va a sobreescribir datos de registro de la fuente.")
+    print(utils::capture.output(df_fuentes_raw_copy[irow,]))
     ok <- readline(prompt = "Continuar con la actualizacion de la fuente raw? Y/N")
 
     stopifnot("Actualizacion cancelada." = tolower(ok) == "y")
+    print(utils::capture.output(df_fuentes_raw[irow,]))
 
   }
-
-  print(df_fuentes_raw[irow,])
-
-  stopifnot(file.exists(normalize_path(paste(directorio, inputs$path_raw, sep = "/"))))
-
-  msj <- glue::glue("FROM: {directorio}/{inputs$path_raw}")
-  print(msj)
-  msj <- glue::glue("TO: {RUTA_FUENTES()}/raw/{inputs$path_raw}")
-  print(msj)
-
-  check_copy <- file.copy(from = glue::glue("{directorio}/{inputs$path_raw}"),
-                          to = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), overwrite = T)
-
-  msj <- glue::glue("Check copy: {check_copy}")
-  print(msj)
-
-  if (isFALSE(check_copy)) {
-
-    warning("Error al copiar el archivo a carpeta /raw")
-    message("Restaurando version anterior de df_fuentes_raw")
-
-    df_fuentes_raw_copy %>%
-      readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"), eol = "\n", progress = F)
-
-    stop("Actualizacion cancelada por error al copiar el archivo")
-
-  }
-
-  if (isTRUE(cambio_path_raw)) {
-
-    file.remove(glue::glue("{RUTA_FUENTES()}/raw/{old_path}"))
-    message(glue::glue("Copia con path anterior eliminada: {old_path}"))
-  }
-
-  message("Fuente copiada a carpeta raw")
-
-  ## control cambio df fuentes ----------
 
   stopifnot("El registro de fuentes cambio antes de finalizar la actualizacion. Vuelva a intentarlo" = df_fuentes_raw_md5 == tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv")))
 
@@ -244,9 +209,39 @@ actualizar_fuente_raw <- function(id_fuente,
   message("Registro actualizado en fuentes raw")
 
 
+  file.copy(from = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw[[irow, 'path_raw']]}"),
+            to = glue::glue("{RUTA_FUENTES()}/raw/_tmp_{df_fuentes_raw[[irow, 'path_raw']]}"), overwrite = T)
 
+  check_copy <- file.copy(from = glue::glue("{directorio}/df_fuentes_raw[[irow, 'path_raw']]}"),
+                          to = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw[[irow, 'path_raw']]}"), overwrite = T)
 
+  msj <- glue::glue("Check copy: {check_copy}")
+  message(msj)
 
+  if (!isTRUE(check_copy)) {
+
+    warning("Error al copiar el archivo a carpeta /raw")
+    file.remove(glue::glue("{RUTA_FUENTES()}/raw/_tmp_{df_fuentes_raw[[irow, 'path_raw']]}"))
+
+    warning("Se restaura el registro de df_fuentes_raw previo")
+    print(utils::capture.output(df_fuentes_raw_copy[irow,]))
+    df_fuentes_raw_copy %>%
+      readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"), eol = "\n", progress = F)
+    stop("Actualizacion cancelada por error al copiar el archivo")
+
+  }
+
+  message("Fuente copiada a carpeta raw")
+
+  ## control cambio df fuentes ----------
+
+  file.remove(glue::glue("{RUTA_FUENTES()}/raw/_tmp_{df_fuentes_raw[[irow, 'path_raw']]}"))
+
+  if (isTRUE(cambio_path_raw)) {
+
+    file.remove(glue::glue("{RUTA_FUENTES()}/raw/{old_path}"))
+    message(glue::glue("Copia con path anterior eliminada: {old_path}"))
+  }
 
 }
 

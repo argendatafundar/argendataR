@@ -139,13 +139,11 @@ actualizar_fuente_raw <- function(id_fuente,
 
   ## control archivos x cambio de path ----------
 
-  if (!is.null(path_raw)) {
 
-    cambio_path_raw <- path_raw != df_fuentes_raw[[irow, "path_raw"]]
+  cambio_path_raw <- path_raw != df_fuentes_raw[[irow, "path_raw"]]
 
-    if (isTRUE(cambio_path_raw)) {
-      old_path <- df_fuentes_raw[[irow, "path_raw"]]
-    }
+  if (isTRUE(cambio_path_raw)) {
+    old_path <- df_fuentes_raw[[irow, "path_raw"]]
   }
 
   ## armado lista input  ---------

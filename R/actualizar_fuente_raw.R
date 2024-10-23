@@ -200,16 +200,6 @@ actualizar_fuente_raw <- function(id_fuente,
 
   print(df_fuentes_raw[irow,])
 
-  ## control cambio df fuentes ----------
-
-  stopifnot("El registro de fuentes cambio antes de finalizar la actualizacion. Vuelva a intentarlo" = df_fuentes_raw_md5 == tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv")))
-
-
-  df_fuentes_raw %>%
-    readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"), eol = "\n", progress = F)
-
-  message("Registro actualizado en fuentes raw")
-
   stopifnot(file.exists(normalize_path(paste(directorio, inputs$path_raw, sep = "/"))))
 
   msj <- glue::glue("FROM: {directorio}/{inputs$path_raw}")
@@ -218,7 +208,7 @@ actualizar_fuente_raw <- function(id_fuente,
   message(msj)
 
   check_copy <- file.copy(from = glue::glue("{directorio}/{inputs$path_raw}"),
-            to = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), overwrite = T)
+                          to = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), overwrite = T)
 
   msj <- glue::glue("Check copy: {check_copy}")
   message(msj)
@@ -242,6 +232,18 @@ actualizar_fuente_raw <- function(id_fuente,
   }
 
   message("Fuente copiada a carpeta raw")
+
+  ## control cambio df fuentes ----------
+
+  stopifnot("El registro de fuentes cambio antes de finalizar la actualizacion. Vuelva a intentarlo" = df_fuentes_raw_md5 == tools::md5sum(glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv")))
+
+
+  df_fuentes_raw %>%
+    readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"), eol = "\n", progress = F)
+
+  message("Registro actualizado en fuentes raw")
+
+
 
 
 

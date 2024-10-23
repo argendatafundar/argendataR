@@ -203,15 +203,15 @@ actualizar_fuente_raw <- function(id_fuente,
   stopifnot(file.exists(normalize_path(paste(directorio, inputs$path_raw, sep = "/"))))
 
   msj <- glue::glue("FROM: {directorio}/{inputs$path_raw}")
-  message(msj)
+  print(msj)
   msj <- glue::glue("TO: {RUTA_FUENTES()}/raw/{inputs$path_raw}")
-  message(msj)
+  print(msj)
 
   check_copy <- file.copy(from = glue::glue("{directorio}/{inputs$path_raw}"),
                           to = glue::glue("{RUTA_FUENTES()}/raw/{inputs$path_raw}"), overwrite = T)
 
   msj <- glue::glue("Check copy: {check_copy}")
-  message(msj)
+  print(msj)
 
   if (isFALSE(check_copy)) {
 

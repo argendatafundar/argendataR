@@ -1,4 +1,4 @@
-#' Comparar un data.frame con un output cargado en el drive de Argendata como csv
+#' Comparar dos dataframes
 #'
 #' @param df data.frame dataframe a comparar con el output cargado en el drive
 #' @param df_anterior data.frame dataframe anterior que se usa como referencia de comparacion. Ver `argendataR::descargar_output()`.
@@ -184,11 +184,6 @@ control_valores_num <- function(root_name, pk, k, df) {
     ggplot2::geom_abline(slope = 1, color = "red", alpha = .7) +
     ggplot2::xlab(col_x) + ggplot2::ylab(col_y) +
     ggplot2::theme_minimal()
-  
-  
-  vars_plot <- vars_plot %>% 
-    plotly::ggplotly()
-  
   
   
   list("nuevos_na" = na_count,

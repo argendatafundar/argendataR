@@ -180,7 +180,7 @@ control_valores_num <- function(root_name, pk, k, df) {
                                             label  = .data[["label"]]
                                             )) +
     ggplot2::geom_point(shape = 1) +
-    ggplot2::geom_smooth(stat = stats::lm, se = T) +
+    ggplot2::geom_smooth(method = stats::lm, se = T) +
     ggplot2::geom_abline(slope = 1, color = "red", alpha = .7) +
     ggplot2::xlab(col_x) + ggplot2::ylab(col_y) +
     ggplot2::theme_minimal()

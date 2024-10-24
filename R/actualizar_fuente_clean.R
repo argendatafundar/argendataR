@@ -135,19 +135,19 @@ actualizar_fuente_clean <- function(id_fuente_clean,
   if (is.data.frame(df)) {
 
     df %>%
-      arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/clean/{path_clean}"), compression = "snappy")
+      arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/clean/{df_fuentes_clean[irow,'path_clean']}"), compression = "snappy")
 
     message("Parquet creado")
 
-  } else if (!is.data.frame(df) & file.exists(normalize_path(paste(directorio, path_clean, sep = "/")))) {
+  } else if (!is.data.frame(df)) {
 
 
-    if (file.size(glue::glue("{directorio}/{path_clean}")) > 1E8) {
+    if (file.size(glue::glue("{directorio}/{{df_fuentes_clean[irow,'path_clean']}}")) > 1E8) {
       warning("El peso del archivo supera el limite de github ")
     }
 
-    file.copy(from = glue::glue("{directorio}/{path_clean}"),
-              to = glue::glue("{RUTA_FUENTES()}/clean/{path_clean}"), overwrite = T)
+    file.copy(from = glue::glue("{directorio}/{{df_fuentes_clean[irow,'path_clean']}}"),
+              to = glue::glue("{RUTA_FUENTES()}/clean/{{df_fuentes_clean[irow,'path_clean']}}"), overwrite = T)
 
     message("Parquet creado")
 

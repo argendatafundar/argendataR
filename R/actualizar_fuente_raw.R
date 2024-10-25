@@ -213,10 +213,11 @@ actualizar_fuente_raw <- function(id_fuente,
             to = glue::glue("{RUTA_FUENTES()}/raw/_tmp_{df_fuentes_raw[[irow, 'path_raw']]}"), overwrite = T)
 
   check_copy <- file.copy(from = glue::glue("{directorio}/df_fuentes_raw[[irow, 'path_raw']]}"),
-                          to = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw[[irow, 'path_raw']]}"), overwrite = T)
+                          to = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw[[irow, 'path_raw']]}"),
+                          overwrite = T)
 
   msj <- glue::glue("Check copy: {check_copy}")
-  message(msj)
+  print(msj)
 
   if (!isTRUE(check_copy)) {
 

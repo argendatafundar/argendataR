@@ -275,6 +275,7 @@ setNames <- function(object = nm, nm) {
 }
 
 
+
 if (getRversion() >= "2.15.1")
   utils::globalVariables(c(".", "fuente_nombre", "url_path"))
 

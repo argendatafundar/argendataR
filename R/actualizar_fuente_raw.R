@@ -210,6 +210,8 @@ actualizar_fuente_raw <- function(id_fuente,
   
   log <- comparar_archivos(x = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw[[irow, 'path_raw']]}"),
                            y = glue::glue("{directorio}/{df_fuentes_raw[[irow, 'path_raw']]}"))
+  
+  print(log)
 
 
   file.copy(from = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw[[irow, 'path_raw']]}"),

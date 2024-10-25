@@ -34,10 +34,10 @@ comparar_archivos <- function(x, y) {
   print(time_x)
   time_y <- file.mtime(path_y)
   print(time_y)
-  hash_x <-  digest::digest(path_x, algo = "md5", serialize = F)
+  hash_x <-  digest::digest(path_x, algo = "md5", serialize = F, file = T)
   print(hash_x)
   
-  hash_y <-  digest::digest(path_y, algo = "md5", serialize = F)
+  hash_y <-  digest::digest(path_y, algo = "md5", serialize = F, file = T)
   print(hash_y)
   
   if ( size_x == size_y ) {

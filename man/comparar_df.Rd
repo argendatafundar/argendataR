@@ -9,7 +9,7 @@ comparar_df(df, df_anterior, pk = NULL, k_control_num = 3, drop_joined_df = F)
 \arguments{
 \item{df}{data.frame dataframe a comparar con el output cargado en el drive}
 
-\item{df_anterior}{data.frame dataframe anterior que se usa como referencia de comparacion. Ver \code{argendataR::descargar_output()}.}
+\item{df_anterior}{data.frame dataframe anterior que se usa como referencia de comparacion.}
 
 \item{pk}{string Vector con los nombres de columnas que son primary key del dataframe}
 

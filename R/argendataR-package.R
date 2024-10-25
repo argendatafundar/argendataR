@@ -6,6 +6,7 @@
 #' @importFrom arrow read_parquet
 #' @importFrom arrow write_parquet
 #' @importFrom assertthat assert_that
+#' @importFrom digest digest
 #' @importFrom dplyr bind_rows
 #' @importFrom fs path_package
 #' @importFrom ggplot2 aes

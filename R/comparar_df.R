@@ -1,7 +1,7 @@
 #' Comparar dos dataframes
 #'
 #' @param df data.frame dataframe a comparar con el output cargado en el drive
-#' @param df_anterior data.frame dataframe anterior que se usa como referencia de comparacion. Ver `argendataR::descargar_output()`.
+#' @param df_anterior data.frame dataframe anterior que se usa como referencia de comparacion. 
 #' @param pk string Vector con los nombres de columnas que son primary key del dataframe
 #' @param k_control_num numeric cantidad de desvios estandar a partir del cual se seleccionan posibles outliers
 #' @param drop_joined_df logical Si es FALSE (default) el resultado incluye joined_df: el left_join de el output cargado en el drive con el df. Si es TRUE no lo incluye.

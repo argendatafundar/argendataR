@@ -207,20 +207,26 @@ actualizar_fuente_raw <- function(id_fuente,
     readr::write_csv(file = glue::glue("{RUTA_FUENTES()}/fuentes_raw.csv"), eol = "\n", progress = F)
 
   message("Registro actualizado en fuentes raw")
+  
+  log <- comparar_archivos(x = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw[[irow, 'path_raw']]}"),
+                           y = glue::glue("{directorio}/{df_fuentes_raw[[irow, 'path_raw']]}"))
+  
+  print(log)
 
 
   file.copy(from = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw[[irow, 'path_raw']]}"),
             to = glue::glue("{RUTA_FUENTES()}/raw/_tmp_{df_fuentes_raw[[irow, 'path_raw']]}"), overwrite = T)
 
-  check_copy <- file.copy(from = glue::glue("{directorio}/df_fuentes_raw[[irow, 'path_raw']]}"),
-                          to = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw[[irow, 'path_raw']]}"), overwrite = T)
+  check_copy <- file.copy(from = glue::glue("{directorio}/{df_fuentes_raw[[irow, 'path_raw']]}"),
+                          to = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw[[irow, 'path_raw']]}"),
+                          overwrite = T)
 
-  msj <- glue::glue("Check copy: {check_copy}")
-  message(msj)
+  warning(check_copy)
 
   if (!isTRUE(check_copy)) {
 
     warning("Error al copiar el archivo a carpeta /raw")
+
     file.remove(glue::glue("{RUTA_FUENTES()}/raw/_tmp_{df_fuentes_raw[[irow, 'path_raw']]}"))
 
     warning("Se restaura el registro de df_fuentes_raw previo")
@@ -242,6 +248,8 @@ actualizar_fuente_raw <- function(id_fuente,
     file.remove(glue::glue("{RUTA_FUENTES()}/raw/{old_path}"))
     message(glue::glue("Copia con path anterior eliminada: {old_path}"))
   }
+  
+  jsonlite::write_json(log, path = glue::glue("{RUTA_FUENTES()}/raw/log_{id_fuente}_{format(Sys.time(), '%Y%m%d%z%S')}.json"))
 
 }
 

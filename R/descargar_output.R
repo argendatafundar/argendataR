@@ -6,61 +6,65 @@
 #' @param ... parametros adicionales pasados a read_delim
 #'
 #' @description
-#' La funcion descarga el archivo en la carpeta temporal de la sesión y hace read_delim desde allí. 
-#' 
+#' La funcion descarga el archivo si está disponible desde GH y sino desde la carpeta del drive de argendata
+#' en la carpeta temporal de la sesión y hace read_delim desde allí.
+#'
 #' @export
 #'
-#' 
+#'
 
-descargar_output <- function(nombre, subtopico, entrega_subtopico, ...) {
-    
+descargar_output <- function(nombre, subtopico, entrega_subtopico = NULL, ...) {
+
     limpiar_temps()
-  
+
+    stopifnot("subtopico debe ser character de largo 6" = is.character(subtopico) & nchar(subtopico) == 6)
+
     path <- gsub("\\.csv$","",nombre)
-    
+
     path <- paste0(path, ".csv")
-  
-    output_url <- glue::glue("{GH_DATA_RAWURL()}/{subtopico}/{path}") 
-    
+
+    output_url <- glue::glue("{GH_DATA_RAWURL()}/{subtopico}/{path}")
+
     df <- tryCatch(
       httr2::req_perform(httr2::request(output_url)),
       httr2_http_404 = function(cnd) NULL
     )
-    
+
     if (is.null(df)) {
       warning("Output no encontrado en repo 'data'.")
+      stopifnot("'entrega_subtopico' debe ser character" = is.character(entrega_subtopico))
       # dowload or read output
       subtopico_outputs_df <- subtopico_outputs(subtopico_nombre = subtopico,
                                                 entrega_subtopico = entrega_subtopico)
-      
+
       id_output <- subtopico_outputs_df$id[grepl("cosasoa", subtopico_outputs_df$name)]
-      
+
       stopifnot("Output no encontrada en el drive de Argendata" = length(id_output) != 0)
-      
+
       stopifnot("Se encontro mas de una coincidencia en el drive de Argendata. Corregir filesystem del drive" = length(id_output) != 1)
-      
+
       filetemp <- tempfile(pattern = sprintf("%s_%s_%s_argdt",
                                              nombre,
                                              entrega_subtopico,
                                              subtopico),
                            fileext = ".csv")
-      
+
       googledrive::drive_download(file = googledrive::as_id(id_output),
                                   path = filetemp)
-      
+
       output_drive <-  readr::read_delim(filetemp, ...)
-    
+
     } else {
-      
+
       output_drive <- rvest::html_text(rvest::read_html(df$body)) %>%
         readr::read_csv()
-      
+
     }
-    
-    
-    
-    
+
+
+
+
     output_drive
-    
+
   }
 

@@ -4,7 +4,7 @@
 \alias{descargar_output}
 \title{Descargar output desde el drive}
 \usage{
-descargar_output(nombre, subtopico, entrega_subtopico, ...)
+descargar_output(nombre, subtopico, entrega_subtopico = NULL, ...)
 }
 \arguments{
 \item{nombre}{nombre del archivo a descargar. La función usa grepl para identificar el archivo, si el nombre coincide con más de un archivo devuelve error.}
@@ -16,5 +16,6 @@ descargar_output(nombre, subtopico, entrega_subtopico, ...)
 \item{...}{parametros adicionales pasados a read_delim}
 }
 \description{
-La funcion descarga el archivo en la carpeta temporal de la sesión y hace read_delim desde allí.
+La funcion descarga el archivo si está disponible desde GH y sino desde la carpeta del drive de argendata
+en la carpeta temporal de la sesión y hace read_delim desde allí.
 }

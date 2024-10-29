@@ -30,7 +30,7 @@ actualizar_fuente_clean <- function(id_fuente_clean,
                                     comparacion = NULL) {
 
 
-  stopifnot("`comparacion` debe ser una lista resultado de `comparar_fuente_clean`" = !is.list(comparacion) & length(comparacion) > 1)
+  stopifnot("`comparacion` debe ser una lista resultado de `comparar_fuente_clean`" = is.list(comparacion) & length(comparacion) > 1)
 
   stopifnot("'id_fuente_clean' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente_clean) | is.character(id_fuente_clean))
 

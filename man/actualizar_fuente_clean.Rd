@@ -12,7 +12,8 @@ actualizar_fuente_clean(
   path_clean = NULL,
   descripcion = NULL,
   directorio = NULL,
-  prompt = T
+  prompt = T,
+  comparacion = NULL
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ actualizar_fuente_clean(
 \item{directorio}{string Ruta al directorio desde el cual cargar el archivo. Si es NULL toma tempdir()}
 
 \item{prompt}{logical Si es TRUE (default) pide confirmacion de los cambios.}
+
+\item{comparacion}{list Lista con la salida de la funcion \code{comparar_fuente_clean}}
 }
 \description{
 Actualiza el registro en la tabla de fuentes clean y guarda una nueva copia de la fuente clean el directorio del servidor.

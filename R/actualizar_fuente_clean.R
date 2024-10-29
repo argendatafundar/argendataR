@@ -14,6 +14,7 @@
 #' @param descripcion string Descripcion del dataset
 #' @param directorio string Ruta al directorio desde el cual cargar el archivo. Si es NULL toma tempdir()
 #' @param prompt logical Si es TRUE (default) pide confirmacion de los cambios.
+#' @param comparacion list Lista con la salida de la funcion `comparar_fuente_clean`
 #' @export
 #'
 #'
@@ -25,9 +26,11 @@ actualizar_fuente_clean <- function(id_fuente_clean,
                                     path_clean = NULL,
                                     descripcion = NULL,
                                     directorio = NULL,
-                                    prompt = T) {
+                                    prompt = T,
+                                    comparacion = NULL) {
 
 
+  stopifnot("`comparacion` debe ser una lista resultado de `comparar_fuente_clean`" = !is.list(comparacion) & length(comparacion) > 1)
 
   stopifnot("'id_fuente_clean' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente_clean) | is.character(id_fuente_clean))
 
@@ -138,6 +141,9 @@ actualizar_fuente_clean <- function(id_fuente_clean,
       arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/clean/{df_fuentes_clean[irow,'path_clean']}"), compression = "snappy")
 
     message("Parquet creado")
+    
+    comparacion %>% 
+      jsonlite::write_json(path = glue::glue("{RUTA_FUENTES()}/clean/log/log_{df_fuentes_clean$codigo[irow]}_{format(Sys.time(), '%Y%m%d%z%S')}.json"))
 
   } else if (!is.data.frame(df)) {
     
@@ -154,7 +160,9 @@ actualizar_fuente_clean <- function(id_fuente_clean,
 
     message("Parquet creado")
 
-
+    comparacion %>% 
+      jsonlite::write_json(path = glue::glue("{RUTA_FUENTES()}/clean/log/log_{df_fuentes_clean$codigo[irow]}_{format(Sys.time(), '%Y%m%d%z%S')}.json"))
+    
   } else {
     stop("Error inesperado al guardar el parquet")
   }

@@ -249,7 +249,7 @@ actualizar_fuente_raw <- function(id_fuente,
     message(glue::glue("Copia con path anterior eliminada: {old_path}"))
   }
   
-  jsonlite::write_json(log, path = glue::glue("{RUTA_FUENTES()}/raw/log_{id_fuente}_{format(Sys.time(), '%Y%m%d%z%S')}.json"))
+  jsonlite::write_json(log, path = glue::glue("{RUTA_FUENTES()}/raw/log/log_R{id_fuente}C0_{format(Sys.time(), '%Y%m%d%z%S')}.json"))
 
 }
 

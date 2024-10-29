@@ -31,6 +31,43 @@ actualizar_fuente_clean <- function(id_fuente_clean,
 
 
   stopifnot("`comparacion` debe ser una lista resultado de `comparar_fuente_clean`" = is.list(comparacion) & length(comparacion) > 1)
+  
+  comparacion$comparacion_cols <- lapply(comparacion$comparacion_cols,
+                                     function(x) {x[names(x) != "plot"]})
+  
+  
+  comparacion <- comparacion[names(comparacion) != "joined_df"]
+  
+  
+  colscontrol <- names(comparacion[["comparacion_cols"]])
+  
+  for (i  in colscontrol) {
+    
+    
+    
+    if ( "ks_test" %in% names(comparacion[["comparacion_cols"]][[i]]) ) {
+      
+      print(paste("Control", i, ":"))
+      print("ks")
+      print(comparacion[["comparacion_cols"]][[i]]$ks_test)
+      print("mw")
+      comparacion[["comparacion_cols"]][[i]]$mw_test
+      
+      stopifnot("El dataset tiene una variable numerica que no cumple los test de control" = comparacion[["comparacion_cols"]][[i]]$ks_test > .2 &  comparacion[["comparacion_cols"]][[i]]$mw_test > .2)
+      
+    } else {
+      
+      print(paste("Control", i, ":"))
+      print("tasa mismatch")
+      print(comparacion[["comparacion_cols"]][[i]]$tasa_mismatches)
+      
+      stopifnot("El dataset tiene una variable no numerica que no cumple los test de control" = comparacion[["comparacion_cols"]][[i]]$tasa_mismatches < .05 )
+      
+      
+    }
+    
+    
+  }
 
   stopifnot("'id_fuente_clean' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente_clean) | is.character(id_fuente_clean))
 

@@ -288,7 +288,9 @@ write_output <- function(
 
   ## control ----
 
-  if (is.list(control)) {
+    stopifnot(is.list(control))
+
+    stopifnot(length(control) >= 1 )
 
     control$comparacion_cols <- lapply(control$comparacion_cols,
                                            function(x) {x[names(x) != "plot"]})
@@ -299,9 +301,9 @@ write_output <- function(
 
     colscontrol <- names(control[["comparacion_cols"]])
 
+    checks <- c()
+
     for (i  in colscontrol) {
-
-
 
       if ( "ks_test" %in% names(control[["comparacion_cols"]][[i]]) ) {
 
@@ -311,7 +313,11 @@ write_output <- function(
         print("mw")
         control[["comparacion_cols"]][[i]]$mw_test
 
-        stopifnot("El dataset tiene una variable numerica que no cumple los test de control" = control[["comparacion_cols"]][[i]]$ks_test > .2 &  control[["comparacion_cols"]][[i]]$mw_test > .2)
+        if (control[["comparacion_cols"]][[i]]$ks_test > .2 &  control[["comparacion_cols"]][[i]]$mw_test > .2) {
+
+          checks <- append(checks, i)
+
+        }
 
       } else {
 
@@ -319,20 +325,45 @@ write_output <- function(
         print("tasa mismatch")
         print(control[["comparacion_cols"]][[i]]$tasa_mismatches)
 
-        stopifnot("El dataset tiene una variable no numerica que no cumple los test de control" = control[["comparacion_cols"]][[i]]$tasa_mismatches < .05 )
+        if (control[["comparacion_cols"]][[i]]$tasa_mismatches < .05 ) {
 
+          checks <- append(checks, i)
+
+        }
+
+      }
+
+      if (length(checks) >= 1 ) {
+
+        warning("El dataset tiene una/s variable/s que no cumplen los test de control")
+        message(checks)
+        continuar <- readline("Continuar de todas formas? Y/N ")
+
+        stopifnot("Actualizacion cancelada" =tolower(continuar) == "y")
+
+        if (is.null(aclaraciones)) {
+
+          aclaraciones <- readline("Especificar las razones de los cambios en el dataset: ")
+
+
+        } else {
+
+          warning("Las aclaraciones del dataset deben dar cuenta de los cambios en control")
+          message(aclaraciones)
+          nueva_aclaracion <- readline("Cambiar aclaraciones? Y/N ")
+
+          if (tolower(nueva_aclaracion) == "y") {
+
+            aclaraciones <- readline("Especificar las razones de los cambios en el dataset: ")
+
+          }
+
+        }
 
       }
 
 
     }
-
-
-  } else {
-
-    control <- "no se incluyeron controles"
-
-  }
 
   # diccionario_cambios ----
 

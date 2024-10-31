@@ -73,21 +73,22 @@ actualizar_fuente_clean <- function(id_fuente_clean,
 
     }
 
-    if (length(checks) >= 1 ) {
+  }
 
-      warning("El dataset tiene una/s variable/s que no cumplen los test de control")
-      warning(checks)
-      continuar <- readline("Continuar de todas formas? Y/N ")
+  if (length(checks) >= 1 ) {
 
-      stopifnot("Actualizacion cancelada" =tolower(continuar) == "y")
+    warning("El dataset tiene una/s variable/s que no cumplen los test de control")
+    warning(checks)
+    continuar <- readline("Continuar de todas formas? Y/N ")
 
-      aclaracion <- readline("Aclaracion sobre la actualizacion: ")
+    stopifnot("Actualizacion cancelada" =tolower(continuar) == "y")
 
-      comparacion$aclaracion <- aclaracion
+    aclaracion <- readline("Aclaracion sobre la actualizacion: ")
 
-    }
+    comparacion$aclaracion <- aclaracion
 
   }
+
 
   stopifnot("'id_fuente_clean' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente_clean) | is.character(id_fuente_clean))
 

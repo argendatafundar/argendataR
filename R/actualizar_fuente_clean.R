@@ -31,42 +31,62 @@ actualizar_fuente_clean <- function(id_fuente_clean,
 
 
   stopifnot("`comparacion` debe ser una lista resultado de `comparar_fuente_clean`" = is.list(comparacion) & length(comparacion) > 1)
-  
+
   comparacion$comparacion_cols <- lapply(comparacion$comparacion_cols,
                                      function(x) {x[names(x) != "plot"]})
-  
-  
+
+
   comparacion <- comparacion[names(comparacion) != "joined_df"]
-  
-  
+
+
   colscontrol <- names(comparacion[["comparacion_cols"]])
-  
+
+  checks <- c()
+
   for (i  in colscontrol) {
-    
-    
-    
+
     if ( "ks_test" %in% names(comparacion[["comparacion_cols"]][[i]]) ) {
-      
+
       print(paste("Control", i, ":"))
       print("ks")
       print(comparacion[["comparacion_cols"]][[i]]$ks_test)
       print("mw")
       comparacion[["comparacion_cols"]][[i]]$mw_test
-      
-      stopifnot("El dataset tiene una variable numerica que no cumple los test de control" = comparacion[["comparacion_cols"]][[i]]$ks_test > .2 &  comparacion[["comparacion_cols"]][[i]]$mw_test > .2)
-      
+
+      if (comparacion[["comparacion_cols"]][[i]]$ks_test > .2 &  comparacion[["comparacion_cols"]][[i]]$mw_test > .2) {
+
+        checks <- append(checks, i)
+
+      }
+
     } else {
-      
+
       print(paste("Control", i, ":"))
       print("tasa mismatch")
       print(comparacion[["comparacion_cols"]][[i]]$tasa_mismatches)
-      
-      stopifnot("El dataset tiene una variable no numerica que no cumple los test de control" = comparacion[["comparacion_cols"]][[i]]$tasa_mismatches < .05 )
-      
-      
+
+      if (comparacion[["comparacion_cols"]][[i]]$tasa_mismatches < .05 ) {
+
+        checks <- append(checks, i)
+
+      }
+
     }
-    
-    
+
+    if (length(checks) >= 1 ) {
+
+      warning("El dataset tiene una/s variable/s que no cumplen los test de control")
+      warning(checks)
+      continuar <- readline("Continuar de todas formas? Y/N ")
+
+      stopifnot("Actualizacion cancelada" =tolower(continuar) == "y")
+
+      aclaracion <- readline("Aclaracion sobre la actualizacion: ")
+
+      comparacion$aclaracion <- aclaracion
+
+    }
+
   }
 
   stopifnot("'id_fuente_clean' debe ser id numerico de fuente o character con codigo de fuente" = is.numeric(id_fuente_clean) | is.character(id_fuente_clean))
@@ -178,12 +198,12 @@ actualizar_fuente_clean <- function(id_fuente_clean,
       arrow::write_parquet(sink = glue::glue("{RUTA_FUENTES()}/clean/{df_fuentes_clean[irow,'path_clean']}"), compression = "snappy")
 
     message("Parquet creado")
-    
-    comparacion %>% 
+
+    comparacion %>%
       jsonlite::write_json(path = glue::glue("{RUTA_FUENTES()}/clean/log/log_{df_fuentes_clean$codigo[irow]}_{format(Sys.time(), '%Y%m%d%z%S')}.json"))
 
   } else if (!is.data.frame(df)) {
-    
+
     msj <- glue::glue("Leyendo desde {directorio}/{df_fuentes_clean[irow,'path_clean']}")
     message(msj)
 
@@ -197,9 +217,9 @@ actualizar_fuente_clean <- function(id_fuente_clean,
 
     message("Parquet creado")
 
-    comparacion %>% 
+    comparacion %>%
       jsonlite::write_json(path = glue::glue("{RUTA_FUENTES()}/clean/log/log_{df_fuentes_clean$codigo[irow]}_{format(Sys.time(), '%Y%m%d%z%S')}.json"))
-    
+
   } else {
     stop("Error inesperado al guardar el parquet")
   }

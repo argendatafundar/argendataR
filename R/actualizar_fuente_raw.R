@@ -188,6 +188,12 @@ actualizar_fuente_raw <- function(id_fuente,
 
   ## warning cambios ----------
 
+  log <- comparar_archivos(x = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw_copy[[irow, 'path_raw']]}"),
+                           y = glue::glue("{directorio}/{df_fuentes_raw[[irow, 'path_raw']]}"))
+
+  print(log)
+
+
 
   if (!isFALSE(prompt) & length(inputs) > 1) {
 
@@ -208,10 +214,6 @@ actualizar_fuente_raw <- function(id_fuente,
 
   message("Registro actualizado en fuentes raw")
 
-  log <- comparar_archivos(x = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw_copy[[irow, 'path_raw']]}"),
-                           y = glue::glue("{directorio}/{df_fuentes_raw[[irow, 'path_raw']]}"))
-
-  print(log)
 
 
   file.copy(from = glue::glue("{RUTA_FUENTES()}/raw/{df_fuentes_raw[[irow, 'path_raw']]}"),

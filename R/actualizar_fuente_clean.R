@@ -53,7 +53,7 @@ actualizar_fuente_clean <- function(id_fuente_clean,
       print("mw")
       comparacion[["comparacion_cols"]][[i]]$mw_test
 
-      if (comparacion[["comparacion_cols"]][[i]]$ks_test > .2 &  comparacion[["comparacion_cols"]][[i]]$mw_test > .2) {
+      if (comparacion[["comparacion_cols"]][[i]]$ks_test < .2 |  comparacion[["comparacion_cols"]][[i]]$mw_test < .2) {
 
         checks <- append(checks, i)
 
@@ -65,7 +65,7 @@ actualizar_fuente_clean <- function(id_fuente_clean,
       print("tasa mismatch")
       print(comparacion[["comparacion_cols"]][[i]]$tasa_mismatches)
 
-      if (comparacion[["comparacion_cols"]][[i]]$tasa_mismatches < .05 ) {
+      if (comparacion[["comparacion_cols"]][[i]]$tasa_mismatches >= .05 ) {
 
         checks <- append(checks, i)
 

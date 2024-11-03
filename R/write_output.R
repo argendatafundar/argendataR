@@ -313,7 +313,7 @@ write_output <- function(
         print("mw")
         control[["comparacion_cols"]][[i]]$mw_test
 
-        if (control[["comparacion_cols"]][[i]]$ks_test > .2 &  control[["comparacion_cols"]][[i]]$mw_test > .2) {
+        if (control[["comparacion_cols"]][[i]]$ks_test < .2 |  control[["comparacion_cols"]][[i]]$mw_test < .2) {
 
           checks <- append(checks, i)
 
@@ -325,7 +325,7 @@ write_output <- function(
         print("tasa mismatch")
         print(control[["comparacion_cols"]][[i]]$tasa_mismatches)
 
-        if (control[["comparacion_cols"]][[i]]$tasa_mismatches < .05 ) {
+        if (control[["comparacion_cols"]][[i]]$tasa_mismatches >= .05 ) {
 
           checks <- append(checks, i)
 

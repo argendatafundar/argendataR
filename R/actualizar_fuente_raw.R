@@ -141,11 +141,17 @@ actualizar_fuente_raw <- function(id_fuente,
 
   ## control archivos x cambio de path ----------
 
+  cambio_path_raw <- FALSE
 
-  cambio_path_raw <- path_raw != df_fuentes_raw[[irow, "path_raw"]]
+  if (!is.null(path_raw)) {
+    cambio_path_raw <- path_raw != df_fuentes_raw[[irow, "path_raw"]]
+  }
 
   if (isTRUE(cambio_path_raw)) {
     old_path <- df_fuentes_raw[[irow, "path_raw"]]
+    print(glue::glue("Path anterior: {old_path}"))
+    print(glue::glue("Path nuevo: {path_raw}"))
+
   }
 
   ## armado lista input  ---------

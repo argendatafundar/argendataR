@@ -16,6 +16,7 @@
 #' @importFrom ggplot2 theme_minimal
 #' @importFrom ggplot2 xlab
 #' @importFrom ggplot2 ylab
+#' @importFrom gh gh
 #' @importFrom glue glue
 #' @importFrom googledrive as_id
 #' @importFrom googledrive drive_download

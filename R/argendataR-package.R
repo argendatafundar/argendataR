@@ -6,6 +6,7 @@
 #' @importFrom arrow read_parquet
 #' @importFrom arrow write_parquet
 #' @importFrom assertthat assert_that
+#' @importFrom base64enc base64encode
 #' @importFrom digest digest
 #' @importFrom dplyr bind_rows
 #' @importFrom fs path_package

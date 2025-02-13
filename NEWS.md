@@ -1,3 +1,12 @@
+# Version: 0.0.9046
+
+Agregado:
+- funcion `subir_archivo()`, `actualizar_archivo()`, `subir_o_actualizar()`
+
+Corregido:
+
+Eliminado:
+
 # Version: 0.0.9045
 
 Agregado:

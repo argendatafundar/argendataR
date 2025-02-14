@@ -27,7 +27,7 @@ subir_archivo <- function(path_remoto, path_local, repo_owner, repo_name, branch
 actualizar_archivo <- function(path_remoto, path_local, sha, repo_owner, repo_name, branch) {
   if (is.null(sha)) stop("SHA no puede ser nulo. Verifique el archivo remoto antes de intentar actualizar.")
   file_content <- base64enc::base64encode(path_local)
-  mensaje_commit <- paste("Actualizaci\\u00f3n de", basename(path_local))
+  mensaje_commit <- paste("Actualizacion de", basename(path_local))
   gh("PUT /repos/:owner/:repo/contents/:path",
      owner = repo_owner, repo = repo_name, path = path_remoto,
      message = mensaje_commit, content = file_content, sha = sha, branch = branch)

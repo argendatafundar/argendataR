@@ -1,3 +1,12 @@
+# Version: 0.0.9048
+
+Agregado:
+
+Corregido:
+- funcion `subir_o_actualizar()`: el path local apunta a tempdir() ahora en vez de /tmp
+
+Eliminado:
+
 # Version: 0.0.9047
 
 Agregado:

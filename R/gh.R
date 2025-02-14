@@ -55,8 +55,8 @@ subir_o_actualizar <- function(nombre_archivo, repo_owner, repo_name, branch = "
       if (is.null(sha)) stop("No se pudo obtener el SHA remoto.")
     }
 
-    path_local <- file.path("/tmp", nombre_archivo)
-    if (!file.exists(path_local)) stop("El archivo local no existe en /tmp.")
+    path_local <- file.path(tempdir(), nombre_archivo)
+    if (!file.exists(path_local)) stop(paste("El archivo local no existe en", tempdir()))
 
     if (is.null(path_remoto)) {
       subir_archivo(nombre_archivo, path_local, repo_owner, repo_name, branch)

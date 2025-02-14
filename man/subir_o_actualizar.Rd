@@ -2,19 +2,19 @@
 % Please edit documentation in R/gh.R
 \name{subir_o_actualizar}
 \alias{subir_o_actualizar}
-\title{Subir o actualizar un archivo en un repositorio GitHub seg\u00fan su existencia}
+\title{Subir o actualizar un archivo en un repositorio GitHub}
 \usage{
 subir_o_actualizar(nombre_archivo, repo_owner, repo_name, branch = "main")
 }
 \arguments{
 \item{nombre_archivo}{Nombre del archivo a subir o actualizar.}
 
-\item{repo_owner}{Usuario o organizaci\u00f3n due\u00f1a del repositorio.}
+\item{repo_owner}{Usuario o organización dueña del repositorio.}
 
 \item{repo_name}{Nombre del repositorio.}
 
-\item{branch}{Rama del repositorio donde se realizar\u00e1 la operaci\u00f3n. Por defecto, 'main'.}
+\item{branch}{Rama del repositorio donde se realizará la operación Por defecto, 'main'.}
 }
 \description{
-Subir o actualizar un archivo en un repositorio GitHub seg\u00fan su existencia
+Subir o actualizar un archivo en un repositorio GitHub
 }

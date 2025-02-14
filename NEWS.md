@@ -1,3 +1,12 @@
+# Version: 0.0.9047
+
+Agregado:
+- funcion `mandar_data()`
+
+Corregido:
+
+Eliminado:
+
 # Version: 0.0.9046
 
 Agregado:

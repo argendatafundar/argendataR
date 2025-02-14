@@ -13,11 +13,11 @@ actualizar_archivo(path_remoto, path_local, sha, repo_owner, repo_name, branch)
 
 \item{sha}{SHA del archivo remoto a actualizar.}
 
-\item{repo_owner}{Usuario o organizaci\u00f3n due\u00f1a del repositorio.}
+\item{repo_owner}{Usuario o organización dueña del repositorio.}
 
 \item{repo_name}{Nombre del repositorio.}
 
-\item{branch}{Rama del repositorio donde se actualizar\u00e1 el archivo.}
+\item{branch}{Rama del repositorio donde se actualizará el archivo.}
 }
 \description{
 Actualizar un archivo existente en un repositorio GitHub

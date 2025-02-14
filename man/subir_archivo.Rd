@@ -11,11 +11,11 @@ subir_archivo(path_remoto, path_local, repo_owner, repo_name, branch)
 
 \item{path_local}{Ruta del archivo local.}
 
-\item{repo_owner}{Usuario o organizaci\u00f3n due\u00f1a del repositorio.}
+\item{repo_owner}{Usuario o organización dueña del repositorio.}
 
 \item{repo_name}{Nombre del repositorio.}
 
-\item{branch}{Rama del repositorio donde se subir\u00e1 el archivo.}
+\item{branch}{Rama del repositorio donde se subirá el archivo.}
 }
 \description{
 Subir un nuevo archivo a un repositorio GitHub

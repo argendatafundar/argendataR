@@ -7,7 +7,7 @@
 subir_archivo(path_remoto, path_local, repo_owner, repo_name, branch)
 }
 \arguments{
-\item{path_remoto}{Ruta completa del archivo en el repositorio remoto.}
+\item{path_remoto}{Ruta completa del archivo en el repositorio remoto (puede incluir carpetas).}
 
 \item{path_local}{Ruta del archivo local.}
 

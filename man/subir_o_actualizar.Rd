@@ -4,10 +4,19 @@
 \alias{subir_o_actualizar}
 \title{Subir o actualizar un archivo en un repositorio GitHub}
 \usage{
-subir_o_actualizar(nombre_archivo, repo_owner, repo_name, branch = "main")
+subir_o_actualizar(
+  path_local,
+  path_remoto,
+  repo_owner,
+  repo_name,
+  branch = "main"
+)
 }
 \arguments{
-\item{nombre_archivo}{Nombre del archivo a subir o actualizar.}
+\item{path_local}{Ruta completa del archivo local. (Por ejemplo '/tmp/data.json')}
+
+\item{path_remoto}{Ruta en donde se subirá o actualizará el archivo en el repositorio remoto
+(Por ejemplo 'CRECIM/data.json')}
 
 \item{repo_owner}{Usuario o organización dueña del repositorio.}
 

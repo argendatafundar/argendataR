@@ -4,12 +4,14 @@
 \alias{mandar_data}
 \title{Subir o actualizar un archivo en repositorio data de argendatafundar}
 \usage{
-mandar_data(nombre_archivo, branch = "dev")
+mandar_data(filename, subtopico, branch = "dev")
 }
 \arguments{
-\item{nombre_archivo}{Nombre del archivo a subir o actualizar.}
+\item{filename}{Nombre del archivo a buscar en tmpdir.}
 
-\item{branch}{Rama del repositorio donde se realizará la operación Por defecto, 'main'.}
+\item{subtopico}{Ruta en el repositorio remoto donde se guardará el archivo.}
+
+\item{branch}{Rama del repositorio donde se realizará la operación Por defecto, 'dev'.}
 }
 \description{
 Subir o actualizar un archivo en repositorio data de argendatafundar

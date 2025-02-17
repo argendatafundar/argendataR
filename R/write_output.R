@@ -217,10 +217,7 @@ write_output <- function(
     stopifnot("hay etiquetas invalidas. Deben ser character no vacios." = all(sapply(descripcion_columnas, function(x) {is.character(x) & x != ""})))
     stopifnot("hay columnas repetidas, cada columna solo debe declararse 1 vez" = all(sapply(unique(names(descripcion_columnas)), function(i) sum(names(descripcion_columnas) == i) == 1 )) )
 
-    if (nrow(etiquetas) == 0) {
-      warning("No se han encontrado etiquetas coincidentes para la descripcion de columnas en metadatos")
-      flush.console()
-    }
+
 
   }  else if (is.null(descripcion_columnas)) {
 

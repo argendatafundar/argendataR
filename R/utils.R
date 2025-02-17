@@ -1,5 +1,5 @@
 #' @keywords internal
-GH_DATA_RAWURL <- function() {"https://raw.githubusercontent.com/argendatafundar/data/main/"}
+GH_DATA_RAWURL <- function() {"https://raw.githubusercontent.com/argendatafundar/data/raw/refs/heads"}
 
 #' @keywords internal
 SERVER_USER_CALL <- function(){
@@ -8,6 +8,9 @@ SERVER_USER_CALL <- function(){
   
   info["nodename"] == "vps-3915596-x"
 }
+
+#' @keywords internal
+URL_GEONOMENCLADOR <- function() {"https://raw.githubusercontent.com/argendatafundar/geonomencladores/refs/heads/main/geonomenclador.json"}
 
 #' @keywords internal
 RUTA_FUENTES <- function() {

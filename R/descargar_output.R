@@ -3,6 +3,7 @@
 #' @param nombre nombre del archivo a descargar. La función usa grepl para identificar el archivo, si el nombre coincide con más de un archivo devuelve error.
 #' @param subtopico codigo de 6 letras del subtopico en mayusculas.
 #' @param entrega_subtopico nombre exacto de la carpeta de entrega donde buscar el output
+#' @param branch branch de github a donde apuntar
 #' @param ... parametros adicionales pasados a read_delim
 #'
 #' @description
@@ -13,7 +14,7 @@
 #'
 #'
 
-descargar_output <- function(nombre, subtopico, entrega_subtopico = NULL, ...) {
+descargar_output <- function(nombre, subtopico, entrega_subtopico = NULL, branch = "dev", ...) {
 
     limpiar_temps()
 
@@ -23,7 +24,7 @@ descargar_output <- function(nombre, subtopico, entrega_subtopico = NULL, ...) {
 
     path <- paste0(path, ".csv")
 
-    output_url <- glue::glue("{GH_DATA_RAWURL()}/{subtopico}/{path}")
+    output_url <- glue::glue("{GH_DATA_RAWURL()}/{branch}/{subtopico}/{path}")
 
     df <- tryCatch(
       httr2::req_perform(httr2::request(output_url)),

@@ -8,7 +8,7 @@ descargar_output(
   nombre,
   subtopico,
   entrega_subtopico = NULL,
-  branch = "dev",
+  branch = "main",
   ...
 )
 }
@@ -19,7 +19,7 @@ descargar_output(
 
 \item{entrega_subtopico}{nombre exacto de la carpeta de entrega donde buscar el output}
 
-\item{branch}{branch de github a donde apuntar}
+\item{branch}{branch de github a donde apuntar. Default es "main"}
 
 \item{...}{parametros adicionales pasados a read_delim}
 }

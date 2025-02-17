@@ -1,7 +1,7 @@
 Type: Package
 Package: argendataR
 Title: Caja de herramientas para Argendata
-Version: 0.0.9048
+Version: 0.0.9049
 Author: Fundar
 Maintainer: Juan Gabriel Juara <jgjuara@fund.ar>
 Description: Paquete de herramientas para el flujo de outputs Argendata.
@@ -32,7 +32,8 @@ Imports:
     assertthat,
     digest,
     gh,
-    base64enc
+    base64enc,
+    utils
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1

@@ -53,5 +53,6 @@
 #' @importFrom tidyr pivot_wider
 #' @importFrom tidyr unnest_wider
 #' @importFrom utils download.file
+#' @importFrom utils flush.console
 ## usethis namespace: end
 NULL

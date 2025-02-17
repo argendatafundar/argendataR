@@ -27,7 +27,7 @@ check_iso3 <- function(x) {
     })
 
   # Verificar códigos ISO3
-  check <- all(x %in% geonomenclador$iso3)
+  check <- all(x %in% geonomenclador$geocodigo)
   
   if (isFALSE(check)) {
     # Identificar valores no válidos
@@ -36,7 +36,7 @@ check_iso3 <- function(x) {
     warning("Algunos valores de 'x' no son codigos ISO3 validados en geonomenclador: ", paste(invalid_values, collapse = ", "))
     flush.console()
     
-    y <- x %in% geonomenclador$iso3
+    y <- x %in% geonomenclador$geocodigo
     names(y) <- x
     return(y)
 

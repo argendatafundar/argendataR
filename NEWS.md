@@ -1,3 +1,13 @@
+# Version: 0.0.9049
+
+Agregado:
+- funcion `check_iso3()`
+
+Corregido:
+- funcion `descargar_output()`: el parametro `branch` por defecto es "main"
+
+Eliminado:
+
 # Version: 0.0.9048
 
 Agregado:

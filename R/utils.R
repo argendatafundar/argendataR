@@ -1,5 +1,5 @@
 #' @keywords internal
-GH_DATA_RAWURL <- function() {"https://raw.githubusercontent.com/argendatafundar/data/raw/refs/heads"}
+GH_DATA_RAWURL <- function() {"https://raw.githubusercontent.com/argendatafundar/data/refs/heads"}
 
 #' @keywords internal
 SERVER_USER_CALL <- function(){

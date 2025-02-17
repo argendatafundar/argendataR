@@ -164,10 +164,11 @@ write_output <- function(
     print("Columna indice de tiempo:")
     print(columna_indice_tiempo)
     stopifnot("'columna_indice_tiempo' no hallada en 'data'" = all(columna_indice_tiempo %in% columnas))
+    max_tiempo <- obtener_fila_max_tiempo(data, columna_indice_tiempo)
 
   } else if (isFALSE(es_serie_tiempo)) {
     stopifnot("'columna_indice_tiempo' debe ser NULL si el dataset no es serie de tiempo" = is.null(columna_indice_tiempo))
-
+    max_tiempo <- NULL
   } else {
     stop("'es_serie_tiempo' debe ser TRUE o FALSE")
   }
@@ -437,6 +438,7 @@ write_output <- function(
     pk = pk,
     es_serie_tiempo = es_serie_tiempo,
     columna_indice_tiempo = columna_indice_tiempo,
+    max_tiempo = max_tiempo,
     columna_geo_referencia = columna_geo_referencia,
     nivel_agregacion = nivel_agregacion,
     nullables = nullables ,
@@ -552,4 +554,30 @@ armador_descripcion <- function(metadatos, etiquetas_nuevas = NULL, output_cols)
 
   etiquetas
 
+}
+
+#' Obtener la fila con los valores más altos de las columnas de tiempo
+#'
+#' Esta función ordena un dataframe según las columnas de tiempo especificadas
+#' y devuelve una lista con los valores más altos de estas columnas.
+#'
+#' @param data Un dataframe que contiene las columnas de tiempo.
+#' @param columnas_tiempo Un vector de caracteres con los nombres de las columnas
+#' de tiempo que se utilizarán para ordenar el dataframe.
+#'
+#' @return Una lista con los nombres y valores de las columnas de tiempo más altos.
+#' @examples
+#' # Ejemplo de uso
+#' data <- data.frame(anio = c(2020, 2021, 2022), mes = c(5, 6, 7))
+#' columnas_tiempo <- c("anio", "mes")
+#' obtener_fila_max_tiempo(data, columnas_tiempo)
+#'
+#' @export
+obtener_fila_max_tiempo <- function(data, columnas_tiempo) {
+    # Ordenar el dataframe por las columnas de tiempo
+    data_ordenado <- data[do.call(order, data[columnas_tiempo]), ]
+    # Seleccionar la última fila
+    fila_max <- data_ordenado[nrow(data_ordenado), ]
+    # Extraer solo las columnas de tiempo de esa fila y convertir a lista
+    as.list(fila_max[columnas_tiempo])
 }

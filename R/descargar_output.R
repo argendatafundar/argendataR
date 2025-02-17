@@ -3,7 +3,7 @@
 #' @param nombre nombre del archivo a descargar. La función usa grepl para identificar el archivo, si el nombre coincide con más de un archivo devuelve error.
 #' @param subtopico codigo de 6 letras del subtopico en mayusculas.
 #' @param entrega_subtopico nombre exacto de la carpeta de entrega donde buscar el output
-#' @param branch branch de github a donde apuntar
+#' @param branch branch de github a donde apuntar. Default es "main"
 #' @param ... parametros adicionales pasados a read_delim
 #'
 #' @description
@@ -14,7 +14,7 @@
 #'
 #'
 
-descargar_output <- function(nombre, subtopico, entrega_subtopico = NULL, branch = "dev", ...) {
+descargar_output <- function(nombre, subtopico, entrega_subtopico = NULL, branch = "main", ...) {
 
     limpiar_temps()
 
@@ -26,6 +26,8 @@ descargar_output <- function(nombre, subtopico, entrega_subtopico = NULL, branch
 
     output_url <- glue::glue("{GH_DATA_RAWURL()}/{branch}/{subtopico}/{path}")
 
+    message("Descargando output desde: ", output_url)
+    flush.console()
     df <- tryCatch(
       httr2::req_perform(httr2::request(output_url)),
       httr2_http_404 = function(cnd) NULL
@@ -33,6 +35,7 @@ descargar_output <- function(nombre, subtopico, entrega_subtopico = NULL, branch
 
     if (is.null(df)) {
       warning("Output no encontrado en repo 'data'.")
+      flush.console()
       stopifnot("'entrega_subtopico' debe ser character" = is.character(entrega_subtopico))
       # dowload or read output
       subtopico_outputs_df <- subtopico_outputs(subtopico_nombre = subtopico,

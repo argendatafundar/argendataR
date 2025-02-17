@@ -76,6 +76,7 @@ write_output <- function(
       descripcion_columnas <- dots[["etiquetas_indicadores"]]
     } else {
       warning("'descripcion_columnas' y 'etiquetas_indicadores' recibidos, ignorando 'etiquetas_indicadores'")
+      flush.console()
     }
   }
 
@@ -216,6 +217,10 @@ write_output <- function(
     stopifnot("hay etiquetas invalidas. Deben ser character no vacios." = all(sapply(descripcion_columnas, function(x) {is.character(x) & x != ""})))
     stopifnot("hay columnas repetidas, cada columna solo debe declararse 1 vez" = all(sapply(unique(names(descripcion_columnas)), function(i) sum(names(descripcion_columnas) == i) == 1 )) )
 
+    if (nrow(etiquetas) == 0) {
+      warning("No se han encontrado etiquetas coincidentes para la descripcion de columnas en metadatos")
+      flush.console()
+    }
 
   }  else if (is.null(descripcion_columnas)) {
 
@@ -336,6 +341,7 @@ write_output <- function(
       if (length(checks) >= 1 ) {
 
         warning("El dataset tiene una/s variable/s que no cumplen los test de control")
+        flush.console()
         message(checks)
         continuar <- readline("Continuar de todas formas? Y/N ")
 
@@ -492,6 +498,7 @@ armador_descripcion <- function(metadatos, etiquetas_nuevas = NULL, output_cols)
   if (nrow(etiquetas) == 0) {
 
     warning("No se han encontrado etiquetas coincidentes para la descripcion de columnas en metadatos")
+    flush.console()
   }
 
   if (is.data.frame(etiquetas_nuevas)) {

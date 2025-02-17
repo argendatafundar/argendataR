@@ -1,3 +1,12 @@
+# Version: 0.0.9050
+
+Agregado:
+- funcion `obtener_fila_max_tiempo()`
+
+Corregido:
+
+Eliminado:
+
 # Version: 0.0.9049
 
 Agregado:

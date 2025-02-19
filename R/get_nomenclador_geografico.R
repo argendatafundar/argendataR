@@ -6,7 +6,7 @@
 
 get_nomenclador_geografico <- function() {
   # Definir el nombre del archivo de caché
-  cache_file <- file.path(tempdir(), "nomenclador_geografico_cache.rds")
+  cache_file <- file.path(tempdir(), "nomenclador_geografico_cache_argdt.rds")
 
   # Verificar si el archivo de caché ya existe
   if (file.exists(cache_file)) {
@@ -19,7 +19,7 @@ get_nomenclador_geografico <- function() {
     # Descargar y leer el archivo Excel directamente desde la URL
     nomenclador <- tryCatch(
       {
-        readxl::read_excel(url_nomenclador, sheet = 1)
+        jsonlite::fromJSON(url_nomenclador, flatten = TRUE)
       },
       error = function(e) {
         stop("Error al descargar o leer el nomenclador desde la URL: ", e$message)

@@ -202,40 +202,17 @@ write_output <- function(
   ## descripcion_columnas ----
 
   if (is.list(descripcion_columnas) | is.data.frame(descripcion_columnas)) {
-
-
-    descripcion_columnas <- armador_descripcion(metadatos = meta_dataset,
-                                       etiquetas_nuevas = descripcion_columnas,
-                                       output_cols = columnas)
-
-    print("Desc. columnas:")
-
-    print(descripcion_columnas)
-
-
-    stopifnot("uno o mas nombres de 'descripcion_columnas' no coinciden con columnas en 'data.'" = all(names(descripcion_columnas) %in% columnas))
-    stopifnot("una o mas columnas no descriptas en 'descripcion_columnas'" = all(columnas %in% names(descripcion_columnas)))
+    descripcion_columnas <- armador_descripcion(metadatos = meta_dataset, etiquetas_nuevas = descripcion_columnas, output_cols = columnas)
+    imprimir_datos("Desc. columnas:", descripcion_columnas)
+    verificar_columnas_descripciones(columnas, descripcion_columnas)
     stopifnot("hay etiquetas invalidas. Deben ser character no vacios." = all(sapply(descripcion_columnas, function(x) {is.character(x) & x != ""})))
     stopifnot("hay columnas repetidas, cada columna solo debe declararse 1 vez" = all(sapply(unique(names(descripcion_columnas)), function(i) sum(names(descripcion_columnas) == i) == 1 )) )
-
-
-
-  }  else if (is.null(descripcion_columnas)) {
-
-    descripcion_columnas <- armador_descripcion(metadatos = meta_dataset,
-                                       etiquetas_nuevas = NULL,
-                                       output_cols = columnas)
-
-    print("Desc. columnas:")
-
-    print(descripcion_columnas)
-
-    stopifnot("uno o mas nombres de 'descripcion_columnas' no coinciden con columnas en 'data.'" = all(names(descripcion_columnas) %in% columnas))
-    stopifnot("una o mas columnas no descriptas en 'descripcion_columnas'" = all(columnas %in% names(descripcion_columnas)))
+  } else if (is.null(descripcion_columnas)) {
+    descripcion_columnas <- armador_descripcion(metadatos = meta_dataset, etiquetas_nuevas = NULL, output_cols = columnas)
+    imprimir_datos("Desc. columnas:", descripcion_columnas)
+    verificar_columnas_descripciones(columnas, descripcion_columnas)
     stopifnot("hay etiquetas invalidas. Deben ser character no vacios." = all(sapply(descripcion_columnas, function(x) {is.character(x) & x != ""})))
     stopifnot("hay columnas repetidas, cada columna solo debe declararse 1 vez" = all(sapply(unique(names(descripcion_columnas)), function(i) sum(names(descripcion_columnas) == i) == 1 )) )
-
-
   } else if (!is.null(descripcion_columnas)) {
     stop("'descripcion_columnas' debe ser null o lista o data.frame. ver `armador_descripcion()`")
   }
@@ -477,83 +454,53 @@ write_output <- function(
 #' @return list Lista de variables con descripcion
 #' @export
 #'
-armador_descripcion <- function(metadatos, etiquetas_nuevas = NULL, output_cols){
-
-  # etiquetas_nuevas: data.frame, tiene que ser una dataframe con la columna
-  # variable_nombre y descripcion
-  # output_cols: vector, tiene las columnas del dataset que se quiere escribir
-
+armador_descripcion <- function(metadatos, etiquetas_nuevas = NULL, output_cols) {
+  # Validaciones iniciales
   stopifnot("armador_descripcion no recibio input de `metadatos`" = !is_missing(metadatos))
   stopifnot("armador_descripcion no recibio input de `output_cols`" = !is_missing(output_cols))
-
 
   etiquetas <- metadatos %>%
     dplyr::filter(.data$variable_nombre %in% output_cols) %>%
     dplyr::distinct(.data$variable_nombre, .data$descripcion)
 
-  # print("etiquetas filtradas de metadata")
-  # print(etiquetas)
-
   if (nrow(etiquetas) == 0) {
-
     warning("No se han encontrado etiquetas coincidentes para la descripcion de columnas en metadatos")
     flush.console()
   }
 
-  if (is.data.frame(etiquetas_nuevas)) {
-
-    stopifnot("Dataframe de etiquetas_nuevas evaluado tiene 0 filas" = nrow(etiquetas_nuevas) != 0)
-
-    stopifnot("Dataframe de etiquetas_nuevas debe tener las columnas variable_nombre y descripcion" = all(colnames(etiquetas_nuevas) %in% c("variable_nombre",
-                                                                                                        "descripcion")))
-
-    # print("etiquetas nuevas")
-    # print(etiquetas_nuevas)
-
+  # Consolidar validaciones y conversiones de etiquetas_nuevas
+  if (!is.null(etiquetas_nuevas)) {
+    etiquetas_nuevas <- validar_y_convertir_etiquetas_nuevas(etiquetas_nuevas)
     etiquetas <- etiquetas %>%
-      dplyr::filter(!.data$variable_nombre %in% etiquetas_nuevas$variable_nombre)
-
-    # print("etiquetas seleccionadas de metadata que no coinciden con etiq nuevas")
-    # print(etiquetas)
-
-
-    etiquetas <- etiquetas %>%
+      dplyr::filter(!.data$variable_nombre %in% etiquetas_nuevas$variable_nombre) %>%
       dplyr::bind_rows(etiquetas_nuevas)
-
-  } else if (is.list(etiquetas_nuevas)) {
-
-    stopifnot("Lista de etiqueta_nuevas evaluada esta vacia" = any(!sapply(etiquetas_nuevas, is.null)))
-
-    stopifnot("Lista de etiqueta_nuevas evaluada debe ser una lista nombrada" = !is.null(names(etiquetas_nuevas)))
-
-    etiquetas_nuevas <- tibble::tibble("variable_nombre" = names(etiquetas_nuevas),
-                               "descripcion" = unlist(etiquetas_nuevas))
-
-    # print("etiquetas nuevas")
-    # print(etiquetas_nuevas)
-
-    etiquetas <- etiquetas %>%
-      dplyr::filter(! .data$variable_nombre %in% etiquetas_nuevas$variable_nombre)
-
-    # print("etiquetas seleccionadas de metadata que no coinciden con etiq nuevas")
-    # print(etiquetas)
-
-    etiquetas <- etiquetas %>%
-      dplyr::bind_rows(etiquetas_nuevas)
-
-
-  } else {
-
-    stopifnot("input etiquetas_nuevas invalido" = is.null(etiquetas_nuevas))
   }
 
+  # Verificar que todas las columnas tengan descripción
+  columnas_faltantes <- setdiff(output_cols, etiquetas$variable_nombre)
+  if (length(columnas_faltantes) > 0) {
+    stop("Las siguientes columnas no tienen descripcion: ", paste(columnas_faltantes, collapse = ", "))
+  }
 
+  # Convertir a lista nombrada
   etiquetas <- setNames(as.list(etiquetas$descripcion), etiquetas$variable_nombre)
 
-  # print(etiquetas)
-
   etiquetas
+}
 
+# Función auxiliar para validar y convertir etiquetas_nuevas
+validar_y_convertir_etiquetas_nuevas <- function(etiquetas_nuevas) {
+  if (is.data.frame(etiquetas_nuevas)) {
+    stopifnot("Dataframe de etiquetas_nuevas evaluado tiene 0 filas" = nrow(etiquetas_nuevas) != 0)
+    stopifnot("Dataframe de etiquetas_nuevas debe tener las columnas variable_nombre y descripcion" = all(colnames(etiquetas_nuevas) %in% c("variable_nombre", "descripcion")))
+  } else if (is.list(etiquetas_nuevas)) {
+    stopifnot("Lista de etiqueta_nuevas evaluada esta vacia" = any(!sapply(etiquetas_nuevas, is.null)))
+    stopifnot("Lista de etiqueta_nuevas evaluada debe ser una lista nombrada" = !is.null(names(etiquetas_nuevas)))
+    etiquetas_nuevas <- tibble::tibble("variable_nombre" = names(etiquetas_nuevas), "descripcion" = unlist(etiquetas_nuevas))
+  } else {
+    stop("input etiquetas_nuevas invalido")
+  }
+  return(etiquetas_nuevas)
 }
 
 #' Obtener la fila con los valores más altos de las columnas de tiempo
@@ -580,4 +527,29 @@ obtener_fila_max_tiempo <- function(data, columnas_tiempo) {
     fila_max <- data_ordenado[nrow(data_ordenado), ]
     # Extraer solo las columnas de tiempo de esa fila y convertir a lista
     as.list(fila_max[columnas_tiempo])
+}
+
+# Función para verificar columnas y descripciones
+verificar_columnas_descripciones <- function(columnas, descripcion_columnas) {
+  columnas_faltantes <- setdiff(columnas, names(descripcion_columnas))
+  if (length(columnas_faltantes) > 0) {
+    stop("Las siguientes columnas no tienen descripcion en 'descripcion_columnas': ", paste(columnas_faltantes, collapse = ", "))
+  }
+
+  columnas_invalidas <- setdiff(names(descripcion_columnas), columnas)
+  if (length(columnas_invalidas) > 0) {
+    stop("Las siguientes descripciones no coinciden con ninguna columna en 'data': ", paste(columnas_invalidas, collapse = ", "))
+  }
+}
+
+# Función para manejar advertencias
+emitir_advertencia <- function(mensaje) {
+  warning(mensaje)
+  flush.console()
+}
+
+# Función para imprimir datos
+imprimir_datos <- function(titulo, datos) {
+  print(titulo)
+  print(datos)
 }

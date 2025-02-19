@@ -1,3 +1,13 @@
+# Version: 0.0.9051
+
+Agregado:
+
+Corregido:
+- get_nomenclador_geografico(): utiliza geonomenclador publico
+- write_output(): mejora mensaje de error de etiquetas
+
+Eliminado:
+
 # Version: 0.0.9050
 
 Agregado:

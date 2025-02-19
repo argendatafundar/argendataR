@@ -5,35 +5,30 @@
 #'
 
 get_nomenclador_geografico <- function() {
+  # Definir el nombre del archivo de caché
+  cache_file <- file.path(tempdir(), "nomenclador_geografico_cache.rds")
 
-  filetemp <- list.files(tempdir(), full.names = T)[grepl("nomenclador_geografico", list.files(tempdir()))]
-
-  if (length(filetemp) == 1) {
-
-    readxl::read_excel(filetemp, sheet = 1) %>%
-      suppressMessages()
-
-
+  # Verificar si el archivo de caché ya existe
+  if (file.exists(cache_file)) {
+    # Leer el nomenclador desde el caché
+    nomenclador <- readRDS(cache_file)
   } else {
+    # Obtener la URL del nomenclador desde utils.R
+    url_nomenclador <- URL_GEONOMENCLADOR()
 
-    temp <- tempfile(pattern = "nomenclador_geografico_argdt",
-                     fileext = ".xlsx")
+    # Descargar y leer el archivo Excel directamente desde la URL
+    nomenclador <- tryCatch(
+      {
+        readxl::read_excel(url_nomenclador, sheet = 1)
+      },
+      error = function(e) {
+        stop("Error al descargar o leer el nomenclador desde la URL: ", e$message)
+      }
+    )
 
-    bbdd_tree <- bbdd_dir()$tree
-
-    clasificadores_nomecladores <- googledrive::drive_ls(googledrive::as_id(x = bbdd_tree[bbdd_tree$name == "Clasificadores y Nomencladores",][["id"]]))
-
-    geograficos <- googledrive::drive_ls(googledrive::as_id(clasificadores_nomecladores[clasificadores_nomecladores$name == "GEOGRAFICOS",][["id"]]))
-
-    id <-  geograficos[grepl("consolidado_fundar_paises_agregaciones3.xlsx",
-                             geograficos$name),]$id
-
-    googledrive::drive_download(googledrive::as_id(id), path = temp)
-
-    readxl::read_excel(temp, sheet = 1)
-    
-
-
-    }
-
+    # Guardar el nomenclador en el archivo de caché
+    saveRDS(nomenclador, cache_file)
   }
+
+  return(nomenclador)
+}

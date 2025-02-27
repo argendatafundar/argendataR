@@ -10,7 +10,7 @@ SERVER_USER_CALL <- function(){
 }
 
 #' @keywords internal
-URL_GEONOMENCLADOR <- function() {"https://raw.githubusercontent.com/argendatafundar/geonomencladores/refs/heads/main/geonomenclador.json"}
+URL_GEONOMENCLADOR_FRONT <- function() {"https://raw.githubusercontent.com/argendatafundar/geonomencladores/refs/heads/main/geonomenclador.json"}
 
 #' @keywords internal
 RUTA_FUENTES <- function() {

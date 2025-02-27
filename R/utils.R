@@ -3,34 +3,36 @@ GH_DATA_RAWURL <- function() {"https://raw.githubusercontent.com/argendatafundar
 
 #' @keywords internal
 SERVER_USER_CALL <- function(){
-  
+
   info <- Sys.info()
-  
+
   info["nodename"] == "vps-3915596-x"
 }
 
 #' @keywords internal
-URL_GEONOMENCLADOR_FRONT <- function() {"https://raw.githubusercontent.com/argendatafundar/geonomencladores/refs/heads/main/geonomenclador.json"}
+URL_GEONOMENCLADOR_FRONT <- function() {
+  "https://raw.githubusercontent.com/argendatafundar/geonomencladores/refs/heads/main/geonomenclador.json"
+  }
 
 #' @keywords internal
 RUTA_FUENTES <- function() {
-  
+
   x <- Sys.getenv("RUTA_FUENTES")
-   
+
   stopifnot("Variable de entorno 'RUTA_FUENTES' no encontrada. Definirla en .Renviron" = x != "")
-  
+
   x
 }
 
 
 #' @keywords internal
 IP_FUENTES <- function() {
-  
-  
+
+
    x <-  Sys.getenv("IP_FUENTES")
-  
+
    stopifnot("Variable de entorno 'RUTA_FUENTES' no encontrada. Definirla en .Renviron" = x != "")
-   
+
    x
 }
 
@@ -237,12 +239,12 @@ normalize_path <- function(path) {
 #'
 
 coerce_to <- function(x, y) {
-  
+
   stopifnot("x no es atomic" = is.atomic(x))
   stopifnot("y no es atomic" = is.atomic(y))
-  
+
   class_y <- class(y)
-  
+
   if ("numeric" %in% class_y) {
     return(as.numeric(x))
   } else if ("character" %in% class_y) {
@@ -266,7 +268,7 @@ coerce_to <- function(x, y) {
 
 #' Set names
 #'
-#' @param object object 
+#' @param object object
 #' @param nm name
 #'
 #' @return object with names

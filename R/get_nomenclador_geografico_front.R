@@ -4,7 +4,7 @@
 #' @export
 #'
 
-get_nomenclador_geografico <- function() {
+get_nomenclador_geografico_front <- function() {
   # Definir el nombre del archivo de caché
   cache_file <- file.path(tempdir(), "nomenclador_geografico_cache_argdt.rds")
   

@@ -1,3 +1,13 @@
+# Version: 0.0.9054
+
+Agregado:
+
+Corregido:
+- get_nomenclador_geografico_front(): fix nombre de la funcion en su script
+
+Eliminado:
+
+
 # Version: 0.0.9053
 
 Agregado:

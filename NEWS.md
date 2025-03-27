@@ -1,3 +1,13 @@
+# Version: 0.0.9056
+
+Agregado:
+- funcion `get_output_repo()` para leer json o csv de output de repo data
+
+Corregido:
+- funcion `descargar_output()` usa `get_output_repo()`
+
+Eliminado:
+
 # Version: 0.0.9055
 
 Agregado:

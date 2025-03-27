@@ -2,7 +2,7 @@
 % Please edit documentation in R/descargar_output.R
 \name{descargar_output}
 \alias{descargar_output}
-\title{Descargar output desde el drive}
+\title{Descargar output}
 \usage{
 descargar_output(
   nombre,

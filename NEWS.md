@@ -1,3 +1,12 @@
+# Version: 0.0.9055
+
+Agregado:
+- funcion `get_ids_graficos()` para scrapear ids de graficos de urls de argendata
+
+Corregido:
+
+Eliminado:
+
 # Version: 0.0.9054
 
 Agregado:

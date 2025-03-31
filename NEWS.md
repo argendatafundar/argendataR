@@ -1,3 +1,10 @@
+# Version: 0.0.9057
+
+Agregado:
+
+Corregido:
+- `get_output_repo()` consume body de la rpta directamente con rawtochar
+
 # Version: 0.0.9056
 
 Agregado:

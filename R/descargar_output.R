@@ -97,15 +97,15 @@ get_output_repo <- function(path, subtopico, branch = "main") {
 
   assertthat::assert_that(!is.null(rpta))
 
-  txt <- rvest::html_text(rvest::read_html(rpta$body))
 
   if (grepl("\\.json$", path)) {
 
-    df <- jsonlite::fromJSON(txt)
+    df <- jsonlite::fromJSON(rawToChar(rpta$body))
 
   } else if (grepl("\\.csv$", path)) {
 
-    df <- readr::read_csv(txt)
+
+    df <- readr::read_csv(rawToChar(rpta$body))
 
   } else {
 

@@ -5,14 +5,13 @@
 
 subtopicos_dir <- function(version=NULL) {
   
-  ersion = NULL
+  
   search_string = 'subtopicos_dir'
   temp_out <- tempfile(pattern = "subtopicos_dir_argdt", fileext = ".rds")
   folder_name <- "SUBTOPICOS"
   
   if (version == 'v2'){
     
-    version = 'v2'
     search_string = 'subtopicos_dir.*v2'
     temp_out <- tempfile(pattern = "subtopicos_dir_argdt_v2", fileext = ".rds")
     folder_name <- "TOPICOS"

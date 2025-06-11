@@ -6,17 +6,23 @@
 #' @return dataframe con la metadata
 #' @export
 #'
+source("R/subtopicos_dir.R")
+source("R/utils.R")
 
 
 metadata <- function(subtopico = NULL,
-                     fuentes = FALSE) {
+                     fuentes = FALSE,
+                     version = NULL) {
+  
+  if(version == 'v2'){skip = NULL}
+  else{skip = 6}
 
   stopifnot("'subtopico' debe ser string con codigo de 6 letras de subtopico" = is.character(subtopico))
 
   subtopico <- toupper(subtopico)
 
   # Lista los archivos o carpetas dentro de la carpeta de subtemas utilizando su ID
-  paths_subtopicos <- subtopicos_dir()$tree
+  paths_subtopicos <- subtopicos_dir(version)$tree
 
   stopifnot("'subtopico' no hallado en el drive" = any(grepl(subtopico, paths_subtopicos$name)))
 
@@ -37,7 +43,7 @@ metadata <- function(subtopico = NULL,
 
   # Para cada archivo de metadatos, lee su contenido saltando las primeras 6 filas y asumiendo que las columnas son tipo texto
   metadata <- purrr::map2(metadata_files$id, metadata_files$name, function(x, y) {
-    df <- googlesheets4::read_sheet(x, skip = 6, col_types = "c")
+    df <- googlesheets4::read_sheet(x, skip = skip, col_types = "c")
     df %>%
       dplyr::mutate(subtopico_nombre = gsub("ArgenData - ", "", y))
   })
@@ -67,3 +73,4 @@ metadata <- function(subtopico = NULL,
   return(metadata)
   
 }
+

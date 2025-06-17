@@ -4,7 +4,7 @@
 \alias{subtopicos_dir}
 \title{subtopicos_dir}
 \usage{
-subtopicos_dir()
+subtopicos_dir(version = NULL)
 }
 \description{
 subtopicos_dir

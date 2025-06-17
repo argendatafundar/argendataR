@@ -4,7 +4,10 @@
 \alias{argendata_root_dir}
 \title{Directorio raiz de argendata}
 \usage{
-argendata_root_dir()
+argendata_root_dir(version = "v1")
+}
+\arguments{
+\item{version}{string Usar 'v2' para referir al Renv ARGENDATA_DRIVE_V2 (nuevo drive compartido). Sino usar 'v1' (default) para viejo drive argendata}
 }
 \description{
 Directorio raiz de argendata

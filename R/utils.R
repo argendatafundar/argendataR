@@ -40,32 +40,35 @@ IP_FUENTES <- function() {
 
 #' Directorio raiz de argendata
 #'
+#' @param version string Usar 'v2' para referir al Renv ARGENDATA_DRIVE_V2 (nuevo drive compartido). Sino usar 'v1' (default) para viejo drive argendata
 #' @keywords internal
 #'
 
-argendata_root_dir <- function(version=NULL){
-  
+argendata_root_dir <- function(version='v1'){
+
+  stopifnot(is.character(version))
+
   if (version == 'v2'){
-  
-  root_dir_id <- Sys.getenv("ARGENDATA_DRIVE_V2")    
+
+  root_dir_id <- Sys.getenv("ARGENDATA_DRIVE_V2")
   stopifnot("ARGENDATA_DRIVE_V2 no esta definido en .Renviron o esta mal escrito" = nchar(root_dir_id) == 19)
 
   filetemp <- list.files(tempdir(), full.names = T)[grepl("argendata_root_dir.*v2", list.files(tempdir()))]
-  
+
   out_temp <- tempfile("argendata_root_dir_argdt_v2")
-  
+
   }else{
-    
-    root_dir_id <- Sys.getenv("ARGENDATA_DRIVE") 
-    
+
+    root_dir_id <- Sys.getenv("ARGENDATA_DRIVE")
+
     stopifnot("ARGENDATA_DRIVE no esta definido en .Renviron o esta mal escrito" = nchar(root_dir_id) == 33)
-    
+
     filetemp <- list.files(tempdir(), full.names = T)[grepl("argendata_root_dir", list.files(tempdir()))]
-    
+
     out_temp <- tempfile("argendata_root_dir_argdt")
-    
+
   }
-  
+
   if (length(filetemp) == 1) {
 
     readr::read_rds(filetemp)

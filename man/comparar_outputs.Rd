@@ -9,7 +9,7 @@ comparar_outputs(
   df_anterior,
   nombre,
   subtopico,
-  entrega_subtopico = "primera_entrega",
+  entrega_subtopico = NULL,
   pk = NULL,
   k_control_num = 3,
   drop_joined_df = F
@@ -24,7 +24,7 @@ comparar_outputs(
 
 \item{subtopico}{string subtopico al que pertenece el output para realizar la descarga si no se proveyo \code{df_anterior}. Si no esta definido el parametro busca en el ambiente global de la sesion un objeto llamado "subtopico"}
 
-\item{entrega_subtopico}{string nombre de la carpeta de entrega donde buscar el output para realizar la descarga si no se proveyo \code{df_anterior}}
+\item{entrega_subtopico}{string o NULL Si es NULL busca el dataset en el repo data. Si es string lo usa como nombre de la carpeta de entrega donde buscar el output para realizar la descarga si no se proveyo \code{df_anterior}}
 
 \item{pk}{string Vector con los nombres de columnas que son primary key del dataframe}
 

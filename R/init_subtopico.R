@@ -12,16 +12,32 @@
 
 subtopico_init <- init_subtopico <- function(subtopico, scripts = T, md = T, fuentes = T, source_zero = T) {
 
+  if (isFALSE(fs::dir_exists("scripts"))) {
+
+    fs::dir_create("scripts")
+  }
+
+  if (isFALSE(fs::dir_exists("subtopicos"))) {
+
+    fs::dir_create("scripts/subtopicos")
+
+  }
+
+  if (isFALSE(fs::dir_exists(glue::glue("scripts/subtopicos/{subtopico}")))) {
+
+    fs::dir_create(glue::glue("scripts/subtopicos/{subtopico}"))
+
+  }
+
   metadata_subtopico <- metadata(subtopico)
 
   meta <- metadata_subtopico %>%
-    dplyr::distinct(.data$dataset_archivo, .data$orden_grafico, .data$script_archivo,
-                    .data$fuente_nombre,
-                    .data$url_path) %>%
+    dplyr::distinct(.data$nombre_archivo, .data$id_grafico, .data$script_archivo,
+                    .data$id_fuente) %>%
     dplyr::filter(!dplyr::if_all(dplyr::everything(),
                                  .fns = is.na))
 
-  meta$script_nuevo <- paste0(meta$orden_grafico,"_",gsub("\\.([^.]*)$", "", meta$dataset_archivo))
+  meta$script_nuevo <- gsub("\\.csv$", "",meta$nombre_archivo)
 
 
   if (isTRUE(scripts)) {
@@ -46,81 +62,79 @@ subtopico_init <- init_subtopico <- function(subtopico, scripts = T, md = T, fue
     })
   }
 
-  if (isTRUE(fuentes)) {
+  # if (isTRUE(fuentes)) {
+  #
+  #   escrito_fuentes <-  tryCatch(
+  #       {
+  #         script_fuentes(
+  #           path = sprintf("scripts/subtopicos/%s/fuentes_%s.R", subtopico,  subtopico),
+  #           .navigate = F)
+  #
+  #         TRUE
+  #       },
+  #       error  = function(e) {
+  #         warning(sprintf("El archivo %s ya existe, no fue sobreescrito.", sprintf("scripts/subtopicos/%s/%s", subtopico,  subtopico)))
+  #         FALSE
+  #       }
+  #     )
+  # }
 
-    escrito_fuentes <-  tryCatch(
-        {
-          script_fuentes(
-            path = sprintf("scripts/subtopicos/%s/fuentes_%s.R", subtopico,  subtopico),
-            .navigate = F)
-
-          TRUE
-        },
-        error  = function(e) {
-          warning(sprintf("El archivo %s ya existe, no fue sobreescrito.", sprintf("scripts/subtopicos/%s/%s", subtopico,  subtopico)))
-          FALSE
-        }
-      )
-  }
-
-  if (isTRUE(source_zero)) {
-
-    path_source_zero <- sprintf("scripts/subtopicos/%s/0_%s.R", subtopico,  subtopico)
-
-    if (file.exists(path_source_zero)) {
-      warning(sprintf("%s ya existe.No se sobreescribio el archivo", sprintf("scripts/subtopicos/%s/0_%s.R", subtopico,  subtopico)))
-      escrito_source_zero <- FALSE
-    } else {
-
-      file.create(path_source_zero)
-
-
-      cat(
-        glue::glue('source("scripts/subtopicos/{subtopico}/fuentes_{subtopico}.R")'),
-        file = path_source_zero,
-        sep = "\n",
-        append = T
-      )
-
-      cat(
-        glue::glue('subtopico <-  "{subtopico}"'),
-        file = path_source_zero,
-        sep = "\n",
-        append = T
-      )
-
-      cat(
-        glue::glue('analista <-  c("")'),
-        file = path_source_zero,
-        sep = "\n",
-        append = T
-      )
-
-      cat(
-        glue::glue('\n\n#-- Sources -----\n\n'),
-        file = path_source_zero,
-        sep = "\n",
-        append = T
-      )
-
-      print(sprintf("scripts/subtopicos/%s/", subtopico))
-
-      purrr::walk(list.files(sprintf("scripts/subtopicos/%s/", subtopico))[!grepl("^fuentes_|^0_.*.R", list.files(sprintf("scripts/subtopicos/%s/", subtopico)))],
-                  function(x) {
-
-                    cat(
-                      glue::glue('# source("scripts/subtopicos/{subtopico}/{x})"'),
-                      file = path_source_zero,
-                      sep = "\n",
-                      append = T
-                    )
-                  }
-      )
-
-    }
-  }
-
-
+  # if (isTRUE(source_zero)) {
+  #
+  #   path_source_zero <- sprintf("scripts/subtopicos/%s/0_%s.R", subtopico,  subtopico)
+  #
+  #   if (file.exists(path_source_zero)) {
+  #     warning(sprintf("%s ya existe.No se sobreescribio el archivo", sprintf("scripts/subtopicos/%s/0_%s.R", subtopico,  subtopico)))
+  #     escrito_source_zero <- FALSE
+  #   } else {
+  #
+  #     file.create(path_source_zero)
+  #
+  #
+  #     cat(
+  #       glue::glue('source("scripts/subtopicos/{subtopico}/fuentes_{subtopico}.R")'),
+  #       file = path_source_zero,
+  #       sep = "\n",
+  #       append = T
+  #     )
+  #
+  #     cat(
+  #       glue::glue('subtopico <-  "{subtopico}"'),
+  #       file = path_source_zero,
+  #       sep = "\n",
+  #       append = T
+  #     )
+  #
+  #     cat(
+  #       glue::glue('analista <-  c("")'),
+  #       file = path_source_zero,
+  #       sep = "\n",
+  #       append = T
+  #     )
+  #
+  #     cat(
+  #       glue::glue('\n\n#-- Sources -----\n\n'),
+  #       file = path_source_zero,
+  #       sep = "\n",
+  #       append = T
+  #     )
+  #
+  #     print(sprintf("scripts/subtopicos/%s/", subtopico))
+  #
+  #     purrr::walk(list.files(sprintf("scripts/subtopicos/%s/", subtopico))[!grepl("^fuentes_|^0_.*.R", list.files(sprintf("scripts/subtopicos/%s/", subtopico)))],
+  #                 function(x) {
+  #
+  #                   cat(
+  #                     glue::glue('# source("scripts/subtopicos/{subtopico}/{x})"'),
+  #                     file = path_source_zero,
+  #                     sep = "\n",
+  #                     append = T
+  #                   )
+  #                 }
+  #     )
+  #
+  #   }
+  # }
 
   path_md <- sprintf("scripts/subtopicos/%s/%s.md", subtopico, subtopico)
 
@@ -189,27 +203,27 @@ subtopico_init <- init_subtopico <- function(subtopico, scripts = T, md = T, fue
                       )
 
                     })
-                    
-                    cat(
-                      "\n  **Fuentes:**",
-                      file = path_md,
-                      sep = "\n",
-                      append = T
-                    )
 
-                    df_y <- df_x %>%
-                      dplyr::distinct(.data$fuente_nombre, .data$url_path)
-
-                    purrr::walk2(df_y$fuente_nombre,
-                                 df_y$url_path, function(x, y) {
-                                   cat(
-                                     sprintf("-- %s: %s", x, y),
-                                     file = path_md,
-                                     sep = "\n",
-                                     append = T
-                                   )
-
-                                 })
+                    # cat(
+                    #   "\n  **Fuentes:**",
+                    #   file = path_md,
+                    #   sep = "\n",
+                    #   append = T
+                    # )
+                    #
+                    # df_y <- df_x %>%
+                    #   dplyr::distinct(.data$fuente_nombre, .data$url_path)
+                    #
+                    # purrr::walk2(df_y$fuente_nombre,
+                    #              df_y$url_path, function(x, y) {
+                    #                cat(
+                    #                  sprintf("-- %s: %s", x, y),
+                    #                  file = path_md,
+                    #                  sep = "\n",
+                    #                  append = T
+                    #                )
+                    #
+                    #              })
 
                   })
 
@@ -225,10 +239,10 @@ subtopico_init <- init_subtopico <- function(subtopico, scripts = T, md = T, fue
 
   escritos_r <- sum(unlist(escritos_r))
   escrito_md <- sum(escrito_md)
-  escrito_fuentes <- sum(escrito_fuentes)
+  # escrito_fuentes <- sum(escrito_fuentes)
 
-  message(sprintf("Se crearon %d scripts de outputs .R, %d script de fuentes y un %d archivo .md",
-                  escritos_r, escrito_fuentes, escrito_md))
+  message(sprintf("Se crearon %d scripts de outputs .R y %d archivo .md",
+                  escritos_r, escrito_md))
 
 }
 

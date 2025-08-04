@@ -2,14 +2,35 @@
 % Please edit documentation in R/utils.R
 \name{normalize_path}
 \alias{normalize_path}
-\title{normalize path con supress warning}
+\title{Directorio fuentes de argendata}
 \usage{
 normalize_path(path)
 }
 \value{
+id de sheet de fuentes
+fuentes_raw_sheet_id
+
+id de sheet de fuentes
+lista de entradas dentro de Fuentes/raw
+
+tibble con el directorio de fuentes raw
+
+tibble con el directorio de fuentes clean
+
 normalized path
 }
 \description{
-normalize path con supress warning
+Directorio fuentes de argendata
 }
+\keyword{Fuentes/clean}
+\keyword{con}
+\keyword{de}
+\keyword{dentro}
+\keyword{entradas}
+\keyword{fuentes_raw_sheet_id}
 \keyword{internal}
+\keyword{lista}
+\keyword{normalize}
+\keyword{path}
+\keyword{supress}
+\keyword{warning}

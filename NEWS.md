@@ -1,3 +1,11 @@
+# Version: 0.0.9059
+
+Agregado: se agregaron `colectar_fuentes()` y `armador_descripcion()`
+
+Corregido:
+- `metadata()`,  `comparar_outputs()`,  `init_subtopico()`, `descargar_output()`, `subtopico_outputs()` cambia consumo de datos del drive de argendata
+
+
 # Version: 0.0.9058
 
 Agregado:

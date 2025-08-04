@@ -1,11 +1,14 @@
 #' subtopicos_dir
 #'
+#' @param version (deprecated) Solo motivos de compatibilidad
 #' @keywords internal
 #' @export
 
 subtopicos_dir <- function(version=NULL) {
   
-  
+
+  version <- "v2"
+
   search_string = 'subtopicos_dir'
   temp_out <- tempfile(pattern = "subtopicos_dir_argdt", fileext = ".rds")
   folder_name <- "SUBTOPICOS"

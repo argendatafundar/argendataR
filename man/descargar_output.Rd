@@ -4,20 +4,14 @@
 \alias{descargar_output}
 \title{Descargar output}
 \usage{
-descargar_output(
-  nombre,
-  subtopico,
-  entrega_subtopico = NULL,
-  branch = "main",
-  ...
-)
+descargar_output(nombre, subtopico, drive = FALSE, branch = "main", ...)
 }
 \arguments{
 \item{nombre}{nombre del archivo a descargar. La función usa grepl para identificar el archivo, si el nombre coincide con más de un archivo devuelve error.}
 
 \item{subtopico}{codigo de 6 letras del subtopico en mayusculas.}
 
-\item{entrega_subtopico}{nombre exacto de la carpeta de entrega donde buscar el output}
+\item{drive}{logical Si es TRUE busca el drive si es FALSE en el repo de gh 'data' (default).}
 
 \item{branch}{branch de github a donde apuntar. Default es "main"}
 

@@ -4,7 +4,7 @@
 #' @param df_anterior data.frame dataframe anterior que se usa como referencia de comparacion. Ver `argendataR::descargar_output()`.
 #' @param nombre  string nombre del output en el drive para realizar la descarga si no se proveyo `df_anterior`
 #' @param subtopico string subtopico al que pertenece el output para realizar la descarga si no se proveyo `df_anterior`. Si no esta definido el parametro busca en el ambiente global de la sesion un objeto llamado "subtopico"
-#' @param entrega_subtopico string nombre de la carpeta de entrega donde buscar el output para realizar la descarga si no se proveyo `df_anterior`
+#' @param entrega_subtopico string o NULL Si es NULL busca el dataset en el repo data. Si es string lo usa como nombre de la carpeta de entrega donde buscar el output para realizar la descarga si no se proveyo `df_anterior`
 #' @param pk string Vector con los nombres de columnas que son primary key del dataframe
 #' @param k_control_num numeric cantidad de desvios estandar a partir del cual se seleccionan posibles outliers
 #' @param drop_joined_df logical Si es FALSE (default) el resultado incluye joined_df: el left_join de el output cargado en el drive con el df. Si es TRUE no lo incluye.
@@ -21,13 +21,13 @@
 
 comparar_outputs <- function(df, df_anterior,
                              nombre, subtopico,
-                             entrega_subtopico = "primera_entrega",
+                             entrega_subtopico = NULL,
                              pk = NULL, k_control_num = 3,
                              drop_joined_df = F) {
 
   if (missing(df_anterior)) {
 
-    message("No se recibio un dataframe de referencia. Se procede a descarga desde el drive")
+    message("No se recibio un dataframe de referencia. Se procede a descarga")
 
     if (missing(subtopico)) {
 
@@ -41,7 +41,7 @@ comparar_outputs <- function(df, df_anterior,
                                     entrega_subtopico = entrega_subtopico)
 
   }
-  
+
   comparar_df(df = df, df_anterior =  df_anterior,
               pk = pk, k_control_num = k_control_num,
               drop_joined_df = drop_joined_df)

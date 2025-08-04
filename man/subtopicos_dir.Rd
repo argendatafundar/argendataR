@@ -6,6 +6,9 @@
 \usage{
 subtopicos_dir(version = NULL)
 }
+\arguments{
+\item{version}{(deprecated) Solo motivos de compatibilidad}
+}
 \description{
 subtopicos_dir
 }

@@ -2,7 +2,7 @@
 #'
 #' @param nombre nombre del archivo a descargar. La función usa grepl para identificar el archivo, si el nombre coincide con más de un archivo devuelve error.
 #' @param subtopico codigo de 6 letras del subtopico en mayusculas.
-#' @param entrega_subtopico nombre exacto de la carpeta de entrega donde buscar el output
+#' @param drive logical Si es TRUE busca el drive si es FALSE en el repo de gh 'data' (default).
 #' @param branch branch de github a donde apuntar. Default es "main"
 #' @param ... parametros adicionales pasados a read_delim
 #'
@@ -14,48 +14,55 @@
 #'
 #'
 
-descargar_output <- function(nombre, subtopico, entrega_subtopico = NULL, branch = "main", ...) {
+descargar_output <- function(nombre, subtopico, drive = FALSE, branch = "main", ...) {
 
     limpiar_temps()
 
     stopifnot("subtopico debe ser character de largo 6" = is.character(subtopico) & nchar(subtopico) == 6)
 
+    stopifnot("drive solo admite T o F" = is.logical(drive) && !is.na(drive) && length(drive) == 1)
+
+    df <- NULL
+
     path <- gsub("\\.csv$|\\.json$","",nombre)
 
     path <- paste0(path, ".csv")
 
-    df <- tryCatch(
-      get_output_repo(path = path, subtopico = subtopico, branch = branch),
-      error = function(cnd) NULL
-    )
+    if (isFALSE(drive)) {
 
-    if (is.null(df)) {
-      warning("Output no encontrado en repo 'data'.")
-      flush.console()
-      stopifnot("'entrega_subtopico' debe ser character" = is.character(entrega_subtopico))
-      # dowload or read output
-      subtopico_outputs_df <- subtopico_outputs(subtopico_nombre = subtopico,
-                                                entrega_subtopico = entrega_subtopico)
 
-      id_output <- subtopico_outputs_df$id[grepl("cosasoa", subtopico_outputs_df$name)]
+      df <- tryCatch(
+        get_output_repo(path = path, subtopico = subtopico, branch = branch),
+        error = function(cnd) NULL
+      )
 
-      stopifnot("Output no encontrada en el drive de Argendata" = length(id_output) != 0)
+      stopifnot("Output no encontrado en repo 'data'. Defina nombre de entrega para buscar en Drive o revise nombre del dataset en el repo." = !is.null(df))
 
-      stopifnot("Se encontro mas de una coincidencia en el drive de Argendata. Corregir filesystem del drive" = length(id_output) != 1)
+    } else {
 
-      filetemp <- tempfile(pattern = sprintf("%s_%s_%s_argdt",
-                                             nombre,
-                                             entrega_subtopico,
-                                             subtopico),
-                           fileext = ".csv")
+        # stopifnot("'entrega_subtopico' debe ser character" = is.character(entrega_subtopico))
+        # dowload or read output
+        subtopico_outputs_df <- subtopico_outputs(subtopico_nombre = subtopico)
 
-      googledrive::drive_download(file = googledrive::as_id(id_output),
-                                  path = filetemp)
+        id_output <- subtopico_outputs_df$id[grepl(nombre, subtopico_outputs_df$name)]
 
-      df <-  readr::read_delim(filetemp, ...)
+        stopifnot("Output no encontrada en el drive de Argendata" = length(id_output) != 0)
+
+        stopifnot("Se encontro mas de una coincidencia en el drive de Argendata. Corregir filesystem del drive" = length(id_output) == 1)
+
+        filetemp <- tempfile(pattern = sprintf("%s_%s_argdt",
+                                               nombre,
+                                               subtopico),
+                             fileext = ".csv")
+
+        googledrive::drive_download(file = googledrive::as_id(id_output),
+                                    path = filetemp)
+
+        df <-  readr::read_delim(filetemp, ...)
 
 
     }
+
 
     df
 

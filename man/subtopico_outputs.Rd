@@ -4,12 +4,12 @@
 \alias{subtopico_outputs}
 \title{Consulta lista de outputs del subtopico/entrega en drive}
 \usage{
-subtopico_outputs(subtopico_nombre, entrega_subtopico)
+subtopico_outputs(subtopico_nombre, entrega_subtopico = NULL)
 }
 \arguments{
 \item{subtopico_nombre}{codigo 6 letras del subtopico tal cual su nombre en el drive de Argendata}
 
-\item{entrega_subtopico}{nombre de la entrega a buscar tal cual su nombre en el drive de Argendata}
+\item{entrega_subtopico}{NULL deprecated}
 }
 \value{
 dataframe con los outputs del subtopico para la entrega elegida

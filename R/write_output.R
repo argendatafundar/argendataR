@@ -57,7 +57,15 @@ write_output <- function(
 
   ## metadata -----
 
-  meta_dataset <- metadata(subtopico = subtopico)
+  topico_nuevo <- T
+  meta_dataset <- metadata_nuevo(subtopico = subtopico)
+
+  if (is.null(meta_dataset)) {
+    topico_nuevo <- F
+    meta_dataset <- metadata_viejo(subtopico = subtopico)
+
+  }
+
 
   meta_dataset <- meta_dataset[gsub("\\.csv$", "", output_name) == gsub("\\.csv$", "", meta_dataset$dataset_archivo),]
 

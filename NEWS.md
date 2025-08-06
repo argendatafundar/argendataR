@@ -1,5 +1,15 @@
 # Version: 0.0.9059
 
+Renombrado: se agregaron `armador_descripcion()` (nuevo) a `armador_descripcion_alt()`
+
+Corregido:
+- `metadata()`,  `write_output()` fix de logica de metadata
+
+Nuevo:
+- `metadata_nuevo()` y `metadata_viejo()`
+
+# Version: 0.0.9059
+
 Agregado: se agregaron `colectar_fuentes()` y `armador_descripcion()`
 
 Corregido:

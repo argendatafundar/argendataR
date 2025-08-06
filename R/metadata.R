@@ -13,7 +13,7 @@ metadata <- function(subtopico = NULL,
   version <- 'v2'
 
 
-  stopifnot("'subtopico' debe ser string con codigo de 6 letras de subtopico" = is.character(subtopico))
+  stopifnot("'subtopico' debe ser string con codigo de 6 letras de subtopico" = (length(subtopico) == 1 & is.character(subtopico) ) | subtopico == "*" )
 
   subtopico <- toupper(subtopico)
 
@@ -21,23 +21,116 @@ metadata <- function(subtopico = NULL,
   paths_subtopicos <- subtopicos_dir(version)$tree
 
 
-  if (isFALSE(any(grepl(subtopico, paths_subtopicos$name)))) {
+  nuevos_topicos <- paths_subtopicos$name[paths_subtopicos$name != "metadata_v1.json"]
 
-    filetemp <- tempfile(pattern = "metadata_v1_argdt.json",
-                         fileext = ".csv")
 
-    googledrive::drive_download(file = paths_subtopicos$id[paths_subtopicos$name == "metadata_v1.json"],
-                                path = filetemp)
+  if (subtopico == "*") {
 
-    metadata <- jsonlite::read_json(filetemp)
+    m1 <- metadata_nuevo(subtopico = "*")
+    m2 <- metadata_viejo(subtopico = "*")
 
-    metadata <- metadata[grepl(subtopico, names(metadata))]
+    metadata <- list(metadata_nuevo = m1, metadata_viejo = m2)
+
+    return(metadata)
+
+  } else if (any(grepl(subtopico, nuevos_topicos))) {
+
+    metadata <- metadata_nuevo(subtopico = subtopico, version = version, skip = skip)
+
+    if (is.null(metadata)) {
+      warning("TOPICO no encontrado")
+    }
 
     return(metadata)
 
   } else {
 
-    paths_subtopicos <- paths_subtopicos[grepl(subtopico, paths_subtopicos$name),]
+    metadata <- metadata_viejo(subtopico = subtopico, version = version, skip = skip)
+    if (is.null(metadata)) {
+      warning("TOPICO no encontrado")
+    }
+
+    return(metadata)
+
+  }
+
+
+}
+
+#' Consulta metadata de subtopicos viejos
+#'
+#' @param subtopico string Texto con el codigo de 6 letras del subtopico o patron de regex
+#' @param version (deprecated) Solo a fines de compatibilidad
+#' @param skip lineas a saltear en la lectura del sheet de metada
+#' @return dataframe con la metadata
+#' @export
+#'
+metadata_viejo <- function(subtopico = NULL,
+                           version = NULL, skip = 0) {
+
+  version <- 'v2'
+
+
+  stopifnot("'subtopico' debe ser string con codigo de 6 letras de subtopico" = (length(subtopico) == 1 & is.character(subtopico)) | subtopico == "*" )
+
+  subtopico <- toupper(subtopico)
+
+  # Lista los archivos o carpetas dentro de la carpeta de subtemas utilizando su ID
+  paths_subtopicos <- subtopicos_dir(version)$tree
+
+
+  filetemp <- tempfile(pattern = "metadata_v1_argdt",
+                       fileext = ".json")
+
+  googledrive::with_drive_quiet(googledrive::drive_download(file = paths_subtopicos$id[paths_subtopicos$name == "metadata_v1.json"],
+                                                            path = filetemp, overwrite = T))
+
+  metadata <- jsonlite::read_json(filetemp)
+
+
+  if (isFALSE(any(grepl(subtopico, names(metadata))))) {
+    # warning("No se encontraron coincidencias en metadata_v1.json")
+    return(NULL)
+  }
+
+  metadata <- metadata[grepl(subtopico, names(metadata))]
+
+  metadata <- dplyr::bind_rows(metadata)
+
+  return(metadata)
+
+}
+
+#' Consulta metadata de subtopicos nuevos
+#'
+#' @param subtopico string Texto con el codigo de 6 letras del subtopico o patron de regex
+#' @param version (deprecated) Solo a fines de compatibilidad
+#' @param skip lineas a saltear en la lectura del sheet de metada
+#' @return dataframe con la metadata
+#' @export
+#'
+metadata_nuevo <- function(subtopico = NULL,
+                          version = NULL, skip = 0) {
+
+
+  version <- 'v2'
+
+
+  stopifnot("'subtopico' debe ser string con codigo de 6 letras de subtopico" = (length(subtopico) == 1 & is.character(subtopico) ) | subtopico == "*" )
+
+  subtopico <- toupper(subtopico)
+
+  # Lista los archivos o carpetas dentro de la carpeta de subtemas utilizando su ID
+  paths_subtopicos <- subtopicos_dir(version)$tree
+
+
+  paths_subtopicos <- paths_subtopicos[grepl(subtopico,  paths_subtopicos$name),]
+
+
+  if (isFALSE(any(grepl(subtopico,  paths_subtopicos$name)))) {
+    # warning("No se encontraron coincidencias con subtopicos en el drive")
+    return(NULL)
+  }
 
   # Para cada ID en paths_subtopicos, lista los archivos dentro y los recopila en una lista
   files_subtopicos <- purrr::map(paths_subtopicos$id, function(x) {
@@ -69,8 +162,7 @@ metadata <- function(subtopico = NULL,
 
   return(metadata)
 
-  }
-
 
 }
+
 

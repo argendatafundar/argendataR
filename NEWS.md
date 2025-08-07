@@ -1,4 +1,11 @@
-# Version: 0.0.9059
+# Version: 0.0.9061
+
+
+Corregido:
+- `write_output()` fix de logica de metadata
+
+
+# Version: 0.0.9060
 
 Renombrado: se agregaron `armador_descripcion()` (nuevo) a `armador_descripcion_alt()`
 

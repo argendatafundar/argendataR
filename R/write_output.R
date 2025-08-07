@@ -66,8 +66,15 @@ write_output <- function(
 
   }
 
+  if (topico_nuevo) {
 
-  meta_dataset <- meta_dataset[gsub("\\.csv$", "", output_name) == gsub("\\.csv$", "", meta_dataset$dataset_archivo),]
+    meta_dataset <- dplyr::rename(meta_dataset,"dataset_archivo" = "nombre_archivo")
+
+  }
+
+  output_name_clean <- gsub("\\.csv$", "", output_name)
+
+  meta_dataset <- meta_dataset[output_name_clean == gsub("\\.csv$", "", meta_dataset$dataset_archivo),]
 
   meta_dataset <- meta_dataset %>% dplyr::distinct(dplyr::pick(c("variable_nombre",
                                                                  "descripcion")))

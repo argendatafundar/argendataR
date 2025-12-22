@@ -6,7 +6,7 @@ SERVER_USER_CALL <- function(){
 
   info <- Sys.info()
 
-  info["nodename"] == "vps-3915596-x"
+  info["nodename"] == Sys.getenv("NODENAME_SERVER")
 }
 
 #' @keywords internal

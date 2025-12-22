@@ -6,6 +6,7 @@ SERVER_USER_CALL <- function(){
 
   info <- Sys.info()
 
+  nzchar(Sys.getenv("NODENAME_SERVER")) &&
   info["nodename"] == Sys.getenv("NODENAME_SERVER")
 }
 

@@ -6,7 +6,11 @@
 
 fuentes_clean <- function() {
 
+  if (SERVER_USER_CALL()) {
+    df <- readr::read_csv(glue::glue("{RUTA_FUENTES()}/fuentes_clean.csv"), show_col_types = F, progress = F)
+  } else {
     df <- readr::read_csv(glue::glue("{IP_FUENTES()}/fuentes_clean.csv"), show_col_types = F, progress = F)
+  }
 
     df <- df %>%
       dplyr::filter(df$borrada != T | is.na(df$borrada)) 

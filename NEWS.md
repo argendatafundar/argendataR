@@ -1,4 +1,16 @@
+# Version: 0.0.9063
+
+Corregido: 
+- `fuentes_clean` busca path dependiendo del contexto de ejecución (remoto o servidor)
+- `fuentes_raw` busca path dependiendo del contexto de ejecución (remoto o servidor)
+
+# Version: 0.0.9062
+
+Corregido: 
+- `SERVER_USER_CALL()` función interna que maneja contexto de ejecución (remoto o servidor)
+
 # Version: 0.0.9061
+
 
 
 Corregido:
